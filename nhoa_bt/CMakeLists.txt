@@ -49,9 +49,12 @@ link_directories(
 add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp 
                # BT ACTION NODES.
                src/bt_action_nodes/ExecuteMotion.cpp
+               src/bt_action_nodes/DrawUserAttention.cpp
                # BT CONDITION NODES.
+               src/bt_condition_nodes/IsUserDetected.cpp
+               src/bt_condition_nodes/IsUserEngaged.cpp
+               src/bt_condition_nodes/IsUserEngaging.cpp
                #############################
-               # 
                src/plan_motion.cpp
                )
 add_dependencies(${PROJECT_NAME}_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
