@@ -1,8 +1,8 @@
-#include <IsFirstUnfoldingPointFound.h>
+#include <ConditionNodeFrame.h>
 #include  <iostream>
 
 
-BT::NodeStatus IsFirstUnfoldingPointFound::tick() {
+BT::NodeStatus ConditionNodeFrame::tick() {
     std::string input;
     while (true) {
         std::cout << name() << ": Select 's' (success) or 'f'(failure)" << std::endl;

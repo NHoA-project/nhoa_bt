@@ -25,6 +25,12 @@
 
 // ACTION NODES
 #include <ExecuteMotion.h>
+#include <DrawUserAttention.h>
+
+// CONDITION NODES
+#include <IsUserDetected.h>
+#include <IsUserEngaged.h>
+#include <IsUserEngaging.h>
 
 // RECYCLA FILES INCLUDES
 #include <plan_motion.h>
@@ -79,16 +85,17 @@ int main(int argc, char **argv)
 
     // ACTION NODES (BT full implemented).
     factory.registerNodeType<ExecuteMotion>("ExecuteMotion");
-
+    factory.registerNodeType<DrawUserAttention>("DrawUserAttention");
 
     // ACTION NODES (Class + BT wrapped functionalities).    
-
     // factory.registerSimpleAction("ResetWrist3",
     //                              std::bind(&wrist_3_arm_movements::ResetWrist3, &wrist3));
 
-
     // CONDITION NODES (BT full implemented).
-    // factory.registerNodeType<IsFirstUnfoldingPointFound>("IsFirstUnfoldingPointFound");
+    // factory.registerNodeType<ConditionNodeFrame>("ConditionNodeFrame");
+    factory.registerNodeType<IsUserDetected>("IsUserDetected");
+    factory.registerNodeType<IsUserEngaged>("IsUserEngaged");
+    factory.registerNodeType<IsUserEngaging>("IsUserEngaging");
 
     // CONDITION NODES (Class + BT wrapped functionalities).
     // factory.registerSimpleCondition("IsGrasping",
@@ -130,10 +137,28 @@ int main(int argc, char **argv)
     // Iterate through all the nodes and call init() if it is an Action_B
     for (auto &node : tree.nodes)
     {
+        // BT Action nodes.
         if (auto ExecuteMotion_node = dynamic_cast<ExecuteMotion *>(node.get()))
         {
             ExecuteMotion_node->init(&nh, &motion);
         }
+        // else if (auto DrawUserAttention_node = dynamic_cast<DrawUserAttention *>(node.get()))
+        // {
+        //     DrawUserAttention_node->init();
+        // }
+        // // BT Condition nodes.
+        // else if (auto IsUserDetected_node = dynamic_cast<IsUserDetected *>(node.get()))
+        // {
+        //     IsUserDetected_node->init();
+        // }
+        // else if (auto IsUserEngaged_node = dynamic_cast<IsUserEngaged *>(node.get()))
+        // {
+        //     IsUserEngaged_node->init();
+        // }
+        // else if (auto IsUserEngaging_node = dynamic_cast<IsUserEngaging *>(node.get()))
+        // {
+        //     IsUserEngaging_node->init(&nh, &motion);
+        // }
     }
 
     const bool LOOP = ( argc == 2 && strcmp( argv[1], "loop") == 0);
