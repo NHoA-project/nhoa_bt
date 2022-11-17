@@ -1,0 +1,10 @@
+<!-- BT DUAL MANIPULATOR + CAMERA -->
+<launch>
+
+  <!-- Arguments -->
+
+  <!--  ============================== -->
+  <!-- run nhoa demo bt node-->
+  <node name="nhoa_bt_demo" pkg="nhoa_bt" type="nhoa_bt_demo" respawn="false" output="screen"/>
+
+</launch>

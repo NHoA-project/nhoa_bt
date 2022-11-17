@@ -1,0 +1,48 @@
+<root>
+    <TreeNodesModel>
+        <SubTree ID="ClothUnfolding"/>
+        <SubTree ID="DefineUnfoldingJointConf"/>
+        <Action ID="ExecuteTrajectories">
+            <input_port type="std::string" name="cartesian_path_mode"/>
+            <input_port type="std::string" name="configuration"/>
+            <input_port type="std::string" name="mode"/>
+            <input_port type="std::string" name="move_group"/>
+            <output_port type="std::string" name="move_group_"/>
+            <input_port type="std::string" name="target_frame"/>
+            <input_port type="std::vector&lt;double, std::allocator&lt;double> >" name="target_orientation"/>
+            <input_port type="std::vector&lt;double, std::allocator&lt;double> >" name="target_pose"/>
+        </Action>
+        <Action ID="FindLowerPoint">
+            <output_port type="std::vector&lt;double, std::allocator&lt;double> >" name="lower_point_pose"/>
+            <input_port type="std::string" name="move_group"/>
+        </Action>
+        <SubTree ID="GraspFirstUnfoldingPoint">
+            <input_port name="__shared_blackboard" default="false">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+            <input_port name="_move_group" default="move_group"/>
+            <input_port name="_target_pose" default="target_pose"/>
+        </SubTree>
+        <SubTree ID="GraspLowerPoint">
+            <input_port name="__shared_blackboard" default="false">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+            <input_port name="_move_group" default="move_group"/>
+            <input_port name="_target_pose" default="target_pose"/>
+        </SubTree>
+        <SubTree ID="GraspSecondUnfoldingPoint">
+            <input_port name="__shared_blackboard" default="false">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+            <input_port name="_move_group" default="move_group"/>
+            <input_port name="_target_pose" default="target_pose"/>
+        </SubTree>
+        <Action ID="SetLowestGripper">
+            <output_port type="std::string" name="move_group_"/>
+            <output_port type="std::vector&lt;double, std::allocator&lt;double> >" name="target_orientation_"/>
+        </Action>
+        <Action ID="SwitchMoveGroupArm">
+            <input_port type="std::string" name="move_group"/>
+            <output_port type="std::string" name="move_group_"/>
+        </Action>
+        <Action ID="SwitchMoveGroupGripper">
+            <input_port type="std::string" name="move_group"/>
+            <output_port type="std::string" name="move_group_"/>
+        </Action>
+    </TreeNodesModel>
+</root>
+

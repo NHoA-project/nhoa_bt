@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="NHoADemoBT">
+    <!-- ////////// -->
+    <BehaviorTree ID="NHoADemoBT">
+        <SubTree ID="T1"/>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <BehaviorTree ID="T1">
+        <Sequence>
+            <SetBlackboard output_key="_motion_name" value="wave"/>
+            <Action ID="ExecuteMotion" motion_name="{_motion_name}"/>
+            <SetBlackboard output_key="_motion_name" value="nod"/>
+            <Action ID="ExecuteMotion" motion_name="{_motion_name}"/>
+            <SetBlackboard output_key="_motion_name" value="look_around"/>
+            <Action ID="ExecuteMotion" motion_name="{_motion_name}"/>
+            <SetBlackboard output_key="_motion_name" value="show left"/>
+            <Action ID="ExecuteMotion" motion_name="{_motion_name}"/>
+            <SetBlackboard output_key="_motion_name" value="show right"/>
+            <Action ID="ExecuteMotion" motion_name="{_motion_name}"/>
+            <SetBlackboard output_key="_motion_name" value="bow"/>
+            <Action ID="ExecuteMotion" motion_name="{_motion_name}"/>
+        </Sequence>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Action ID="ExecuteMotion">
+            <input_port name="motion_name" type="std::string"/>
+        </Action>
+        <SubTree ID="T1">
+            <!-- <input_port default="false" name="__shared_blackboard">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+            <input_port default="move_group" name="_move_group"/> -->
+        </SubTree>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>
+
