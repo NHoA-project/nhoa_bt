@@ -15,7 +15,8 @@
 // RECYCLA INCLUDES
 #include <plan_motion.h>
 
-/*This BT action node encapsulates the PAL ROBOTICS ARI "play_motion" functionality.*/
+/* This BT action node encapsulates the PAL ROBOTICS ARI "play_motion" 
+   motion functionality.*/
 
 class ExecuteMotion : public BT::CoroActionNode
 {
