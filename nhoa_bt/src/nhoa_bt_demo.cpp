@@ -24,7 +24,10 @@
 #ifdef MANUAL_STATIC_LINKING
 
 // ACTION NODES
-#include <ExecuteMotion.h>
+#include <ExecuteConversation.h>
+#include <ExecuteNavigation.h>
+#include <ExecuteUperbodyMotion.h>
+#include <ExecuteVoiceCmd.h>
 #include <DrawUserAttention.h>
 
 // CONDITION NODES
@@ -34,6 +37,7 @@
 
 // RECYCLA FILES INCLUDES
 #include <plan_motion.h>
+#include <plan_navigation.h>
 
 #endif
 
@@ -50,6 +54,7 @@ int main(int argc, char **argv)
 
     // Initialize resources [TODO: Add new instances here].
     plan_motion motion(&nh);
+    plan_navigation navigation(&nh);
 
     // Load xml BT file
     std::string default_path = ros::package::getPath("nhoa_bt");
@@ -84,7 +89,10 @@ int main(int argc, char **argv)
     std::cout << "BT_CONTROL: Starting the node registration" << std::endl;
 
     // ACTION NODES (BT full implemented).
-    factory.registerNodeType<ExecuteMotion>("ExecuteMotion");
+    factory.registerNodeType<ExecuteConversation>("ExecuteConversation");
+    factory.registerNodeType<ExecuteNavigation>("ExecuteNavigation");
+    factory.registerNodeType<ExecuteUperbodyMotion>("ExecuteUperbodyMotion");
+    factory.registerNodeType<ExecuteVoiceCmd>("ExecuteVoiceCmd");
     factory.registerNodeType<DrawUserAttention>("DrawUserAttention");
 
     // ACTION NODES (Class + BT wrapped functionalities).    
@@ -138,9 +146,13 @@ int main(int argc, char **argv)
     for (auto &node : tree.nodes)
     {
         // BT Action nodes.
-        if (auto ExecuteMotion_node = dynamic_cast<ExecuteMotion *>(node.get()))
+        if (auto ExecuteUperbodyMotion_node = dynamic_cast<ExecuteUperbodyMotion *>(node.get()))
         {
-            ExecuteMotion_node->init(&nh, &motion);
+            ExecuteUperbodyMotion_node->init(&nh, &motion);
+        }
+        else if (auto ExecuteNavigation_node = dynamic_cast<ExecuteNavigation *>(node.get()))
+        {
+            ExecuteNavigation_node->init(&nh, &navigation);
         }
         // else if (auto DrawUserAttention_node = dynamic_cast<DrawUserAttention *>(node.get()))
         // {
@@ -149,7 +161,7 @@ int main(int argc, char **argv)
         // // BT Condition nodes.
         // else if (auto IsUserDetected_node = dynamic_cast<IsUserDetected *>(node.get()))
         // {
-        //     IsUserDetected_node->init();
+        //     IsUserDetected_node->init();T
         // }
         // else if (auto IsUserEngaged_node = dynamic_cast<IsUserEngaged *>(node.get()))
         // {

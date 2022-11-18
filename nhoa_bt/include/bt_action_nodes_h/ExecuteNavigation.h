@@ -1,5 +1,5 @@
-#ifndef ExecuteMotion_H_INCLUDED_
-#define ExecuteMotion_H_INCLUDED_
+#ifndef ExecuteNavigation_H_INCLUDED_
+#define ExecuteNavigation_H_INCLUDED_
 
 // GENERAL INCLUDES
 #include <iostream>
@@ -12,18 +12,17 @@
 #include <behaviortree_cpp_v3/behavior_tree.h>
 #include <behaviortree_cpp_v3/bt_factory.h>
 
-// RECYCLA INCLUDES
-#include <plan_motion.h>
+// NHOA_BT INCLUDES
+#include <plan_navigation.h>
 
-/* This BT action node encapsulates the PAL ROBOTICS ARI "play_motion" 
-   motion functionality.*/
+/* This BT action node encapsulates the PAL ROBOTICS ARI navigation functionality.*/
 
-class ExecuteMotion : public BT::CoroActionNode
+class ExecuteNavigation : public BT::CoroActionNode
 {
   public:  
 
     // Shared program resources.
-    plan_motion* motion_;
+    plan_navigation* navigation_;
 
     // ROS stuff.
     ros::NodeHandle             nh_;    
@@ -33,7 +32,7 @@ class ExecuteMotion : public BT::CoroActionNode
 
     // =================================================== 
 
-    ExecuteMotion(const std::string& name, const BT::NodeConfiguration& config) : 
+    ExecuteNavigation(const std::string& name, const BT::NodeConfiguration& config) : 
     BT::CoroActionNode(name, config)
     {
     }
@@ -42,17 +41,16 @@ class ExecuteMotion : public BT::CoroActionNode
     {
         // This action has a single input port called "message"
         // Any port must have a name. The type is optional.
-        return { BT::InputPort<std::string>("motion_name") };
-                //  {BT::OutputPort<std::string>("move_group_")}};
+        return { BT::InputPort<std::vector<double>>("_navigation_goal") };
     }
 
     void init(ros::NodeHandle*  input_nh,
-              plan_motion*      input_motion)
+              plan_navigation*  input_navigation)
     {
-      std::cout << "### Initializing ExecuteMotion! ###" << std::endl;
+      std::cout << "### Initializing ExecuteNavigation! ###" << std::endl;
 
-      nh_       = *input_nh;
-      motion_   = input_motion;
+      nh_           = *input_nh;
+      navigation_   = input_navigation;
     }
 
     // You must override the virtual function tick()
@@ -64,6 +62,6 @@ class ExecuteMotion : public BT::CoroActionNode
 
     // Execute Cartersian Path by specifying a list of waypoints to the EE
     // to go through.
-    bool executeMotion(const std::string  &motion_name);
+    bool executeNavigation(const std::vector<double>  &navigation_goal);
 };
-#endif // ExecuteMotion_H_INCLUDED_
+#endif // ExecuteNavigation_H_INCLUDED_

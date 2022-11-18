@@ -1,11 +1,14 @@
-#include <DrawUserAttention.h>
+#include <ExecuteNavigation.h>
 
 // ROS INCLUDES
 #include <ros/ros.h>
 
+// NHOA_BT INCLUDES
+#include <plan_navigation.h>
+
 // =====================================
 
-BT::NodeStatus DrawUserAttention::tick()
+BT::NodeStatus ExecuteNavigation::tick()
 {   
   std::string input;
   bool waiting = true;
@@ -17,25 +20,25 @@ BT::NodeStatus DrawUserAttention::tick()
       if (input.compare("s") == 0) 
       { 
         // Get the Blackboard input arguments.
-        auto iteration = getInput<std::size_t>("_iteration");
+        auto navigation_goal = getInput<std::vector<double>>("_navigation_goal");
 
         // =======
 
-        // if((iteration.value().empty()))
+        // if((navigation_goal.value().empty()))
         // {
-        //   throw BT::RuntimeError("error reading port [iteration]:", iteration.error());
+        //   throw BT::RuntimeError("error reading port [navigation_goal]:", navigation_goal.error());
         // }
-        // --------
-        // else if((!iteration.value().empty()))
+        // // --------
+        // else if((!navigation_goal.value().empty()))
         // {
-          if(!(drawUserAttention(iteration.value())))
+          if(!(executeNavigation(navigation_goal.value())))
           {
-              std::cout << "ERROR! Not able to draw user attention action." << std::endl;
+              std::cout << "ERROR! Not able to set the requested navigation goal." << std::endl;
               success = false;
           }
           else
           {
-              std::cout << "SUCCESS! Drawing user attention action is reached." << std::endl;
+              std::cout << "SUCCESS! The requested navigation_goal is reached." << std::endl;
               success = true;
           }
         // }
@@ -56,7 +59,7 @@ BT::NodeStatus DrawUserAttention::tick()
 }
 
 
-void DrawUserAttention::cleanup(bool halted)
+void ExecuteNavigation::cleanup(bool halted)
 {
     std::cout << "cleaning up" << std::endl;
     if(halted)
@@ -68,7 +71,7 @@ void DrawUserAttention::cleanup(bool halted)
     }
 }
 
-void DrawUserAttention::halt(){
+void ExecuteNavigation::halt(){
 
     std::cout << name() <<": Halted." << std::endl;
     cleanup(true);
@@ -80,25 +83,9 @@ void DrawUserAttention::halt(){
 // ####################
 // Additional functions.
 
-bool DrawUserAttention::drawUserAttention(const std::size_t  &iteration)
+bool ExecuteNavigation::executeNavigation(const std::vector<double>  &navigation_goal)
 {
-  if(!(iteration > voice_cmds.size()))
-  {
-    std::cout << "### ITERATION -> " << iteration << " ###" << std::endl;
+  std::cout << "Executin navigation goal ..." << std::endl;
 
-    // Setting outputs.
-    setOutput("iteration_", iteration + 1);  
-    setOutput("motion_name_", motion_names[iteration]);
-    setOutput("voice_cmd_", voice_cmds[iteration]);
-
-    success_ = true;
-  }
-  else
-  {
-    success_ = false;
-  }
-
-  return success_;
+  return navigation_->set_navigation_goal(navigation_goal);
 }
-
-

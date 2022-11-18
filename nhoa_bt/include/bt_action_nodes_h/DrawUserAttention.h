@@ -12,9 +12,6 @@
 #include <behaviortree_cpp_v3/behavior_tree.h>
 #include <behaviortree_cpp_v3/bt_factory.h>
 
-// RECYCLA INCLUDES
-#include <plan_motion.h>
-
 /* TODO: This BT Action node outputs the "motion_name" and 
          "voice command" to grap the user attention.*/
 
@@ -35,7 +32,7 @@ class DrawUserAttention : public BT::CoroActionNode
                                            "Oh, wow. I would really love a chat."};                                         
 
     // Bool flag.
-    bool succes_ = false;
+    bool success_ = false;
 
 
     // ==============
@@ -49,10 +46,10 @@ class DrawUserAttention : public BT::CoroActionNode
     {
         // This action has a single input port called "message"
         // Any port must have a name. The type is optional.
-        return { {BT::InputPort<std::size_t>("_iteration")},
+        return { {BT::InputPort<std::size_t>("_iteration")}, 
+                 {BT::OutputPort<std::size_t>("iteration_")},
                  {BT::OutputPort<std::string>("motion_name_")},
-                 {BT::OutputPort<std::string>("voice_cmd_")}, 
-                 {BT::OutputPort<std::size_t>("iteration_")} };
+                 {BT::OutputPort<std::string>("voice_cmd_")} };
     }
 
     void init()
@@ -70,11 +67,5 @@ class DrawUserAttention : public BT::CoroActionNode
 
     // Outputs the "motion_name" and "voice command" to grap the user attention.
     bool drawUserAttention(const std::size_t  &iteration);
-
-    // Set the output "motion_name".
-    void setOutputMotionName(const std::size_t  &iteration);
-
-    // Set the output "voice_cmd".
-    void setOutputVoiceCmd(const std::size_t  &iteration);
 };
 #endif // DrawUserAttention_H_INCLUDED_

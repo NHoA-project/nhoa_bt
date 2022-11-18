@@ -1,14 +1,14 @@
-#include <ExecuteMotion.h>
+#include <ExecuteUperbodyMotion.h>
 
 // ROS INCLUDES
 #include <ros/ros.h>
 
-// RECYCLA INCLUDES
+// NHOA_BT INCLUDES
 #include <plan_motion.h>
 
 // =====================================
 
-BT::NodeStatus ExecuteMotion::tick()
+BT::NodeStatus ExecuteUperbodyMotion::tick()
 {   
   std::string input;
   bool waiting = true;
@@ -20,7 +20,7 @@ BT::NodeStatus ExecuteMotion::tick()
       if (input.compare("s") == 0) 
       { 
         // Get the Blackboard input arguments.
-        auto motion_name = getInput<std::string>("motion_name");
+        auto motion_name = getInput<std::string>("_motion_name");
 
         // Debug 
         std::cout << "Motion name -> " << motion_name.value() << std::endl;
@@ -34,7 +34,7 @@ BT::NodeStatus ExecuteMotion::tick()
         // --------
         else if((!motion_name.value().empty()))
         {
-          if(!(executeMotion(motion_name.value())))
+          if(!(executeUperbodyMotion(motion_name.value())))
           {
               std::cout << "ERROR! Not able to set the requested motion." << std::endl;
               success = false;
@@ -62,7 +62,7 @@ BT::NodeStatus ExecuteMotion::tick()
 }
 
 
-void ExecuteMotion::cleanup(bool halted)
+void ExecuteUperbodyMotion::cleanup(bool halted)
 {
     std::cout << "cleaning up" << std::endl;
     if(halted)
@@ -74,7 +74,7 @@ void ExecuteMotion::cleanup(bool halted)
     }
 }
 
-void ExecuteMotion::halt(){
+void ExecuteUperbodyMotion::halt(){
 
     std::cout << name() <<": Halted." << std::endl;
     cleanup(true);
@@ -86,7 +86,7 @@ void ExecuteMotion::halt(){
 // ####################
 // Additional functions.
 
-bool ExecuteMotion::executeMotion(const std::string  &motion_name)
+bool ExecuteUperbodyMotion::executeUperbodyMotion(const std::string  &motion_name)
 {
   std::cout << "### EXECUTING MOTION -> " << motion_name << " ###" << std::endl;
 

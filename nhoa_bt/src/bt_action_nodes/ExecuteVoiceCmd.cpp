@@ -1,11 +1,11 @@
-#include <DrawUserAttention.h>
+#include <ExecuteVoiceCmd.h>
 
 // ROS INCLUDES
 #include <ros/ros.h>
 
 // =====================================
 
-BT::NodeStatus DrawUserAttention::tick()
+BT::NodeStatus ExecuteVoiceCmd::tick()
 {   
   std::string input;
   bool waiting = true;
@@ -17,28 +17,28 @@ BT::NodeStatus DrawUserAttention::tick()
       if (input.compare("s") == 0) 
       { 
         // Get the Blackboard input arguments.
-        auto iteration = getInput<std::size_t>("_iteration");
+        auto voice_cmd = getInput<std::string>("_voice_cmd");
 
         // =======
 
-        // if((iteration.value().empty()))
-        // {
-        //   throw BT::RuntimeError("error reading port [iteration]:", iteration.error());
-        // }
+        if((voice_cmd.value().empty()))
+        {
+          throw BT::RuntimeError("error reading port [voice_cmd]:", voice_cmd.error());
+        }
         // --------
-        // else if((!iteration.value().empty()))
-        // {
-          if(!(drawUserAttention(iteration.value())))
+        else if((!voice_cmd.value().empty()))
+        {
+          if(!(executeVoiceCmd(voice_cmd.value())))
           {
-              std::cout << "ERROR! Not able to draw user attention action." << std::endl;
+              std::cout << "ERROR! Not able to execute voice cmd." << std::endl;
               success = false;
           }
           else
           {
-              std::cout << "SUCCESS! Drawing user attention action is reached." << std::endl;
+              std::cout << "SUCCESS! Voice cmd executed." << std::endl;
               success = true;
           }
-        // }
+        }
         waiting = false;
       } 
   }
@@ -56,7 +56,7 @@ BT::NodeStatus DrawUserAttention::tick()
 }
 
 
-void DrawUserAttention::cleanup(bool halted)
+void ExecuteVoiceCmd::cleanup(bool halted)
 {
     std::cout << "cleaning up" << std::endl;
     if(halted)
@@ -68,7 +68,7 @@ void DrawUserAttention::cleanup(bool halted)
     }
 }
 
-void DrawUserAttention::halt(){
+void ExecuteVoiceCmd::halt(){
 
     std::cout << name() <<": Halted." << std::endl;
     cleanup(true);
@@ -80,25 +80,10 @@ void DrawUserAttention::halt(){
 // ####################
 // Additional functions.
 
-bool DrawUserAttention::drawUserAttention(const std::size_t  &iteration)
+bool ExecuteVoiceCmd::executeVoiceCmd(const std::string  &voice_cmd)
 {
-  if(!(iteration > voice_cmds.size()))
-  {
-    std::cout << "### ITERATION -> " << iteration << " ###" << std::endl;
+  std::cout << "Robot says -> " << voice_cmd << std::endl;
 
-    // Setting outputs.
-    setOutput("iteration_", iteration + 1);  
-    setOutput("motion_name_", motion_names[iteration]);
-    setOutput("voice_cmd_", voice_cmds[iteration]);
-
-    success_ = true;
-  }
-  else
-  {
-    success_ = false;
-  }
-
-  return success_;
+  return true;
 }
-
 

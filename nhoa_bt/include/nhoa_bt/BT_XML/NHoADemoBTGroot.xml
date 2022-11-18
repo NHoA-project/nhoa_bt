@@ -2,7 +2,7 @@
 <root main_tree_to_execute="NHoADemoBT">
     <!-- ////////// -->
     <BehaviorTree ID="NHoADemoBT">
-        <!-- <Sequence>     
+        <Sequence>     
             <SubTree ID="T1"/> 
             <ReactiveSequence name="UserDetectionReactiveSequence">
                 <Condition ID="IsUserDetected"/>
@@ -16,28 +16,27 @@
                 <SubTree ID="TConversation" __shared_blackboard="false" _conversation_mode="conversation_mode"/>  
                 <SubTree ID="T7"/> 
             </ReactiveSequence>
-        </Sequence>     -->
-        <SubTree ID="T7"/>  
+        </Sequence>    
     </BehaviorTree>
     <!-- ////////// -->
     <BehaviorTree ID="T1">
         <Sequence>        
             <SetBlackboard output_key="motion_name" value="look_around"/>
-            <RetryUntilSuccessful num_attempts="30">
+            <RetryUntilSuccesful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserDetected"/>
                     <Inverter>
                         <Action ID="ExecuteUperbodyMotion" _motion_name="{motion_name}"/>
                     </Inverter>
                 </Fallback>
-            </RetryUntilSuccessful>
+            </RetryUntilSuccesful>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
     <BehaviorTree ID="T2">
         <Sequence>        
             <SetBlackboard output_key="iteration" value="0"/>
-            <RetryUntilSuccessful num_attempts="30">
+            <RetryUntilSuccesful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserEngaging"/>
                     <Inverter>
@@ -50,28 +49,28 @@
                         </Sequence>        
                     </Inverter>
                 </Fallback>
-            </RetryUntilSuccessful>
+            </RetryUntilSuccesful>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
     <BehaviorTree ID="T3">
         <Sequence>        
             <SetBlackboard output_key="navigation_goal" value="0.0;1.0;2.0"/>
-            <RetryUntilSuccessful num_attempts="30">
+            <RetryUntilSuccesful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserEngaged"/>
                     <Inverter> 
                         <Action ID="ExecuteNavigation" _navigation_goal="{navigation_goal}" />
                     </Inverter>
                 </Fallback>
-            </RetryUntilSuccessful>
+            </RetryUntilSuccesful>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
     <BehaviorTree ID="TConversation">
         <Sequence>     
             <SetBlackboard output_key="iteration" value="0"/>   
-            <RetryUntilSuccessful num_attempts="30">
+            <RetryUntilSuccesful num_attempts="30">
                 <Fallback>
                     <Inverter>
                         <Sequence>    
@@ -80,7 +79,7 @@
                         </Sequence>    
                     </Inverter>
                 </Fallback>
-            </RetryUntilSuccessful>
+            </RetryUntilSuccesful>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
@@ -88,14 +87,14 @@
         <Sequence>     
             <SetBlackboard output_key="iteration" value="0"/>   
             <SetBlackboard output_key="conversation_mode" value="agenda_recall"/>   
-            <RetryUntilSuccessful num_attempts="30">
+            <RetryUntilSuccesful num_attempts="30">
                 <Inverter>
                     <Sequence>    
                         <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}" motion_name_="{motion_name}" voice_cmd_="{voice_cmd}"/>
                         <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
                     </Sequence>    
                 </Inverter>
-            </RetryUntilSuccessful>
+            </RetryUntilSuccesful>
             <Action ID="ExecuteUperbodyMotion" _motion_name="{motion_name}"/>
         </Sequence>
     </BehaviorTree>

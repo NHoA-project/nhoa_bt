@@ -48,7 +48,10 @@ link_directories(
 # BT NODES
 add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp 
                # BT ACTION NODES.
-               src/bt_action_nodes/ExecuteMotion.cpp
+               src/bt_action_nodes/ExecuteConversation.cpp
+               src/bt_action_nodes/ExecuteNavigation.cpp
+               src/bt_action_nodes/ExecuteUperbodyMotion.cpp
+               src/bt_action_nodes/ExecuteVoiceCmd.cpp
                src/bt_action_nodes/DrawUserAttention.cpp
                # BT CONDITION NODES.
                src/bt_condition_nodes/IsUserDetected.cpp
@@ -56,6 +59,7 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_condition_nodes/IsUserEngaging.cpp
                #############################
                src/plan_motion.cpp
+               src/plan_navigation.cpp
                )
 add_dependencies(${PROJECT_NAME}_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_demo ${catkin_LIBRARIES})
