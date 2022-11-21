@@ -23,25 +23,17 @@ BT::NodeStatus ExecuteNavigation::tick()
         auto navigation_goal = getInput<std::vector<double>>("_navigation_goal");
 
         // =======
-
-        // if((navigation_goal.value().empty()))
-        // {
-        //   throw BT::RuntimeError("error reading port [navigation_goal]:", navigation_goal.error());
-        // }
-        // // --------
-        // else if((!navigation_goal.value().empty()))
-        // {
-          if(!(executeNavigation(navigation_goal.value())))
-          {
-              std::cout << "ERROR! Not able to set the requested navigation goal." << std::endl;
-              success = false;
-          }
-          else
-          {
-              std::cout << "SUCCESS! The requested navigation_goal is reached." << std::endl;
-              success = true;
-          }
-        // }
+        if(!(executeNavigation(navigation_goal.value())))
+        {
+            std::cout << "ERROR! Not able to set the requested navigation goal." << std::endl;
+            success = false;
+        }
+        else
+        {
+            std::cout << "SUCCESS! The requested navigation_goal is reached." << std::endl;
+            success = true;
+        }
+        
         waiting = false;
       } 
   }

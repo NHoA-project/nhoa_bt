@@ -15,7 +15,8 @@
 // NHOA_BT INCLUDES
 #include <plan_navigation.h>
 
-/* This BT action node encapsulates the PAL ROBOTICS ARI navigation functionality.*/
+/* [TODO: Fill in this BT Action node class] This BT action node encapsulates the PAL ROBOTICS 
+    ARI navigation functionality.*/
 
 class ExecuteNavigation : public BT::CoroActionNode
 {
@@ -60,7 +61,7 @@ class ExecuteNavigation : public BT::CoroActionNode
 
     // =================================================== 
 
-    // Execute Cartersian Path by specifying a list of waypoints to the EE
+    // Execute Navigation by specifying a list of waypoints to the EE
     // to go through.
     bool executeNavigation(const std::vector<double>  &navigation_goal);
 };
