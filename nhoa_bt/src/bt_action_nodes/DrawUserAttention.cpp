@@ -20,25 +20,17 @@ BT::NodeStatus DrawUserAttention::tick()
         auto iteration = getInput<std::size_t>("_iteration");
 
         // =======
-
-        // if((iteration.value().empty()))
-        // {
-        //   throw BT::RuntimeError("error reading port [iteration]:", iteration.error());
-        // }
-        // --------
-        // else if((!iteration.value().empty()))
-        // {
-          if(!(drawUserAttention(iteration.value())))
-          {
-              std::cout << "ERROR! Not able to draw user attention action." << std::endl;
-              success = false;
-          }
-          else
-          {
-              std::cout << "SUCCESS! Drawing user attention action is reached." << std::endl;
-              success = true;
-          }
-        // }
+        if(!(drawUserAttention(iteration.value())))
+        {
+            std::cout << "ERROR! Not able to draw user attention action." << std::endl;
+            success = false;
+        }
+        else
+        {
+            std::cout << "SUCCESS! Drawing user attention action is reached." << std::endl;
+            success = true;
+        }
+        
         waiting = false;
       } 
   }
