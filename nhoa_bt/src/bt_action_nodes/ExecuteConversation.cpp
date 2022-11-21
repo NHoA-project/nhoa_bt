@@ -30,17 +30,45 @@ BT::NodeStatus ExecuteConversation::tick()
           throw BT::RuntimeError("error reading port [conversation_mode]:", conversation_mode.error());
         }
         // --------
-        else if((conversation_mode.value().compare("chit_chat") == 0) )
+        else if((conversation_mode.value().compare("agenda") == 0) )
         {
-          if(!(executeChitChat(iteration.value())))
+          if(!(executeAgenda(iteration.value())))
           {
-            std::cout << "ERROR! Not able to execute Chit Chat conversation." << std::endl;
+            std::cout << "ERROR! Not able to execute Agenda conversation." << std::endl;
             success = false;
           }
           else
           {
-            std::cout << "SUCCESS! Chit Chat conversation executed." << std::endl;
+            std::cout << "SUCCESS! Agenda conversation executed." << std::endl;
             success = true;
+          }
+        }
+        // --------
+        else if((conversation_mode.value().compare("agenda_recall") == 0) )
+        {
+          if(!(executeAgendaRecall(iteration.value())))
+          {
+              std::cout << "ERROR! Not able to execute Agenda Recall." << std::endl;
+              success = false;
+          }
+          else
+          {
+            std::cout << "SUCCESS! Agenda Recall executed." << std::endl;
+            success = true;
+          }
+        }
+        // --------
+        else if(conversation_mode.value().compare("chit_chat") == 0)
+        {
+          if(!(executeChitChat(iteration.value())))
+          {
+              std::cout << "ERROR! Not able to start Chit Chat." << std::endl;
+              success = false;
+          }
+          else
+          {
+              std::cout << "SUCCESS! Starting Chit Chat conversation is reached." << std::endl;
+              success = true;
           }
         }
         // --------
@@ -72,17 +100,17 @@ BT::NodeStatus ExecuteConversation::tick()
           }
         }
         // --------
-        else if((conversation_mode.value().compare("agenda_recall") == 0) )
+        else if(conversation_mode.value().compare("questionnaire_start") == 0)
         {
-          if(!(executeAgendaRecall(iteration.value())))
+          if(!(startQuestionnaire(iteration.value())))
           {
-              std::cout << "ERROR! Not able to execute Agenda Recall." << std::endl;
+              std::cout << "ERROR! Not able to start Questionnaire." << std::endl;
               success = false;
           }
           else
           {
-            std::cout << "SUCCESS! Agenda Recall executed." << std::endl;
-            success = true;
+              std::cout << "SUCCESS! Starting Questionnaire is reached." << std::endl;
+              success = true;
           }
         }
         waiting = false;
@@ -125,15 +153,32 @@ void ExecuteConversation::halt(){
 
 // ####################
 // Additional functions.
+
+bool ExecuteConversation::executeAgenda(const std::size_t  &iteration)
+{
+  if(iteration < agenda_cmds.size())
+  {
+    setOutput("iteration_", iteration + 1);  
+    setOutput("voice_cmd_", agenda_cmds[iteration]);
+
+    success_ = true;
+  }
+  else
+  {
+    success_ = false;
+  }
+  return success_;
+}
+
 bool ExecuteConversation::executeAgendaRecall(const std::size_t  &iteration)
 {
-  if(!(iteration > agenda_recall_cmds.size()))
+  if(iteration < agenda_recall_cmds.size())
   {
     setOutput("iteration_", iteration + 1);  
     setOutput("voice_cmd_", agenda_recall_cmds[iteration]);
     if(iteration == 1)
     {
-      setOutput("motion_name_", "good bye");
+      setOutput("motion_name_", "wave");
     }
 
     success_ = true;
@@ -145,27 +190,50 @@ bool ExecuteConversation::executeAgendaRecall(const std::size_t  &iteration)
   return success_;
 }
 
-bool ExecuteConversation::executeChitChat(const std::size_t  &iteration)
+bool ExecuteConversation::executeChitChat(const std::size_t &iteration)
 {
-  std::cout << "### ITERATION -> " << iteration << " ###" << std::endl;
-
-  if(!(iteration > chit_chat_cmds.size()))
+  if (iteration < 2)
   {
     setOutput("iteration_", iteration + 1);  
     setOutput("voice_cmd_", chit_chat_cmds[iteration]);
 
     success_ = true;
   }
-  else
+  else if(iteration == 2)
   {
+    std::string input;
+    bool waiting = true;
+    while (waiting)
+    {
+      std::cout << "Select 'y' (yes) or 'n'(no)." << std::endl;
+      std::cin >> input;
+      if (input.compare("y") == 0) 
+      { 
+        setOutput("iteration_", iteration + 1);  
+        setOutput("voice_cmd_", chit_chat_cmds[iteration]);
+        waiting = false;
+      } 
+      else if (input.compare("n") == 0) 
+      {
+        setOutput("iteration_", iteration + 1);  
+        setOutput("voice_cmd_", chit_chat_cmds[iteration+1]);
+        waiting = false;
+      }
+    }
+
+    success_ = true;
+  }
+  else
+  { 
     success_ = false;
   }
+
   return success_;
 }
 
 bool ExecuteConversation::executeQuestionnaire(const std::size_t  &iteration)
 {
-  if(!(iteration > questionnaire_cmds.size()))
+  if(iteration < questionnaire_cmds.size())
   {
     setOutput("iteration_", iteration + 1);  
     setOutput("voice_cmd_", questionnaire_cmds[iteration]);
@@ -182,7 +250,7 @@ bool ExecuteConversation::executeQuestionnaire(const std::size_t  &iteration)
 
 bool ExecuteConversation::executeQuestionnaireFB(const std::size_t  &iteration)
 {
-  if(!(iteration > questionnaire_fb_cmds.size()))
+  if(iteration < questionnaire_fb_cmds.size())
   {
     setOutput("iteration_", iteration + 1);  
     setOutput("voice_cmd_", questionnaire_fb_cmds[iteration]);
@@ -193,5 +261,48 @@ bool ExecuteConversation::executeQuestionnaireFB(const std::size_t  &iteration)
   {
     success_ = false;
   }
+  return success_;
+}
+
+bool ExecuteConversation::startQuestionnaire(const std::size_t &iteration)
+{
+  if (iteration == 0)
+  {
+    setOutput("iteration_", iteration + 1);  
+    setOutput("voice_cmd_", questionnaire_start_cmds[iteration]);
+
+    success_ = true;
+  }
+  else if(iteration == 1)
+  {
+    std::string input;
+    bool waiting = true;
+    while (waiting)
+    {
+      std::cout << "Select 'y' (yes) or 'n'(no)." << std::endl;
+      std::cin >> input;
+      if (input.compare("y") == 0) 
+      { 
+        setOutput("iteration_", iteration + 1);  
+        setOutput("voice_cmd_", questionnaire_start_cmds[iteration]);
+        setOutput("questionnaire_requested_", "true");
+        waiting = false;
+      } 
+      else if (input.compare("n") == 0) 
+      {
+        setOutput("iteration_", iteration + 1);
+        setOutput("voice_cmd_", questionnaire_start_cmds[iteration+1]);
+        setOutput("questionnaire_requested_", "false");
+        waiting = false;
+      }
+    }
+
+    success_ = true;
+  }
+  else
+  { 
+    success_ = false;
+  }
+
   return success_;
 }

@@ -12,37 +12,40 @@
 #include <behaviortree_cpp_v3/behavior_tree.h>
 #include <behaviortree_cpp_v3/bt_factory.h>
 
-/* TODO: This BT Action node outputs the "motion_name" and 
-         "voice command" to grap the user attention.*/
-
+/* TODO: This BT Action node encapsulates all the functionalities
+         for the User-Robot conversation.*/
 
 class ExecuteConversation : public BT::CoroActionNode
 {
   public:   
 
-    // TODO: Predefined messages.
-    std::vector<std::string> chit_chat_cmds = {"How are you?",
-                                               "Did you sleep well?",
-                                               "Today is 12th of December and the weather is sunny.",
-                                               "Remember you have to call your daughter and that you have an appointment with the doctor at 17:00."};                                         
-
-    std::vector<std::string> questionnaire_cmds = {"I would like to ask you a few questions. Is now a good moment for you?",
-                                                   "Question 1: ...?",
+    // Predefined messages. TODO: Download voice commands from the DB (EUT).
+    std::vector<std::string> agenda_cmds = {"Today is 12th of December and the weather is sunny.",
+                                            "Remember you have to call your daughter and that you have an appointment with the doctor at 17:00."};                                         
+                                                      
+    std::vector<std::string> agenda_recall_cmds = {"We're done for now. Thank you.",
+                                                    "Remember that today you must call your daughter and that you have an appointment with the doctor at 17:00. Bye bye!"};                                          
+                                              
+    std::vector<std::string> chit_chat_cmds = {"How are you today?",                                // Question
+                                               "Did you sleep well?",                               // Y/N Question
+                                               "Great. A good sleep is important.",                 // Yes
+                                               "I am sorry to hear that. You must be very tired."}; // No
+                                             
+    std::vector<std::string> questionnaire_cmds = {"Question 1: ...?",
                                                    "Question 2: ...?",
                                                    "Question 3: ...?"};   
 
     std::vector<std::string> questionnaire_fb_cmds = {"Today we finished it quicker",
                                                       "I see you're feeling better than yesterday.",
                                                       "I suggest calling a friend or family”, “Why don't you go out for a walk?"};            
-                                                      
-    std::vector<std::string> agenda_recall_cmds = {"We're done for now. Thank you.",
-                                                    "Remember that today you must call your daughter and that you have an appointment with the doctor at 17:00. Bye bye!"};                                          
-                                                                                         
 
+    
+    std::vector<std::string> questionnaire_start_cmds = {"I would like to ask you a few questions. Is now a good moment for you?", // Y/N Question
+                                                         "Great! Here I go.",             // Yes
+                                                         "Let's do it some other time."}; // No                                                                                                              
 
     // Bool flag.
     bool success_ = false;
-
 
     // ==============
 
@@ -58,6 +61,7 @@ class ExecuteConversation : public BT::CoroActionNode
         return { {BT::InputPort<std::string>("_conversation_mode")},
                  {BT::InputPort<std::size_t>("_iteration")}, 
                  {BT::OutputPort<std::size_t>("iteration_")},
+                 {BT::OutputPort<std::string>("questionnaire_requested_")},
                  {BT::OutputPort<std::string>("motion_name_")},
                  {BT::OutputPort<std::string>("voice_cmd_")} };
     }
@@ -74,17 +78,22 @@ class ExecuteConversation : public BT::CoroActionNode
 
     // =================================================== 
     // Additional functionalities.
+    // Outputs the Agenda "voice command".
+    bool executeAgenda(const std::size_t  &iteration);
 
     // Outputs the Agenda Recall "motion_name" and "voice command".
     bool executeAgendaRecall(const std::size_t  &iteration);
 
-    // Outputs the Chit Chat "voice command".
-    bool executeChitChat(const std::size_t  &iteration);
+    // Outputs Chit Chat the "voice command".
+    bool executeChitChat(const std::size_t &iteration);
 
     // Outputs the Questionnaire "voice command".
     bool executeQuestionnaire(const std::size_t  &iteration);
 
     // Outputs the Questionnaire Feedback "voice command".
     bool executeQuestionnaireFB(const std::size_t  &iteration);
+
+    // Outputs the "voice command" to start the Questionnaire conversation.
+    bool startQuestionnaire(const std::size_t &iteration);
 };
 #endif // ExecuteConversation_H_INCLUDED_
