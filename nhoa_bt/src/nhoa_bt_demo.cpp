@@ -24,13 +24,15 @@
 #ifdef MANUAL_STATIC_LINKING
 
 // ACTION NODES
+#include <DrawUserAttention.h>
 #include <ExecuteConversation.h>
 #include <ExecuteNavigation.h>
 #include <ExecuteUperbodyMotion.h>
 #include <ExecuteVoiceCmd.h>
-#include <DrawUserAttention.h>
+#include <UploadUserInput.h>
 
 // CONDITION NODES
+#include <IsQuestionnaireRequested.h>
 #include <IsUserDetected.h>
 #include <IsUserEngaged.h>
 #include <IsUserEngaging.h>
@@ -46,7 +48,7 @@ using namespace BT;
 int main(int argc, char **argv)
 {
     // Initialize ROS
-    ros::init(argc, argv, "nhoa_demo_bt");
+    ros::init(argc, argv, "nhoa_bt_demo");
     ros::NodeHandle nh;
 
     ros::AsyncSpinner spinner(0);
@@ -89,11 +91,12 @@ int main(int argc, char **argv)
     std::cout << "BT_CONTROL: Starting the node registration" << std::endl;
 
     // ACTION NODES (BT full implemented).
+    factory.registerNodeType<DrawUserAttention>("DrawUserAttention");
     factory.registerNodeType<ExecuteConversation>("ExecuteConversation");
     factory.registerNodeType<ExecuteNavigation>("ExecuteNavigation");
     factory.registerNodeType<ExecuteUperbodyMotion>("ExecuteUperbodyMotion");
     factory.registerNodeType<ExecuteVoiceCmd>("ExecuteVoiceCmd");
-    factory.registerNodeType<DrawUserAttention>("DrawUserAttention");
+    factory.registerNodeType<UploadUserInput>("UploadUserInput");
 
     // ACTION NODES (Class + BT wrapped functionalities).    
     // factory.registerSimpleAction("ResetWrist3",
@@ -101,6 +104,7 @@ int main(int argc, char **argv)
 
     // CONDITION NODES (BT full implemented).
     // factory.registerNodeType<ConditionNodeFrame>("ConditionNodeFrame");
+    factory.registerNodeType<IsQuestionnaireRequested>("IsQuestionnaireRequested");
     factory.registerNodeType<IsUserDetected>("IsUserDetected");
     factory.registerNodeType<IsUserEngaged>("IsUserEngaged");
     factory.registerNodeType<IsUserEngaging>("IsUserEngaging");
@@ -154,23 +158,6 @@ int main(int argc, char **argv)
         {
             ExecuteNavigation_node->init(&nh, &navigation);
         }
-        // else if (auto DrawUserAttention_node = dynamic_cast<DrawUserAttention *>(node.get()))
-        // {
-        //     DrawUserAttention_node->init();
-        // }
-        // // BT Condition nodes.
-        // else if (auto IsUserDetected_node = dynamic_cast<IsUserDetected *>(node.get()))
-        // {
-        //     IsUserDetected_node->init();T
-        // }
-        // else if (auto IsUserEngaged_node = dynamic_cast<IsUserEngaged *>(node.get()))
-        // {
-        //     IsUserEngaged_node->init();
-        // }
-        // else if (auto IsUserEngaging_node = dynamic_cast<IsUserEngaging *>(node.get()))
-        // {
-        //     IsUserEngaging_node->init(&nh, &motion);
-        // }
     }
 
     const bool LOOP = ( argc == 2 && strcmp( argv[1], "loop") == 0);
