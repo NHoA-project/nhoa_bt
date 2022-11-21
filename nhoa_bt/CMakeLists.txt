@@ -48,12 +48,14 @@ link_directories(
 # BT NODES
 add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp 
                # BT ACTION NODES.
+               src/bt_action_nodes/DrawUserAttention.cpp
                src/bt_action_nodes/ExecuteConversation.cpp
                src/bt_action_nodes/ExecuteNavigation.cpp
                src/bt_action_nodes/ExecuteUperbodyMotion.cpp
                src/bt_action_nodes/ExecuteVoiceCmd.cpp
-               src/bt_action_nodes/DrawUserAttention.cpp
+               src/bt_action_nodes/UploadUserInput.cpp
                # BT CONDITION NODES.
+               src/bt_condition_nodes/IsQuestionnaireRequested.cpp
                src/bt_condition_nodes/IsUserDetected.cpp
                src/bt_condition_nodes/IsUserEngaged.cpp
                src/bt_condition_nodes/IsUserEngaging.cpp
@@ -63,3 +65,16 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                )
 add_dependencies(${PROJECT_NAME}_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_demo ${catkin_LIBRARIES})
+
+# BT NODES (CONVERSATION)
+add_executable(${PROJECT_NAME}_conversation_demo src/${PROJECT_NAME}_conversation_demo.cpp 
+               # BT ACTION NODES.
+               src/bt_action_nodes/ExecuteConversation.cpp
+               src/bt_action_nodes/ExecuteVoiceCmd.cpp
+               src/bt_action_nodes/UploadUserInput.cpp
+               # BT CONDITION NODES.
+               src/bt_condition_nodes/IsQuestionnaireRequested.cpp
+               #############################
+               )
+add_dependencies(${PROJECT_NAME}_conversation_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${PROJECT_NAME}_conversation_demo ${catkin_LIBRARIES})
