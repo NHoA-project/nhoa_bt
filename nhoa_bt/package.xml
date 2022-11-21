@@ -2,7 +2,7 @@
 <package format="2">
   <name>nhoa_bt</name>
   <version>0.4.10</version>
-  <description>This package executes the NHoA's project bt</description>
+  <description>This package executes the NHoA's project BT</description>
 
   <maintainer email="oscar.palacin@eurecat.org">Oscar Palacin</maintainer>
 
