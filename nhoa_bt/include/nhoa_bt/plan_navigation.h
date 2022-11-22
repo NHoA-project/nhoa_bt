@@ -3,6 +3,11 @@
 
 // ROS headers
 #include <ros/ros.h>
+#include "tf/transform_listener.h"
+#include "actionlib/client/simple_action_client.h"
+#include "move_base_msgs/MoveBaseAction.h"
+
+// =====
 
 class plan_navigation
 {
@@ -10,6 +15,13 @@ private:
     //vars
     // ROS stuff
     ros::NodeHandle     nh_;
+
+    // Actionlib stuff.
+    actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> client_;
+
+    // Move base stuff.
+    move_base_msgs::MoveBaseGoal goal_;
+    bool                         action_status_;
 
     // =======
     //functions

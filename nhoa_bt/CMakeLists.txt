@@ -22,7 +22,9 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   diagnostic_msgs 
   diagnostic_updater 
-  behaviortree_cpp_v3)
+  behaviortree_cpp_v3
+  move_base_msgs)
+  
 find_package(Boost REQUIRED COMPONENTS thread)
 
 catkin_package(INCLUDE_DIRS include

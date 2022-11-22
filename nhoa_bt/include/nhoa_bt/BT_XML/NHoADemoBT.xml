@@ -3,7 +3,7 @@
     <!-- ////////// -->
     <BehaviorTree ID="NHoADemoBT">
         <Sequence>     
-            <SubTree ID="T1"/> 
+            <!-- <SubTree ID="T1"/> 
             <ReactiveSequence name="UserDetectionReactiveSequence">
                 <Condition ID="IsUserDetected"/>
                 <SubTree ID="T2"/> 
@@ -12,7 +12,9 @@
                 <SubTree ID="T5"/> 
                 <SubTree ID="T6"/> 
                 <SubTree ID="T7"/> 
-            </ReactiveSequence>
+            </ReactiveSequence> -->
+            <SetBlackboard output_key="navigation_goal" value="0.0; 0.0; 3.14"/>
+            <Action ID="ExecuteNavigation" _navigation_goal="{navigation_goal}" />
         </Sequence>    
     </BehaviorTree>
     <!-- ////////// -->

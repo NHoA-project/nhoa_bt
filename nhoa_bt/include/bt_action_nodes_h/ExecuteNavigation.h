@@ -7,7 +7,6 @@
 
 // ROS INCLUDES
 #include <ros/ros.h>
-
 // BT includes.
 #include <behaviortree_cpp_v3/behavior_tree.h>
 #include <behaviortree_cpp_v3/bt_factory.h>

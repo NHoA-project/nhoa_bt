@@ -36,6 +36,8 @@ void plan_motion::cook_motion(const std::string    &motion_name)
 
 void plan_motion::init()
 {
+  std::cout << "Initializing plan_motion ..." << std::endl;
+
   if (!ros::Time::waitForValid(ros::WallDuration(10.0))) // NOTE: Important when using simulated clock
   {
     ROS_FATAL("Timed-out waiting for valid time.");
