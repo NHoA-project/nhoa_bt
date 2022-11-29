@@ -26,6 +26,7 @@
 // ACTION NODES
 #include <DrawUserAttention.h>
 #include <ExecuteConversation.h>
+#include <ExecuteHeadMotion.h>
 #include <ExecuteNavigation.h>
 #include <ExecuteUperbodyMotion.h>
 #include <ExecuteVoiceCmd.h>
@@ -38,8 +39,10 @@
 #include <IsUserEngaging.h>
 
 // RECYCLA FILES INCLUDES
+#include <plan_head_motion.h>
 #include <plan_motion.h>
 #include <plan_navigation.h>
+#include <plan_voice_cmd.h>
 
 #endif
 
@@ -55,8 +58,10 @@ int main(int argc, char **argv)
     spinner.start();
 
     // Initialize resources [TODO: Add new instances here].
-    plan_motion motion(&nh);
-    plan_navigation navigation(&nh);
+    plan_head_motion    head_motion(&nh);
+    plan_motion         motion(&nh);
+    plan_navigation     navigation(&nh);
+    plan_voice_cmd          voice(&nh);
 
     // Load xml BT file
     std::string default_path = ros::package::getPath("nhoa_bt");
@@ -93,6 +98,7 @@ int main(int argc, char **argv)
     // ACTION NODES (BT full implemented).
     factory.registerNodeType<DrawUserAttention>("DrawUserAttention");
     factory.registerNodeType<ExecuteConversation>("ExecuteConversation");
+    factory.registerNodeType<ExecuteHeadMotion>("ExecuteHeadMotion");
     factory.registerNodeType<ExecuteNavigation>("ExecuteNavigation");
     factory.registerNodeType<ExecuteUperbodyMotion>("ExecuteUperbodyMotion");
     factory.registerNodeType<ExecuteVoiceCmd>("ExecuteVoiceCmd");
@@ -150,13 +156,21 @@ int main(int argc, char **argv)
     for (auto &node : tree.nodes)
     {
         // BT Action nodes.
-        if (auto ExecuteUperbodyMotion_node = dynamic_cast<ExecuteUperbodyMotion *>(node.get()))
+        if(auto ExecuteHeadMotion_node = dynamic_cast<ExecuteHeadMotion *>(node.get()))
+        {
+            ExecuteHeadMotion_node->init(&nh, &head_motion); 
+        }
+        else if(auto ExecuteUperbodyMotion_node = dynamic_cast<ExecuteUperbodyMotion *>(node.get()))
         {
             ExecuteUperbodyMotion_node->init(&nh, &motion);
         }
         else if (auto ExecuteNavigation_node = dynamic_cast<ExecuteNavigation *>(node.get()))
         {
             ExecuteNavigation_node->init(&nh, &navigation);
+        }
+        else if (auto ExecuteVoiceCmd_node = dynamic_cast<ExecuteVoiceCmd *>(node.get()))
+        {
+            ExecuteVoiceCmd_node->init(&nh, &voice);
         }
     }
 
