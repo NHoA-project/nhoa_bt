@@ -3,6 +3,9 @@
 // ROS INCLUDES
 #include <ros/ros.h>
 
+// NHOA_BT INCLUDES
+#include <plan_voice_cmd.h>
+
 // =====================================
 
 BT::NodeStatus ExecuteVoiceCmd::tick()
@@ -19,6 +22,9 @@ BT::NodeStatus ExecuteVoiceCmd::tick()
         // Get the Blackboard input arguments.
         auto voice_cmd = getInput<std::string>("_voice_cmd");
 
+        // Debug 
+        std::cout << "Voice cmd -> " << voice_cmd.value() << std::endl;
+
         // =======
 
         if((voice_cmd.value().empty()))
@@ -30,12 +36,12 @@ BT::NodeStatus ExecuteVoiceCmd::tick()
         {
           if(!(executeVoiceCmd(voice_cmd.value())))
           {
-              std::cout << "ERROR! Not able to execute voice cmd." << std::endl;
+              std::cout << "ERROR! Not able to set the requested voice command." << std::endl;
               success = false;
           }
           else
           {
-              std::cout << "SUCCESS! Voice cmd executed." << std::endl;
+              std::cout << "SUCCESS! The requested voice command is reached." << std::endl;
               success = true;
           }
         }
@@ -82,8 +88,7 @@ void ExecuteVoiceCmd::halt(){
 
 bool ExecuteVoiceCmd::executeVoiceCmd(const std::string  &voice_cmd)
 {
-  std::cout << "Robot says -> " << voice_cmd << std::endl;
+  std::cout << "### EXECUTING VOICE COMMAND -> " << voice_cmd << " ###" << std::endl;
 
-  return true;
+  return voice_->set_voice_cmd(voice_cmd); 
 }
-
