@@ -10,7 +10,6 @@
 // ROS headers
 #include <ros/ros.h>
 #include <actionlib/client/simple_action_client.h>
-#include <play_motion_msgs/PlayMotionAction.h>
 
 // C++ standard headers
 #include <cstdlib>
@@ -18,15 +17,14 @@
 // =====================================
 
 plan_motion::plan_motion(ros::NodeHandle    *nodehandle):  nh_(*nodehandle),
-                                                           client_("/play_motion", true)
+                                                           client_("play_motion", true)
 {
   // Initialize joint state variables.
   plan_motion::init();
 }
 
 // ###################################
-
-void plan_motion::cook_motion(const std::string    &motion_name)
+void plan_motion::cook_goal(const std::string    &motion_name)
 {
   // Cooking motion.
   goal_.motion_name = motion_name;
@@ -46,11 +44,13 @@ void plan_motion::init()
   
   // ROS_INFO("Waiting for Action Server ...");
   client_.waitForServer();
+
 }
+
 
 bool plan_motion::set_motion(const std::string    &motion_name)
 {
-  plan_motion::cook_motion(motion_name);
+  plan_motion::cook_goal(motion_name);
 
   // Send goal to the client.
   ROS_INFO_STREAM("Sending goal with motion: " << motion_name);  

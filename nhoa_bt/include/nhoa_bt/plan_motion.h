@@ -1,5 +1,5 @@
-#ifndef __PLANNING_MOTION_H_INCLUDED__
-#define __PLANNING_MOTION_H_INCLUDED__
+#ifndef __PLAN_MOTION_H_INCLUDED__
+#define __PLAN_MOTION_H_INCLUDED__
 
 // C++ standard headers
 #include <exception>
@@ -11,10 +11,14 @@
 // ROS headers
 #include <ros/ros.h>
 #include <actionlib/client/simple_action_client.h>
+
+// PAL includes
 #include <play_motion_msgs/PlayMotionAction.h>
 
 // C++ standard headers
 #include <cstdlib>
+
+/* This class encapsulates the planning of the Uper Body predefined motions. */
 
 class plan_motion
 {
@@ -24,19 +28,19 @@ private:
     ros::NodeHandle     nh_;
 
     // Actionlib stuff.
-    actionlib::SimpleActionClient<play_motion_msgs::PlayMotionAction>   client_;
-
+    actionlib::SimpleActionClient<play_motion_msgs::PlayMotionAction>           client_;
+    
     // Play motion stuff.
-    play_motion_msgs::PlayMotionGoal goal_;
-    bool                             action_status_;
+    bool                                    action_status_;
+    play_motion_msgs::PlayMotionGoal        goal_;
 
     // =======
     //functions
     // Initializing.
     void init();
 
-    // Cook motion.
-    void cook_motion(const std::string    &motion_name);
+    // Cook play motion.
+    void cook_goal(const std::string                 &motion_name);
 
 public:
     //vars
@@ -45,6 +49,7 @@ public:
     //functions
     plan_motion(ros::NodeHandle    *nodehandle);
 
+    // Set predefined motion.
     bool set_motion(const std::string    &motion_name);
 };
-#endif // __PLANNING_MOTION_H_INCLUDED__
+#endif // __PLAN_MOTION_H_INCLUDED__
