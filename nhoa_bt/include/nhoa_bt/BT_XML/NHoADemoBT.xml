@@ -3,7 +3,7 @@
     <!-- ////////// -->
     <BehaviorTree ID="NHoADemoBT">
         <Sequence>     
-            <!-- <SubTree ID="T1"/> 
+            <SubTree ID="T1"/> 
             <ReactiveSequence name="UserDetectionReactiveSequence">
                 <Condition ID="IsUserDetected"/>
                 <SubTree ID="T2"/> 
@@ -12,15 +12,14 @@
                 <SubTree ID="T5"/> 
                 <SubTree ID="T6"/> 
                 <SubTree ID="T7"/> 
-            </ReactiveSequence> -->
-            <SetBlackboard output_key="navigation_goal" value="0.0; 0.0; 3.14"/>
-            <Action ID="ExecuteNavigation" _navigation_goal="{navigation_goal}" />
+            </ReactiveSequence>
         </Sequence>    
     </BehaviorTree>
     <!-- ////////// -->
     <BehaviorTree ID="T1">
         <Sequence>        
-            <SetBlackboard output_key="motion_name" value="look_around"/>
+            <SetBlackboard output_key="motion_name"         value="look_around"/>
+            <SetBlackboard output_key="navigation_mode"     value="rotation"/>
             <RetryUntilSuccessful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserDetected"/>
@@ -55,11 +54,12 @@
     <BehaviorTree ID="T3">
         <Sequence>        
             <SetBlackboard output_key="navigation_goal" value="0.0;1.0;2.0"/>
+            <SetBlackboard output_key="navigation_mode" value="navigation_goal"/>
             <RetryUntilSuccessful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserEngaged"/>
                     <Inverter> 
-                        <Action ID="ExecuteNavigation" _navigation_goal="{navigation_goal}" />
+                        <Action ID="ExecuteNavigation" _navigation_goal="{}" _navigation_mode="{navigation_mode}" _rotation="{}" />
                     </Inverter>
                 </Fallback>
             </RetryUntilSuccessful>
@@ -169,8 +169,15 @@
             <output_port name="motion_name_"                type="std::string"/>
             <output_port name="voice_cmd_"                  type="std::string"/>
         </Action>
+        <Action ID="ExecuteHeadMotion">
+            <input_port name="_head_motion_mode" type="std::string"/>
+            <input_port name="_pan_tilt_goal"    type="std::vector&lt;double, std::allocator&lt;double&gt; &gt;"/>
+            <input_port name="_point_head_goal"  type="geometry_msgs::PointStamped"/>
+        </Action>
         <Action ID="ExecuteNavigation">
             <input_port name="_navigation_goal" type="std::vector&lt;double, std::allocator&lt;double&gt; &gt;"/>
+            <input_port name="_navigation_mode" type="std::string"/>
+            <input_port name="_rotation"        type="double"/>
         </Action>
         <Action ID="ExecuteUperbodyMotion">
             <input_port name="_motion_name" type="std::string"/>

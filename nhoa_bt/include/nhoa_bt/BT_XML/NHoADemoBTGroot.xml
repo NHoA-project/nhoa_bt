@@ -18,7 +18,8 @@
     <!-- ////////// -->
     <BehaviorTree ID="T1">
         <Sequence>        
-            <SetBlackboard output_key="motion_name" value="look_around"/>
+            <SetBlackboard output_key="motion_name"         value="look_around"/>
+            <SetBlackboard output_key="navigation_mode"     value="rotation"/>
             <RetryUntilSuccesful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserDetected"/>
@@ -53,11 +54,12 @@
     <BehaviorTree ID="T3">
         <Sequence>        
             <SetBlackboard output_key="navigation_goal" value="0.0;1.0;2.0"/>
+            <SetBlackboard output_key="navigation_mode" value="navigation_goal"/>
             <RetryUntilSuccesful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserEngaged"/>
                     <Inverter> 
-                        <Action ID="ExecuteNavigation" _navigation_goal="{navigation_goal}" />
+                        <Action ID="ExecuteNavigation" _navigation_goal="{}" _navigation_mode="{navigation_mode}" _rotation="{}" />
                     </Inverter>
                 </Fallback>
             </RetryUntilSuccesful>
@@ -169,6 +171,8 @@
         </Action>
         <Action ID="ExecuteNavigation">
             <input_port name="_navigation_goal" type="std::vector&lt;double, std::allocator&lt;double&gt; &gt;"/>
+            <input_port name="_navigation_mode" type="std::string"/>
+            <input_port name="_rotation"        type="double"/>
         </Action>
         <Action ID="ExecuteUperbodyMotion">
             <input_port name="_motion_name" type="std::string"/>
