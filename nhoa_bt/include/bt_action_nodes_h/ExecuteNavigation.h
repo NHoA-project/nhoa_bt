@@ -41,7 +41,9 @@ class ExecuteNavigation : public BT::CoroActionNode
     {
         // This action has a single input port called "message"
         // Any port must have a name. The type is optional.
-        return { BT::InputPort<std::vector<double>>("_navigation_goal") };
+        return { {BT::InputPort<std::vector<double>>("_navigation_goal")}, 
+                 {BT::InputPort<std::string>("_navigation_mode")}, 
+                 {BT::InputPort<double>("_rotation")}};
     }
 
     void init(ros::NodeHandle*  input_nh,
@@ -60,8 +62,10 @@ class ExecuteNavigation : public BT::CoroActionNode
 
     // =================================================== 
 
-    // Execute Navigation by specifying a list of waypoints to the EE
-    // to go through.
-    bool executeNavigation(const std::vector<double>  &navigation_goal);
+    // Execute 2D Navigation Goal (position + rotation).
+    bool executeNavigationGoal(const std::vector<double>  &navigation_goal);
+
+    // Execute rotation.
+    bool executeRotation(const double  &rotation);
 };
 #endif // ExecuteNavigation_H_INCLUDED_

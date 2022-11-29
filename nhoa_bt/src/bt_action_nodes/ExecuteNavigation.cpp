@@ -3,9 +3,6 @@
 // ROS INCLUDES
 #include <ros/ros.h>
 
-// NHOA_BT INCLUDES
-#include <plan_navigation.h>
-
 // =====================================
 
 BT::NodeStatus ExecuteNavigation::tick()
@@ -20,20 +17,43 @@ BT::NodeStatus ExecuteNavigation::tick()
       if (input.compare("s") == 0) 
       { 
         // Get the Blackboard input arguments.
-        auto navigation_goal = getInput<std::vector<double>>("_navigation_goal");
+        auto navigation_goal  = getInput<std::vector<double>>("_navigation_goal");
+        auto navigation_mode  = getInput<std::string>("_navigation_mode");
+        auto rotation         = getInput<double>("_rotation");
 
         // =======
-        if(!(executeNavigation(navigation_goal.value())))
+        if(navigation_mode.value().empty())
         {
-            std::cout << "ERROR! Not able to set the requested navigation goal." << std::endl;
-            success = false;
+          throw BT::RuntimeError("error reading port [navigation_mode]:", navigation_mode.error());
         }
-        else
+        // --------
+        else if(navigation_mode.value().compare("navigation_goal") == 0 )
         {
-            std::cout << "SUCCESS! The requested navigation_goal is reached." << std::endl;
-            success = true;
+          if(!(executeNavigationGoal(navigation_goal.value())))
+          {
+              std::cout << "ERROR! Not able to set the requested navigation goal." << std::endl;
+              success = false;
+          }
+          else
+          {
+              std::cout << "SUCCESS! The requested navigation_goal is reached." << std::endl;
+              success = true;
+          }
         }
-        
+        // --------
+        else if(navigation_mode.value().compare("rotation") == 0 )
+        {
+          if(!(executeRotation(rotation.value())))
+          {
+              std::cout << "ERROR! Not able to set the requested rotation." << std::endl;
+              success = false;
+          }
+          else
+          {
+              std::cout << "SUCCESS! The requested rotation is reached." << std::endl;
+              success = true;
+          }
+        }
         waiting = false;
       } 
   }
@@ -75,9 +95,16 @@ void ExecuteNavigation::halt(){
 // ####################
 // Additional functions.
 
-bool ExecuteNavigation::executeNavigation(const std::vector<double>  &navigation_goal)
+bool ExecuteNavigation::executeNavigationGoal(const std::vector<double>  &navigation_goal)
 {
-  std::cout << "Executin navigation goal ..." << std::endl;
+  std::cout << "Executing navigation goal ..." << std::endl;
 
   return navigation_->set_navigation_goal(navigation_goal);
+}
+
+bool ExecuteNavigation::executeRotation(const double  &rotation)
+{
+  std::cout << "Executing rotation ..." << std::endl;
+
+  return navigation_->set_rotation(rotation);
 }

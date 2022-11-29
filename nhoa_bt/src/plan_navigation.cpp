@@ -43,6 +43,13 @@ void plan_navigation::init()
   client_.waitForServer();
 }
 
+void plan_navigation::odom_callback(const nav_msgs::Odometry &odom_msg)
+{
+  mutex_.lock();
+  odom_ = odom_msg;
+  mutex_.unlock();
+}
+
 bool plan_navigation::set_navigation_goal(const std::vector<double>    &navigation_goal)
 {
 
@@ -50,6 +57,33 @@ bool plan_navigation::set_navigation_goal(const std::vector<double>    &navigati
 
   // Send goal to "navigation client".
   ROS_INFO_STREAM("Sending navigation goal!");  
+  client_.sendGoal(goal_);
+
+  // Waiting for action status.
+  ROS_INFO("Waiting for result ...");
+  action_status_ = client_.waitForResult(ros::Duration(30.0));
+
+  // Get action status.
+  actionlib::SimpleClientGoalState state_ = client_.getState();
+
+  if ( action_status_ )
+  {
+      ROS_INFO_STREAM("Action finished successfully with state: " << state_.toString());
+  }
+  else
+  {
+      ROS_ERROR_STREAM("Action failed with state: " << state_.toString());
+  }
+  return action_status_;
+}
+
+bool plan_navigation::set_rotation(const double &rotation)
+{
+
+  plan_navigation::cook_navigation({odom_.pose.pose.position.x, odom_.pose.pose.position.y, rotation});
+
+  // Send goal to "navigation client".
+  ROS_INFO_STREAM("Sending rotation goal!");  
   client_.sendGoal(goal_);
 
   // Waiting for action status.
