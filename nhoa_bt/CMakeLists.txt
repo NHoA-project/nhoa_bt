@@ -23,14 +23,17 @@ find_package(catkin REQUIRED COMPONENTS
   diagnostic_msgs 
   diagnostic_updater 
   behaviortree_cpp_v3
-  move_base_msgs)
+  move_base_msgs
+  nav_msgs
+  trajectory_msgs
+  pal_interaction_msgs)
   
 find_package(Boost REQUIRED COMPONENTS thread)
 
 catkin_package(INCLUDE_DIRS include
                LIBRARIES play_motion_helpers
                CATKIN_DEPENDS actionlib control_msgs controller_manager_msgs
-               play_motion_msgs moveit_ros_planning_interface roscpp sensor_msgs)
+               play_motion_msgs moveit_ros_planning_interface roscpp sensor_msgs pal_interaction_msgs)
 
 
 ## Specify additional locations of header files
@@ -52,6 +55,7 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                # BT ACTION NODES.
                src/bt_action_nodes/DrawUserAttention.cpp
                src/bt_action_nodes/ExecuteConversation.cpp
+               src/bt_action_nodes/ExecuteHeadMotion.cpp
                src/bt_action_nodes/ExecuteNavigation.cpp
                src/bt_action_nodes/ExecuteUperbodyMotion.cpp
                src/bt_action_nodes/ExecuteVoiceCmd.cpp
@@ -62,21 +66,23 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_condition_nodes/IsUserEngaged.cpp
                src/bt_condition_nodes/IsUserEngaging.cpp
                #############################
+               src/plan_head_motion.cpp
                src/plan_motion.cpp
                src/plan_navigation.cpp
+               src/plan_voice_cmd.cpp
                )
 add_dependencies(${PROJECT_NAME}_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_demo ${catkin_LIBRARIES})
 
 # BT NODES (CONVERSATION)
-add_executable(${PROJECT_NAME}_conversation_demo src/${PROJECT_NAME}_conversation_demo.cpp 
-               # BT ACTION NODES.
-               src/bt_action_nodes/ExecuteConversation.cpp
-               src/bt_action_nodes/ExecuteVoiceCmd.cpp
-               src/bt_action_nodes/UploadUserInput.cpp
-               # BT CONDITION NODES.
-               src/bt_condition_nodes/IsQuestionnaireRequested.cpp
-               #############################
-               )
-add_dependencies(${PROJECT_NAME}_conversation_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(${PROJECT_NAME}_conversation_demo ${catkin_LIBRARIES})
+# add_executable(${PROJECT_NAME}_conversation_demo src/${PROJECT_NAME}_conversation_demo.cpp 
+#                # BT ACTION NODES.
+#                src/bt_action_nodes/ExecuteConversation.cpp
+#                src/bt_action_nodes/ExecuteVoice.cpp
+#                src/bt_action_nodes/UploadUserInput.cpp
+#                # BT CONDITION NODES.
+#                src/bt_condition_nodes/IsQuestionnaireRequested.cpp
+#                #############################
+#                )
+# add_dependencies(${PROJECT_NAME}_conversation_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# target_link_libraries(${PROJECT_NAME}_conversation_demo ${catkin_LIBRARIES})
