@@ -43,7 +43,6 @@ class ExecuteUperbodyMotion : public BT::CoroActionNode
         // This action has a single input port called "message"
         // Any port must have a name. The type is optional.
         return { BT::InputPort<std::string>("_motion_name") };
-                //  {BT::OutputPort<std::string>("move_group_")}};
     }
 
     void init(ros::NodeHandle*  input_nh,

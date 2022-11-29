@@ -24,7 +24,6 @@ BT::NodeStatus ExecuteConversation::tick()
         auto iteration          = getInput<std::size_t>("_iteration");
 
         // =======
-
         if((conversation_mode.value().empty()))
         {
           throw BT::RuntimeError("error reading port [conversation_mode]:", conversation_mode.error());
