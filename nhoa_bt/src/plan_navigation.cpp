@@ -79,8 +79,7 @@ bool plan_navigation::set_navigation_goal(const std::vector<double>    &navigati
 
 bool plan_navigation::set_rotation(const double &rotation)
 {
-
-  plan_navigation::cook_navigation({odom_.pose.pose.position.x, odom_.pose.pose.position.y, rotation});
+  plan_navigation::cook_navigation({odom_.pose.pose.position.x, odom_.pose.pose.position.y, 2*asin(odom_.pose.pose.position.z) + rotation});
 
   // Send goal to "navigation client".
   ROS_INFO_STREAM("Sending rotation goal!");  
