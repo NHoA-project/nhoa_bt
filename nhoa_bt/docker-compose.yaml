@@ -1,0 +1,54 @@
+version: "2.3"
+
+services:
+  noetic-nhoa_bt:
+    network_mode: host
+    # runtime: nvidia
+    container_name: "noetic-nhoa_bt"
+    image: gitlab.local.eurecat.org:5050/robotics-automation/nhoa:noetic-nhoa_bt
+    privileged: true
+   # ports:
+    #  - "11312:11311"   
+    volumes:
+     # - ~/git/sharework/sharework_cameras:/ros_ws/src/sharework_cameras
+      #- ../../sharework_cameras:/sharework_cameras_data
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ~/docker/.xauth_docker/share:/tmp/xauth
+      # - /run/udev/control:/run/udev/control
+      # - /etc/udev/:/etc/udev/
+    tty: true
+    stdin_open: true
+    environment:
+      - DISPLAY=$DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/xauth/.docker.xauth   
+    devices:
+      - /dev/dri:/dev/dri
+      # - /dev/usb:/dev/usb
+      # - /dev/bus/usb:/dev/bus/usb
+  
+  pal-nhoa_bt:
+    network_mode: host
+    # runtime: nvidia
+    container_name: "pal-nhoa_bt"
+    image: registry.gitlab.com/pal-robotics/nhoa/dockers/pal-ferrum-pal-metapkg-development-ari-20-dev
+    privileged: true
+   # ports:
+    #  - "11312:11311"   
+    volumes:
+     # - ~/git/sharework/sharework_cameras:/ros_ws/src/sharework_cameras
+      #- ../../sharework_cameras:/sharework_cameras_data
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ~/docker/.xauth_docker/share:/tmp/xauth
+      # - /run/udev/control:/run/udev/control
+      # - /etc/udev/:/etc/udev/
+    tty: true
+    stdin_open: true
+    environment:
+      - DISPLAY=$DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/xauth/.docker.xauth   
+    devices:
+      - /dev/dri:/dev/dri
+      # - /dev/usb:/dev/usb
+      # - /dev/bus/usb:/dev/bus/usb
