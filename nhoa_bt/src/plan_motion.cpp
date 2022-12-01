@@ -45,6 +45,7 @@ void plan_motion::init()
   // ROS_INFO("Waiting for Action Server ...");
   client_.waitForServer();
 
+  std::cout << "plan_motion initialized!" << std::endl;
 }
 
 
