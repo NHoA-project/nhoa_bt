@@ -26,14 +26,17 @@ find_package(catkin REQUIRED COMPONENTS
   move_base_msgs
   nav_msgs
   trajectory_msgs
-  pal_interaction_msgs)
+  pal_interaction_msgs
+  hri_msgs
+  nhoa_msgs)
   
 find_package(Boost REQUIRED COMPONENTS thread)
 
 catkin_package(INCLUDE_DIRS include
                LIBRARIES play_motion_helpers
                CATKIN_DEPENDS actionlib control_msgs controller_manager_msgs
-               play_motion_msgs moveit_ros_planning_interface roscpp sensor_msgs pal_interaction_msgs)
+               moveit_ros_planning_interface roscpp sensor_msgs 
+               play_motion_msgs pal_interaction_msgs hri_msgs nhoa_msgs)
 
 
 ## Specify additional locations of header files
@@ -66,10 +69,11 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_condition_nodes/IsUserEngaged.cpp
                src/bt_condition_nodes/IsUserEngaging.cpp
                #############################
+               src/handle_hri.cpp
+               src/handle_voice.cpp
                src/plan_head_motion.cpp
                src/plan_motion.cpp
                src/plan_navigation.cpp
-               src/plan_voice_cmd.cpp
                )
 add_dependencies(${PROJECT_NAME}_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_demo ${catkin_LIBRARIES})
