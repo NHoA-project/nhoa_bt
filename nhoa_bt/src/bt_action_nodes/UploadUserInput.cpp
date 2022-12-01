@@ -89,6 +89,7 @@ bool UploadUserInput::getQuestionnaireInput(const std::size_t  &iteration)
   {
     std::cout << "Introduce Question " << iteration << " answer: " << std::endl;
     std::cin  >> user_input;
+    // voice_->user_input_msg_; // TODO: Uncomment.
     std::cout << "Question " << iteration << " answer : '" << user_input << "' sent to the DB cloud." << std::endl;
 
     // TODO: Send answer to the DB (EUT).

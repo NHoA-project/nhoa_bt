@@ -12,12 +12,19 @@
 #include <behaviortree_cpp_v3/behavior_tree.h>
 #include <behaviortree_cpp_v3/bt_factory.h>
 
+// NHOA_BT INCLUDES
+#include <handle_voice.h>
+
+
 /* TODO: This BT Action node encapsulates all the functionalities
          to handle the user conversation answers.*/
 
 class UploadUserInput : public BT::CoroActionNode
 {
   public:                                                                                                     
+
+    // Shared program resources.
+    handle_voice* voice_;
 
     // Bool flag.
     bool success_ = false;
@@ -41,9 +48,11 @@ class UploadUserInput : public BT::CoroActionNode
                  {BT::InputPort<std::size_t>("_iteration")}};
     }
 
-    void init()
+    void init(handle_voice*  input_voice)
     {
       std::cout << "### Initializing UploadUserInput! ###" << std::endl;
+
+      voice_   = input_voice;
     }
 
     // You must override the virtual function tick()
