@@ -2,7 +2,7 @@
 <root main_tree_to_execute="NHoADemoBT">
     <!-- ////////// -->
     <BehaviorTree ID="NHoADemoBT">
-        <Sequence>     
+        <!-- <Sequence>     
             <SubTree ID="T1"/> 
             <ReactiveSequence name="UserDetectionReactiveSequence">
                 <Condition ID="IsUserDetected"/>
@@ -13,7 +13,14 @@
                 <SubTree ID="T6"/> 
                 <SubTree ID="T7"/> 
             </ReactiveSequence>
-        </Sequence>    
+        </Sequence>     -->
+        <Sequence>
+            <SetBlackboard output_key="head_motion_mode"      value="pan_tilt"/>
+            <SetBlackboard output_key="pan_tilt_goal"         value="-1.309; 0.0"/>
+            <Action ID="ExecuteHeadMotion" _head_motion_mode="{head_motion_mode}" _pan_tilt_goal="{pan_tilt_goal}" _point_head_goal="" />
+            <SetBlackboard output_key="pan_tilt_goal"         value="+1.309; 0.0"/>
+            <Action ID="ExecuteHeadMotion" _head_motion_mode="{head_motion_mode}" _pan_tilt_goal="{pan_tilt_goal}" _point_head_goal="" />
+        </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
     <BehaviorTree ID="T1">
