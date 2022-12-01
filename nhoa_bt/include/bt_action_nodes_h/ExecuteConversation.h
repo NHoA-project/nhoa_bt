@@ -20,29 +20,45 @@ class ExecuteConversation : public BT::CoroActionNode
   public:   
 
     // Predefined messages. TODO: Download voice commands from the DB (EUT).
-    std::vector<std::string> agenda_cmds = {"Today is 12th of December and the weather is sunny.",
-                                            "Remember you have to call your daughter and that you have an appointment with the doctor at 17:00."};                                         
+    // std::vector<std::string> agenda_cmds = {"Today is 12th of December and the weather is sunny.",
+    //                                         "Remember you have to call your daughter and that you have an appointment with the doctor at 17:00."};       
+    std::vector<std::string> agenda_cmds = {"Hoy es 12 de diciembre y el día es soleado.",
+                                            "Recuerda que tienes que llamar a tu hija y que tienes una cita con el médico a las 17:00."};                                         
                                                       
-    std::vector<std::string> agenda_recall_cmds = {"We're done for now. Thank you.",
-                                                    "Remember that today you must call your daughter and that you have an appointment with the doctor at 17:00. Bye bye!"};                                          
+    // std::vector<std::string> agenda_recall_cmds = {"We're done for now. Thank you.",
+    //                                                 "Remember that today you must call your daughter and that you have an appointment with the doctor at 17:00. Bye bye!"};  
+    std::vector<std::string> agenda_recall_cmds = {"Hemos terminado por ahora. Gracias.",
+                                                    "Recuerda que tienes que llamar a tu hija y que tienes una cita con el médico a las 17:00. ¡Adiós!"};                                          
                                               
-    std::vector<std::string> chit_chat_cmds = {"How are you today?",                                // Question
-                                               "Did you sleep well?",                               // Y/N Question
-                                               "Great. A good sleep is important.",                 // Yes
-                                               "I am sorry to hear that. You must be very tired."}; // No
+    // std::vector<std::string> chit_chat_cmds = {"How are you today?",                                // Question
+    //                                            "Did you sleep well?",                               // Y/N Question
+    //                                            "Great. A good sleep is important.",                 // Yes
+    //                                            "I am sorry to hear that. You must be very tired."}; // No
+    std::vector<std::string> chit_chat_cmds = {"¿Cómo estás hoy?",                                // Question
+                                               "¿Has dormido bien?",                              // Y/N Question
+                                               "Genial. Dormir bien es importante.",              // Yes
+                                               "Lamento escuchar eso. Debes estar muy cansado."}; // No
                                              
-    std::vector<std::string> questionnaire_cmds = {"Question 1: ...?",
-                                                   "Question 2: ...?",
-                                                   "Question 3: ...?"};   
+    // std::vector<std::string> questionnaire_cmds = {"Question 1: ...?",
+    //                                                "Question 2: ...?",
+    //                                                "Question 3: ...?"};   
+    std::vector<std::string> questionnaire_cmds = {"Pregunta 1: ...?",
+                                                   "Pregunta 2: ...?",
+                                                   "Pregunta 3: ...?"};  
 
-    std::vector<std::string> questionnaire_fb_cmds = {"Today we finished it quicker",
-                                                      "I see you're feeling better than yesterday.",
-                                                      "I suggest calling a friend or family”, “Why don't you go out for a walk?"};            
-
+    // std::vector<std::string> questionnaire_fb_cmds = {"Today we finished it quicker",
+    //                                                   "I see you're feeling better than yesterday.",
+    //                                                   "I suggest calling a friend or family”, “Why don't you go out for a walk?"};      
+    std::vector<std::string> questionnaire_fb_cmds = {"Hoy lo hemos terminado antes.",
+                                                      "Veo que te sientes mejor que ayer.",
+                                                      "Te sugiero que llames a un amigo o a un familiar. ¿Por qué no sales a dar un paseo?"};        
     
-    std::vector<std::string> questionnaire_start_cmds = {"I would like to ask you a few questions. Is now a good moment for you?", // Y/N Question
-                                                         "Great! Here I go.",             // Yes
-                                                         "Let's do it some other time."}; // No                                                                                                              
+    // std::vector<std::string> questionnaire_start_cmds = {"I would like to ask you a few questions. Is now a good moment for you?", // Y/N Question
+    //                                                      "Great! Here I go.",             // Yes
+    //                                                      "Let's do it some other time."}; // No
+    std::vector<std::string> questionnaire_start_cmds = {"Me gustaría hacerle algunas preguntas. ¿Es un buen momento para usted?", // Y/N Question
+                                                         "¡Genial! Allá voy.",             // Yes
+                                                         "Lo dejamos para otro momento."}; // No                                                                                                                             
 
     // Bool flag.
     bool success_ = false;
