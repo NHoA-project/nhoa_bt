@@ -43,8 +43,8 @@ class ExecuteHeadMotion : public BT::CoroActionNode
         // This action has a single input port called "message"
         // Any port must have a name. The type is optional.
         return { {BT::InputPort<std::string>("_head_motion_mode")},
-                 {BT::InputPort<std::vector<double>>("_pan_tilt_value")},
-                 {BT::InputPort<geometry_msgs::PointStamped>("_point_target_value")}
+                 {BT::InputPort<std::vector<double>>("_pan_tilt_goal")},
+                 {BT::InputPort<geometry_msgs::PointStamped>("_point_head_goal")}
                };
                 //  {BT::OutputPort<std::string>("move_group_")}};
     }
