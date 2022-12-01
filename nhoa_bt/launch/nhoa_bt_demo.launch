@@ -2,9 +2,12 @@
 <launch>
 
   <!-- Arguments -->
+  <!-- HRI Arguments -->
+  <param name="ids_match_confidence_threshold"      type="double" value="0.5" />  <!-- [0 - 1] -->
+  <param name="smile_score_threshold"               type="double" value="0.5" />  <!-- [0 - 1] -->
 
   <!--  ============================== -->
   <!-- run nhoa bt demo node-->
-  <node name="nhoa_bt_demo" pkg="nhoa_bt" type="nhoa_bt_demo" respawn="false" output="screen"/>
+  <node name="nhoa_bt_demo" pkg="nhoa_bt" type="nhoa_bt_demo" respawn="false" output="screen" />
 
 </launch>
