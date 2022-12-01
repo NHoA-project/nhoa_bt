@@ -2,6 +2,7 @@
 #include  <iostream>
 
 BT::NodeStatus IsUserEngaging::tick() {
+    // TODO: HARDCODED VERSION.
     std::string input;
     while (true) 
     {
@@ -34,6 +35,45 @@ BT::NodeStatus IsUserEngaging::tick() {
         } 
     }
 
-    // std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    // return  BT::NodeStatus::SUCCESS;
+    // // TODO: CLEAN VERSION.
+    // std::string input;
+    // bool waiting = true;
+    // bool success = false;
+    // while (waiting) 
+    // {
+    //     std::cout << name() << ": Select 's' (start) or 'p'(pause)" << std::endl;
+    //     std::cin >> input;
+    //     if (input.compare("s") == 0) 
+    //     { 
+    //         if(isUserEngaging())
+    //             success = true;
+
+    //         waiting = false;
+    //     } 
+    // }
+
+    // if(success)
+    // {
+    //     return BT::NodeStatus::SUCCESS;
+    // }
+    // else
+    // {
+    //     return BT::NodeStatus::FAILURE;
+    // }
+}
+
+// ####################
+// Additional functions.
+bool IsUserEngaging::isUserEngaging()
+{
+    if( hri_->smile_score_ > hri_->smile_score_threshold_ ) // TODO: SmileScore
+    // if( hri_->engagement_level_.compare("engaging") == 0 ) // TODO: EngagementLevel
+    {
+        success_ = true;
+    }
+    else
+    {
+        success_ = false;
+    }
+    return success_;
 }
