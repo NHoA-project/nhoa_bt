@@ -39,10 +39,11 @@
 #include <IsUserEngaging.h>
 
 // RECYCLA FILES INCLUDES
+#include <handle_hri.h>
+#include <handle_voice.h>
 #include <plan_head_motion.h>
 #include <plan_motion.h>
 #include <plan_navigation.h>
-#include <plan_voice_cmd.h>
 
 #endif
 
@@ -58,10 +59,11 @@ int main(int argc, char **argv)
     spinner.start();
 
     // Initialize resources [TODO: Add new instances here].
+    handle_hri          hri(&nh);
+    handle_voice        voice(&nh);
     plan_head_motion    head_motion(&nh);
     plan_motion         motion(&nh);
     plan_navigation     navigation(&nh);
-    plan_voice_cmd          voice(&nh);
 
     // Load xml BT file
     std::string default_path = ros::package::getPath("nhoa_bt");
@@ -171,6 +173,24 @@ int main(int argc, char **argv)
         else if (auto ExecuteVoiceCmd_node = dynamic_cast<ExecuteVoiceCmd *>(node.get()))
         {
             ExecuteVoiceCmd_node->init(&nh, &voice);
+        }
+        else if (auto UploadUserInput_node = dynamic_cast<UploadUserInput *>(node.get()))
+        {
+            UploadUserInput_node->init(&voice);
+        }
+        // --------------
+        // BT Condition nodes.
+        else if (auto IsUserDetected_node = dynamic_cast<IsUserDetected *>(node.get()))
+        {
+            IsUserDetected_node->init(&hri);
+        }
+        else if (auto IsUserEngaging_node = dynamic_cast<IsUserEngaging *>(node.get()))
+        {
+            IsUserEngaging_node->init(&hri);
+        }
+        else if (auto IsUserEngaged_node = dynamic_cast<IsUserEngaged *>(node.get()))
+        {
+            IsUserEngaged_node->init(&hri);
         }
     }
 
