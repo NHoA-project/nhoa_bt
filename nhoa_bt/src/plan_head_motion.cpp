@@ -17,8 +17,8 @@
 // =====================================
 
 plan_head_motion::plan_head_motion(ros::NodeHandle    *nodehandle):  nh_(*nodehandle),
-                                                           follow_joint_traj_client_("head_controller/follow_joint_trajectory", true),
-                                                           point_head_client_("head_controller/point_head_action", true)
+                                                                     follow_joint_traj_client_("head_controller/follow_joint_trajectory", true),
+                                                                     point_head_client_("head_controller/point_head_action", true)
 {
   // Initialize joint state variables.
   plan_head_motion::init();
@@ -28,7 +28,6 @@ plan_head_motion::plan_head_motion(ros::NodeHandle    *nodehandle):  nh_(*nodeha
 
 void plan_head_motion::cook_follow_joint_traj(const std::vector<double>    &joint)
 {
-  plan_head_motion::init_fjt_goal();
 
   for (size_t i=0; i<2; i++)
   {
@@ -65,6 +64,11 @@ void plan_head_motion::init()
   // ROS_INFO("Waiting for Action Server ...");
   follow_joint_traj_client_.waitForServer();
   point_head_client_.waitForServer();
+
+  // Init Follow Joint Trajectory goal.
+  plan_head_motion::init_fjt_goal();
+
+  std::cout << "plan_head_motion initialized!" << std::endl;
 }
 
 void plan_head_motion::init_fjt_goal()
@@ -82,7 +86,7 @@ bool plan_head_motion::set_joint_trajectory_goal(const std::vector<double>    &j
 
   plan_head_motion::cook_follow_joint_traj(joint);
 
-  auto goal_state = follow_joint_traj_client_.sendGoalAndWait(follow_jont_traj_goal_,ros::Duration(10.0)); //send goal and wait until complete or timout exceeded
+  auto goal_state = follow_joint_traj_client_.sendGoalAndWait(follow_jont_traj_goal_,ros::Duration(20.0)); //send goal and wait until complete or timout exceeded
   if (goal_state.state_==goal_state.SUCCEEDED)
   {
     return true;
