@@ -14,20 +14,23 @@ endif()
 
 find_package(catkin REQUIRED COMPONENTS 
   actionlib 
+  behaviortree_cpp_v3
   control_msgs 
   controller_manager_msgs
-  play_motion_msgs 
-  moveit_ros_planning_interface 
-  roscpp 
-  sensor_msgs
   diagnostic_msgs 
   diagnostic_updater 
-  behaviortree_cpp_v3
+  moveit_ros_planning_interface 
   move_base_msgs
   nav_msgs
+  roscpp 
+  sensor_msgs
   trajectory_msgs
-  pal_interaction_msgs
+  # PAL msgs
   hri_msgs
+  pal_interaction_msgs
+  pal_web_msgs
+  play_motion_msgs 
+  # CUSTOM msgs
   nhoa_msgs)
   
 find_package(Boost REQUIRED COMPONENTS thread)
@@ -36,7 +39,8 @@ catkin_package(INCLUDE_DIRS include
                LIBRARIES play_motion_helpers
                CATKIN_DEPENDS actionlib control_msgs controller_manager_msgs
                moveit_ros_planning_interface roscpp sensor_msgs 
-               play_motion_msgs pal_interaction_msgs hri_msgs nhoa_msgs)
+               pal_interaction_msgs pal_web_msgs play_motion_msgs hri_msgs  # PAL msgs
+               nhoa_msgs) # CUSTOM msgs
 
 
 ## Specify additional locations of header files
@@ -59,6 +63,7 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_action_nodes/DrawUserAttention.cpp
                src/bt_action_nodes/ExecuteConversation.cpp
                src/bt_action_nodes/ExecuteHeadMotion.cpp
+               src/bt_action_nodes/ExecuteGUI.cpp
                src/bt_action_nodes/ExecuteNavigation.cpp
                src/bt_action_nodes/ExecuteUperbodyMotion.cpp
                src/bt_action_nodes/ExecuteVoiceCmd.cpp
@@ -69,6 +74,7 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_condition_nodes/IsUserEngaged.cpp
                src/bt_condition_nodes/IsUserEngaging.cpp
                #############################
+               src/handle_gui.cpp
                src/handle_hri.cpp
                src/handle_voice.cpp
                src/plan_head_motion.cpp

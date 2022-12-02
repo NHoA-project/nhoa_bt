@@ -2,9 +2,11 @@
 <package format="2">
   <name>nhoa_bt</name>
   <version>0.4.10</version>
-  <description>This package executes the NHoA's project BT</description>
+  <description>This package executes the NHoA BT's project</description>
 
   <maintainer email="oscar.palacin@eurecat.org">Oscar Palacin</maintainer>
+
+  <author email="oscar.palacin@eurecat.org">Oscar Palacin</author>
 
   <license>BSD</license>
 
@@ -15,15 +17,18 @@
   <depend>controller_manager_msgs</depend>
   <depend>diagnostic_msgs</depend>
   <depend>diagnostic_updater</depend>
-  <depend>play_motion_msgs</depend>
   <depend>moveit_ros_planning_interface</depend>
-  <depend>roscpp</depend>
-  <depend>sensor_msgs</depend>
   <depend>move_base_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
   <depend>trajectory_msgs</depend>
+  <!-- PAL msgs -->
   <depend>pal_interaction_msgs</depend>
+  <depend>pal_web_msgs</depend>
+  <depend>play_motion_msgs</depend>
   <depend>hri_msgs</depend>
+  <!-- CUSTOM msgs -->
   <depend>nhoa_msgs</depend>
 
   <!-- test build depends -->
@@ -39,7 +44,6 @@
 
   <!-- build build depends -->
   <build_depend>behaviortree_cpp_v3</build_depend>
-
 
   <!-- exec build depends -->
   <exec_depend>behaviortree_cpp_v3</exec_depend> 
