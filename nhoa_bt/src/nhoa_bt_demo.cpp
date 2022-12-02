@@ -27,6 +27,7 @@
 #include <DrawUserAttention.h>
 #include <ExecuteConversation.h>
 #include <ExecuteHeadMotion.h>
+#include <ExecuteGUI.h>
 #include <ExecuteNavigation.h>
 #include <ExecuteUperbodyMotion.h>
 #include <ExecuteVoiceCmd.h>
@@ -39,6 +40,7 @@
 #include <IsUserEngaging.h>
 
 // RECYCLA FILES INCLUDES
+#include <handle_gui.h>
 #include <handle_hri.h>
 #include <handle_voice.h>
 #include <plan_head_motion.h>
@@ -59,6 +61,7 @@ int main(int argc, char **argv)
     spinner.start();
 
     // Initialize resources [TODO: Add new instances here].
+    handle_gui          gui(&nh);
     handle_hri          hri(&nh);
     handle_voice        voice(&nh);
     plan_head_motion    head_motion(&nh);
@@ -158,7 +161,11 @@ int main(int argc, char **argv)
     for (auto &node : tree.nodes)
     {
         // BT Action nodes.
-        if(auto ExecuteHeadMotion_node = dynamic_cast<ExecuteHeadMotion *>(node.get()))
+        if(auto ExecuteGUI_node = dynamic_cast<ExecuteGUI *>(node.get()))
+        {
+            ExecuteGUI_node->init(&nh, &gui); 
+        }
+        else if(auto ExecuteHeadMotion_node = dynamic_cast<ExecuteHeadMotion *>(node.get()))
         {
             ExecuteHeadMotion_node->init(&nh, &head_motion); 
         }
