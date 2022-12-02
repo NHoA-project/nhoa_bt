@@ -42,7 +42,7 @@ class ExecuteGUI : public BT::CoroActionNode
         // This action has a single input port called "message"
         // Any port must have a name. The type is optional.
         return { {BT::InputPort<std::string>("_web_name")},
-                 {BT::InputPort<uint8_t>("_web_type")} };
+                 {BT::InputPort<int>("_web_type")} };
     }
 
     void init(ros::NodeHandle*  input_nh,
@@ -63,6 +63,6 @@ class ExecuteGUI : public BT::CoroActionNode
 
     // Sent
     bool executeGUI(const std::string  &web_name,
-                    const uint8_t      &web_type);
+                    const int          &web_type);
 };
 #endif // ExecuteGUI_H_INCLUDED_

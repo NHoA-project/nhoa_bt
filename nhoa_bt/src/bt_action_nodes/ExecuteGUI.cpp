@@ -21,7 +21,7 @@ BT::NodeStatus ExecuteGUI::tick()
       { 
         // Get the Blackboard input arguments.
         auto web_name = getInput<std::string>("_web_name");
-        auto web_type = getInput<uint8_t>("_web_type");
+        auto web_type = getInput<int>("_web_type");
 
         // =======
 
@@ -85,7 +85,7 @@ void ExecuteGUI::halt(){
 // Additional functions.
 
 bool ExecuteGUI::executeGUI(const std::string  &web_name,
-                            const uint8_t      &web_type)
+                            const int          &web_type)
 {
   std::cout << "### EXECUTING GUI -> " << web_name << " ###" << std::endl;
 
