@@ -113,7 +113,7 @@
             <RetryUntilSuccessful num_attempts="30">
                 <Inverter>
                     <Sequence>    
-                        <Action ID="ExecuteConversation" _voice_cmd="{voice_cmd}"/>
+                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}"  questionnaire_requested_="{questionnaire_requested}" motion_name_="" voice_cmd_="{voice_cmd}"/>
                         <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
                     </Sequence>    
                 </Inverter>
@@ -188,7 +188,7 @@
         </Action>
         <Action ID="ExecuteGUI">
             <input_port name="_web_name" type="std::string"/>
-            <input_port name="_web_type" type="uint8_t"/>
+            <input_port name="_web_type" type="int"/>
         </Action>
         <Action ID="ExecuteHeadMotion">
             <input_port name="_head_motion_mode" type="std::string"/>
