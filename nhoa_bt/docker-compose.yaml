@@ -27,10 +27,10 @@ services:
       # - /dev/usb:/dev/usb
       # - /dev/bus/usb:/dev/bus/usb
   
-  pal-nhoa_bt:
+  melodic-ari:
     network_mode: host
     # runtime: nvidia
-    container_name: "pal-nhoa_bt"
+    container_name: "melodic-ari"
     image: registry.gitlab.com/pal-robotics/nhoa/dockers/pal-ferrum-pal-metapkg-development-ari-20-dev
     privileged: true
    # ports:
