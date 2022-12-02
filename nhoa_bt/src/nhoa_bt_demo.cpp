@@ -103,6 +103,7 @@ int main(int argc, char **argv)
     // ACTION NODES (BT full implemented).
     factory.registerNodeType<DrawUserAttention>("DrawUserAttention");
     factory.registerNodeType<ExecuteConversation>("ExecuteConversation");
+    factory.registerNodeType<ExecuteGUI>("ExecuteGUI");
     factory.registerNodeType<ExecuteHeadMotion>("ExecuteHeadMotion");
     factory.registerNodeType<ExecuteNavigation>("ExecuteNavigation");
     factory.registerNodeType<ExecuteUperbodyMotion>("ExecuteUperbodyMotion");
