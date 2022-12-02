@@ -1,5 +1,5 @@
 #!/bin/bash
-HOME_PATH="${HOME}" #Modify with your home directory.
+HOME_PATH="${HOME}" # Modify with your home directory.
 DAUTH_PATH=$HOME_PATH/docker/.xauth_docker
 XAUTH=$DAUTH_PATH/share/.docker.xauth 
 if [ -f $XAUTH ]
