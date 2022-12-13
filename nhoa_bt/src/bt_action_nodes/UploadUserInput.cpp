@@ -17,8 +17,9 @@ BT::NodeStatus UploadUserInput::tick()
       if (input.compare("s") == 0) 
       { 
         // Get the Blackboard input arguments.
-        auto conversation_mode  = getInput<std::string>("_conversation_mode");
-        auto iteration          = getInput<std::size_t>("_iteration");
+        auto conversation_mode    = getInput<std::string>("_conversation_mode");
+        auto iteration            = getInput<std::size_t>("_iteration");
+        auto questionnaire_score  = getInput<double>("_questionnaire_score");
 
         // =======
 
@@ -29,7 +30,7 @@ BT::NodeStatus UploadUserInput::tick()
         // --------
         else if(conversation_mode.value().compare("questionnaire") == 0 )
         {
-          if(!(getQuestionnaireInput(iteration.value())))
+          if(!(getQuestionnaireInput(iteration.value(), questionnaire_score.value())))
           {
               std::cout << "ERROR! Not able to get Questionnaire Input." << std::endl;
               success = false;
@@ -80,22 +81,55 @@ void UploadUserInput::halt(){
 
 // ####################
 // Additional functions.
-
-bool UploadUserInput::getQuestionnaireInput(const std::size_t  &iteration)
+void  UploadUserInput::checkQuestionnaireInput(const std::size_t  &iteration,
+                                                     double       &questionnaire_score)
 {
-  waiting_user = true;
-
-  while (waiting_user)
+  if( gui_->user_input_msg_.compare(questionnaire_resp_[0]) == 0 )
   {
-    std::cout << "Introduce Question " << iteration << " answer: " << std::endl;
-    std::cin  >> user_input;
-    // voice_->user_input_msg_; // TODO: Uncomment.
-    std::cout << "Question " << iteration << " answer : '" << user_input << "' sent to the DB cloud." << std::endl;
+    questionnaire_score += 1.0;
 
-    // TODO: Send answer to the DB (EUT).
-    // uploadQuestionnaireAnswer(iteration, user_input);
-    waiting_user = false;
   }
+  else if( gui_->user_input_msg_.compare(questionnaire_resp_[1]) == 0 )  
+  {
+    questionnaire_score += 2.0;
+  }
+  else if( gui_->user_input_msg_.compare(questionnaire_resp_[2]) == 0 )  
+  {
+    questionnaire_score += 3.0;
+  }
+  else if( gui_->user_input_msg_.compare(questionnaire_resp_[3]) == 0 )  
+  {
+    questionnaire_score += 4.0;
+  }
+  else if( gui_->user_input_msg_.compare(questionnaire_resp_[4]) == 0 )  
+  {
+    questionnaire_score += 5.0;
+  }
+  
+  if(iteration+1 == gui_->max_iter_)
+  {
+    // TODO: Integrate smile score.
+    std::cout << " Adding smile score to the questionnaire one! " << std::endl;
+    // questionnaire_score =+ hri_->smile_score * 5.0;
+  }
+  std::cout << " ### Questionnaire score -> " << questionnaire_score << " ### " << std::endl;
+  setOutput("questionnaire_score_", questionnaire_score);
+}
+
+bool UploadUserInput::getQuestionnaireInput(const std::size_t  &iteration,
+                                                  double       &questionnaire_score)
+{
+  while (gui_->user_input_flag_ == false){}
+
+  std::cout << "Introduce Question " << iteration << " answer: " << std::endl;
+  std::cout << "Question " << iteration << " answer : '" << gui_->user_input_msg_ << "' sent to the DB cloud." << std::endl;
+
+  UploadUserInput::checkQuestionnaireInput(iteration-1, questionnaire_score);
+
+  gui_->user_input_flag_ = false;
+
+  // TODO: Send answer to the DB (EUT).
+  // uploadQuestionnaireAnswer(iteration, user_input);
 
   return true;
 }

@@ -13,7 +13,7 @@
 #include <behaviortree_cpp_v3/bt_factory.h>
 
 // NHOA_BT INCLUDES
-#include <handle_voice.h>
+#include <handle_gui.h>
 
 
 /* TODO: This BT Action node encapsulates all the functionalities
@@ -24,14 +24,17 @@ class UploadUserInput : public BT::CoroActionNode
   public:                                                                                                     
 
     // Shared program resources.
-    handle_voice* voice_;
+    handle_gui* gui_;
 
     // Bool flag.
-    bool success_ = false;
+    bool      success_              = false;
 
     // User input stuff.
-    std::string user_input;
-    bool waiting_user = true;
+    std::vector<std::string>  questionnaire_resp_ = {"Nada",
+                                                     "Un poco",
+                                                     "Moderadamente",
+                                                     "Bastante",
+                                                     "Muchisimo"};
 
     // ==============
 
@@ -45,14 +48,16 @@ class UploadUserInput : public BT::CoroActionNode
         // This action has a single input port called "message"
         // Any port must have a name. The type is optional.
         return { {BT::InputPort<std::string>("_conversation_mode")},
-                 {BT::InputPort<std::size_t>("_iteration")}};
+                 {BT::InputPort<std::size_t>("_iteration")},
+                 {BT::InputPort<double>("_questionnaire_score")},
+                 {BT::OutputPort<double>("questionnaire_score_")}};
     }
 
-    void init(handle_voice*  input_voice)
+    void init(handle_gui*       input_gui)
     {
       std::cout << "### Initializing UploadUserInput! ###" << std::endl;
 
-      voice_   = input_voice;
+      gui_      = input_gui;
     }
 
     // You must override the virtual function tick()
@@ -63,8 +68,13 @@ class UploadUserInput : public BT::CoroActionNode
     // =================================================== 
     // Additional functionalities.
 
+    // Check questionnaire input.
+    void checkQuestionnaireInput(const std::size_t  &iteration,
+                                       double       &questionnaire_score);
+
     // Inputs the Questionnaire answers.
-    bool getQuestionnaireInput(const std::size_t  &iteration);
+    bool getQuestionnaireInput(const std::size_t  &iteration,
+                                     double       &questionnaire_score);
 
     // TODO: Sent Answers to the database.
 };
