@@ -17,6 +17,7 @@
 #include <hri_msgs/IdsMatch.h>
 #include <hri_msgs/EngagementLevel.h>
 #include <hri_msgs/FacialLandmarks.h>
+#include <hri_msgs/LiveSpeech.h>
 
 // C++ standard headers
 #include <cstdlib>
@@ -36,6 +37,7 @@ private:
     // - ROS subscribers.
     ros::Subscriber     candidate_matches_sub_; 
     ros::Subscriber     engagement_level_sub_;
+    ros::Subscriber     live_speech_sub_;
     ros::Subscriber     smile_score_sub_;       // UOC
     ros::Subscriber     tracked_bodies_sub_;
     ros::Subscriber     tracked_faces_sub_;  
@@ -62,6 +64,9 @@ private:
 
     // Initializing.
     void init();
+
+    // Live speech callback.
+    void live_speech_callback(const hri_msgs::LiveSpeech&  speech);
 
     // Matched ID subscribers' loop. It checks the current face/body/person
     // ID and launches the subscribers.
@@ -100,6 +105,9 @@ public:
     std::string     id1_type_;
     std::string     id2_type_;
     std::string     person_id_;
+    std::string     speech_;
+
+    bool            live_speech_flag_   = false;
 
     double          match_confidence_   = 0.0;
     double          smile_score_        = 0.0;

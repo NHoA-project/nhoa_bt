@@ -52,15 +52,24 @@ void handle_hri::init()
 
   // Initialize user_input subscriber. 
   candidate_matches_sub_    = nh_.subscribe("/humans/candidate_matches", 1, &handle_hri::candidates_matches_callback, this);
-  tracked_bodies_sub_       = nh_.subscribe("/humans/bodies/tracked", 1, &handle_hri::tracked_bodies_callback, this);
-  tracked_faces_sub_        = nh_.subscribe("/humans/faces/tracked", 1, &handle_hri::tracked_faces_callback, this);
-  tracked_persons_sub_      = nh_.subscribe("/humans/persons/tracked", 1, &handle_hri::tracked_persons_callback, this);
+  live_speech_sub_          = nh_.subscribe("/humans/voices/anonymous_speaker/speech", 1, &handle_hri::live_speech_callback, this);
+  // tracked_bodies_sub_       = nh_.subscribe("/humans/bodies/tracked", 1, &handle_hri::tracked_bodies_callback, this);
+  // tracked_faces_sub_        = nh_.subscribe("/humans/faces/tracked", 1, &handle_hri::tracked_faces_callback, this);
+  // tracked_persons_sub_      = nh_.subscribe("/humans/persons/tracked", 1, &handle_hri::tracked_persons_callback, this);
 
   // Initialize variables.
   match_confidence_threshold_ = nh_.param("ids_match_confidence_threshold", 0.5);
   smile_score_threshold_      = nh_.param("smile_score_threshold", 0.5);
 
   std::cout << "handle_hri initialized!" << std::endl;
+}
+
+void handle_hri::live_speech_callback(const hri_msgs::LiveSpeech&  speech)
+{
+  std::cout << "Live speech -> " << speech.final << std::endl; 
+  speech_           = speech.final;
+  if(speech_.find("sí") != std::string::npos || speech_.find("no") != std::string::npos)
+    live_speech_flag_ = true;
 }
 
 void handle_hri::matched_id_subscriber_loop()
