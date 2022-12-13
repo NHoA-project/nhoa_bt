@@ -20,19 +20,19 @@ BT::NodeStatus ExecuteGUI::tick()
       if (input.compare("s") == 0) 
       { 
         // Get the Blackboard input arguments.
-        auto web_name = getInput<std::string>("_web_name");
-        auto web_type = getInput<int>("_web_type");
+        auto iteration  = getInput<std::size_t>("_iteration");
+        auto web_type   = getInput<int>("_web_type");
 
         // =======
 
-        if((web_name.value().empty()))
-        {
-          throw BT::RuntimeError("error reading port [web_name]:", web_name.error());
-        }
-        // --------
-        else if((!web_name.value().empty()))
-        {
-          if(!(executeGUI(web_name.value(), web_type.value())))
+        // if((web_name.value().empty()))
+        // {
+        //   throw BT::RuntimeError("error reading port [web_name]:", web_name.error());
+        // }
+        // // --------
+        // else if((!web_name.value().empty()))
+        // {
+          if(!(executeGUI(iteration.value(), web_type.value())))
           {
               std::cout << "ERROR! Not able to set the requested web name." << std::endl;
               success = false;
@@ -42,7 +42,7 @@ BT::NodeStatus ExecuteGUI::tick()
               std::cout << "SUCCESS! The requested web name is reached." << std::endl;
               success = true;
           }
-        }
+        // }
         waiting = false;
       } 
   }
@@ -84,10 +84,9 @@ void ExecuteGUI::halt(){
 // ####################
 // Additional functions.
 
-bool ExecuteGUI::executeGUI(const std::string  &web_name,
+bool ExecuteGUI::executeGUI(const std::size_t  &iteration,
                             const int          &web_type)
 {
-  std::cout << "### EXECUTING GUI -> " << web_name << " ###" << std::endl;
-
-  return gui_->set_web_go_to(web_name, web_type); 
+  // std::cout << "### ITERATION ->  "<< iteration << "###" << std::endl;
+  return gui_->set_web_go_to(iteration, web_type); 
 }
