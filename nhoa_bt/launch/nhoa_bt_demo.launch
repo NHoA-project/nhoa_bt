@@ -2,9 +2,12 @@
 <launch>
 
   <!-- Arguments -->
-  <!-- HRI Arguments -->
+  <!-- HRI arguments -->
   <param name="ids_match_confidence_threshold"      type="double" value="0.5" />  <!-- [0 - 1] -->
   <param name="smile_score_threshold"               type="double" value="0.5" />  <!-- [0 - 1] -->
+
+  <!-- Questionnaire arguments -->
+  <param name="questionnaire_max_iterations"        type="int" value="3" />  <!-- [0 - 1] -->
 
   <!--  ============================== -->
   <!-- run nhoa bt demo node-->
