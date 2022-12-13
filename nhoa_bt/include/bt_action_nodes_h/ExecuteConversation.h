@@ -12,12 +12,18 @@
 #include <behaviortree_cpp_v3/behavior_tree.h>
 #include <behaviortree_cpp_v3/bt_factory.h>
 
+// NHOA_BT INCLUDES
+#include <handle_scene.h>
+
 /* TODO: This BT Action node encapsulates all the functionalities
          for the User-Robot conversation.*/
 
 class ExecuteConversation : public BT::CoroActionNode
 {
   public:   
+
+    // Shared program resources.
+    handle_scene* scene_;
 
     // Predefined messages. TODO: Download voice commands from the DB (EUT).
     // std::vector<std::string> agenda_cmds = {"Today is 12th of December and the weather is sunny.",
@@ -35,30 +41,32 @@ class ExecuteConversation : public BT::CoroActionNode
     //                                            "Great. A good sleep is important.",                 // Yes
     //                                            "I am sorry to hear that. You must be very tired."}; // No
     std::vector<std::string> chit_chat_cmds = {"¿Cómo estás hoy?",                                // Question
-                                               "¿Has dormido bien?",                              // Y/N Question
-                                               "Genial. Dormir bien es importante.",              // Yes
-                                               "Lamento escuchar eso. Debes estar muy cansado."}; // No
+                                               "¿Has dormido bien?"};                              // Y/N Question
+
+    std::vector<std::string> chit_chat_fb_cmds = {"Genial. Dormir bien es importante.",              // Yes
+                                                  "Lamento escuchar eso. Debes estar muy cansado."}; // No
                                              
     // std::vector<std::string> questionnaire_cmds = {"Question 1: ...?",
     //                                                "Question 2: ...?",
     //                                                "Question 3: ...?"};   
-    std::vector<std::string> questionnaire_cmds = {"Pregunta 1: ...?",
-                                                   "Pregunta 2: ...?",
-                                                   "Pregunta 3: ...?"};  
+    std::vector<std::string> questionnaire_cmds = {"¿Cuán lleno de energía te encuentras hoy?",
+                                                   "¿Cuán activo te encuentras hoy?",
+                                                   "¿Cuán animado te encuentras hoy?"};  
 
     // std::vector<std::string> questionnaire_fb_cmds = {"Today we finished it quicker",
     //                                                   "I see you're feeling better than yesterday.",
     //                                                   "I suggest calling a friend or family”, “Why don't you go out for a walk?"};      
-    std::vector<std::string> questionnaire_fb_cmds = {"Hoy lo hemos terminado antes.",
-                                                      "Veo que te sientes mejor que ayer.",
-                                                      "Te sugiero que llames a un amigo o a un familiar. ¿Por qué no sales a dar un paseo?"};        
+    std::vector<std::string> questionnaire_fb_cmds = {"A veces solo necesitas desconectar. Pon tu canción favorita, cántala y veras que te sentirás mucho mejor. Préstale atención a la letra y siente la melodía.",
+                                                      "Haz una lista de sitios donde te gustaría pasear y comienza por uno.",
+                                                      "¿Qué tal si cocinas una receta saludable para toda tu familia o compañeros? Cocinar aporta grandes beneficios, como aumentar la creatividad y bienestar emocional.",
+                                                      "¡Sal a caminar media hora hoy!"};        
     
     // std::vector<std::string> questionnaire_start_cmds = {"I would like to ask you a few questions. Is now a good moment for you?", // Y/N Question
     //                                                      "Great! Here I go.",             // Yes
     //                                                      "Let's do it some other time."}; // No
-    std::vector<std::string> questionnaire_start_cmds = {"Me gustaría hacerle algunas preguntas. ¿Es un buen momento para usted?", // Y/N Question
-                                                         "¡Genial! Allá voy.",             // Yes
-                                                         "Lo dejamos para otro momento."}; // No                                                                                                                             
+    std::vector<std::string> questionnaire_start_cmds     = {"Me gustaría hacerle algunas preguntas. ¿Es un buen momento para usted?"}; // Y/N Question
+    std::vector<std::string> questionnaire_start_fb_cmds  = {"¡Genial! Allá voy.",             // Yes
+                                                             "Lo dejamos para otro momento."}; // No                                                                                                                             
 
     // Bool flag.
     bool success_ = false;
@@ -76,15 +84,18 @@ class ExecuteConversation : public BT::CoroActionNode
         // Any port must have a name. The type is optional.
         return { {BT::InputPort<std::string>("_conversation_mode")},
                  {BT::InputPort<std::size_t>("_iteration")}, 
+                 {BT::InputPort<double>("_questionnaire_score")}, 
+                 {BT::InputPort<std::string>("_user_answer")}, 
                  {BT::OutputPort<std::size_t>("iteration_")},
-                 {BT::OutputPort<std::string>("questionnaire_requested_")},
                  {BT::OutputPort<std::string>("motion_name_")},
                  {BT::OutputPort<std::string>("voice_cmd_")} };
     }
 
-    void init()
+    void init(handle_scene*  input_scene)
     {
       std::cout << "### Initializing ExecuteConversation! ###" << std::endl;
+
+      scene_   = input_scene;
     }
 
     // You must override the virtual function tick()
@@ -94,6 +105,10 @@ class ExecuteConversation : public BT::CoroActionNode
 
     // =================================================== 
     // Additional functionalities.
+
+    // Check scene.
+    void checkScene();
+
     // Outputs the Agenda "voice command".
     bool executeAgenda(const std::size_t  &iteration);
 
@@ -103,13 +118,19 @@ class ExecuteConversation : public BT::CoroActionNode
     // Outputs Chit Chat the "voice command".
     bool executeChitChat(const std::size_t &iteration);
 
+    // Outputs Chit Chat the "voice command".
+    bool executeChitChatFB(const std::string &user_answer);
+
     // Outputs the Questionnaire "voice command".
     bool executeQuestionnaire(const std::size_t  &iteration);
 
     // Outputs the Questionnaire Feedback "voice command".
-    bool executeQuestionnaireFB(const std::size_t  &iteration);
+    bool executeQuestionnaireFB(const double  &questionnaire_score);
 
     // Outputs the "voice command" to start the Questionnaire conversation.
     bool startQuestionnaire(const std::size_t &iteration);
+
+    // Outputs the "voice command" to start the Questionnaire FB conversation.
+    bool startQuestionnaireFB(const std::string &user_answer);
 };
 #endif // ExecuteConversation_H_INCLUDED_
