@@ -34,7 +34,7 @@
 #include <UploadUserInput.h>
 
 // CONDITION NODES
-#include <IsQuestionnaireRequested.h>
+#include <IsUserAnswered.h>
 #include <IsUserDetected.h>
 #include <IsUserEngaged.h>
 #include <IsUserEngaging.h>
@@ -43,6 +43,7 @@
 #include <handle_gui.h>
 #include <handle_hri.h>
 #include <handle_voice.h>
+// #include <handle_scene.h>
 #include <plan_head_motion.h>
 #include <plan_motion.h>
 #include <plan_navigation.h>
@@ -64,6 +65,7 @@ int main(int argc, char **argv)
     handle_gui          gui(&nh);
     handle_hri          hri(&nh);
     handle_voice        voice(&nh);
+    handle_scene        scene(&nh);
     plan_head_motion    head_motion(&nh);
     plan_motion         motion(&nh);
     plan_navigation     navigation(&nh);
@@ -116,7 +118,7 @@ int main(int argc, char **argv)
 
     // CONDITION NODES (BT full implemented).
     // factory.registerNodeType<ConditionNodeFrame>("ConditionNodeFrame");
-    factory.registerNodeType<IsQuestionnaireRequested>("IsQuestionnaireRequested");
+    factory.registerNodeType<IsUserAnswered>("IsUserAnswered");
     factory.registerNodeType<IsUserDetected>("IsUserDetected");
     factory.registerNodeType<IsUserEngaged>("IsUserEngaged");
     factory.registerNodeType<IsUserEngaging>("IsUserEngaging");
@@ -184,10 +186,14 @@ int main(int argc, char **argv)
         }
         else if (auto UploadUserInput_node = dynamic_cast<UploadUserInput *>(node.get()))
         {
-            UploadUserInput_node->init(&voice);
+            UploadUserInput_node->init(&gui);
         }
         // --------------
         // BT Condition nodes.
+        else if (auto IsUserAnswered_node = dynamic_cast<IsUserAnswered *>(node.get()))
+        {
+            IsUserAnswered_node->init(&hri);
+        }
         else if (auto IsUserDetected_node = dynamic_cast<IsUserDetected *>(node.get()))
         {
             IsUserDetected_node->init(&hri);
