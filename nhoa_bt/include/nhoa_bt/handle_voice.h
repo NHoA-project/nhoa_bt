@@ -15,7 +15,6 @@
 
 // PAL includes
 #include <pal_interaction_msgs/TtsAction.h>
-#include <pal_interaction_msgs/Input.h>
 
 // C++ standard headers
 #include <cstdlib>
@@ -37,10 +36,6 @@ private:
     bool                                 action_status_;
     pal_interaction_msgs::TtsGoal        goal_;
 
-    // User input stuff.
-    ros::Subscriber     user_input_sub_;
-    std::mutex          mutex_;
-
     // =======
     //functions
     // Initializing.
@@ -49,12 +44,7 @@ private:
     // Cook voice.
     void cook_voice_cmd(const std::string   &voice_cmd);
 
-    // User input callback.
-    void user_input_callback(const pal_interaction_msgs::Input&  user_input);
-
 public:
-    //vars
-    std::string         user_input_msg_;
 
     // =======
     //functions
