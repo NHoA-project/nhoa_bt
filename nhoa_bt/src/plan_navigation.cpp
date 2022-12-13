@@ -40,8 +40,7 @@ void plan_navigation::init()
   }
   
   // ROS_INFO("Waiting for Action Server ...");
-  std::cout << "I'm here ... " << std::endl;
-  // client_.waitForServer(); # Should be implemented w/ Real Ari.
+  client_.waitForServer(); // Should be implemented w/ Real Ari.
 
   // Initialize subscriber.
   odom_sub_ = nh_.subscribe("/mobile_base_controller/odom", 1, &plan_navigation::odom_callback, this);
@@ -59,56 +58,56 @@ void plan_navigation::odom_callback(const nav_msgs::Odometry &odom_msg)
 bool plan_navigation::set_navigation_goal(const std::vector<double>    &navigation_goal)
 {
 
-  // plan_navigation::cook_navigation(navigation_goal);
+  plan_navigation::cook_navigation(navigation_goal);
 
   // Send goal to "navigation client".
   ROS_INFO_STREAM("Sending navigation goal!");  
-  // client_.sendGoal(goal_);
+  client_.sendGoal(goal_);
 
   // Waiting for action status.
   ROS_INFO("Waiting for result ...");
-  // action_status_ = client_.waitForResult(ros::Duration(30.0));
+  action_status_ = client_.waitForResult(ros::Duration(30.0));
 
   // Get action status.
-  // actionlib::SimpleClientGoalState state_ = client_.getState();
+  actionlib::SimpleClientGoalState state_ = client_.getState();
 
-  // if ( action_status_ )
-  // {
-  //     ROS_INFO_STREAM("Action finished successfully with state: " << state_.toString());
-  // }
-  // else
-  // {
-  //     ROS_ERROR_STREAM("Action failed with state: " << state_.toString());
-  // }
-  // return action_status_;
+  if ( action_status_ )
+  {
+      ROS_INFO_STREAM("Action finished successfully with state: " << state_.toString());
+  }
+  else
+  {
+      ROS_ERROR_STREAM("Action failed with state: " << state_.toString());
+  }
+  return action_status_;
 
-  return true;
+  // return true;
 }
 
 bool plan_navigation::set_rotation(const double &rotation)
 {
-  // plan_navigation::cook_navigation({odom_.pose.pose.position.x, odom_.pose.pose.position.y, 2*asin(odom_.pose.pose.position.z) + rotation});
+  plan_navigation::cook_navigation({odom_.pose.pose.position.x, odom_.pose.pose.position.y, 2*asin(odom_.pose.pose.position.z) + rotation});
 
   // Send goal to "navigation client".
   ROS_INFO_STREAM("Sending rotation goal:" << rotation);  
-  // client_.sendGoal(goal_);
+  client_.sendGoal(goal_);
 
   // Waiting for action status.
   ROS_INFO("Waiting for result ...");
-  // action_status_ = client_.waitForResult(ros::Duration(30.0));
+  action_status_ = client_.waitForResult(ros::Duration(30.0));
 
-  // // Get action status.
-  // actionlib::SimpleClientGoalState state_ = client_.getState();
+  // Get action status.
+  actionlib::SimpleClientGoalState state_ = client_.getState();
 
-  // if ( action_status_ )
-  // {
-  //     ROS_INFO_STREAM("Action finished successfully with state: " << state_.toString());
-  // }
-  // else
-  // {
-  //     ROS_ERROR_STREAM("Action failed with state: " << state_.toString());
-  // }
-  // return action_status_;
+  if ( action_status_ )
+  {
+      ROS_INFO_STREAM("Action finished successfully with state: " << state_.toString());
+  }
+  else
+  {
+      ROS_ERROR_STREAM("Action failed with state: " << state_.toString());
+  }
+  return action_status_;
 
-  return true;
+  // return true;
 }
