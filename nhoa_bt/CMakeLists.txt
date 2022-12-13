@@ -31,7 +31,8 @@ find_package(catkin REQUIRED COMPONENTS
   pal_web_msgs
   play_motion_msgs 
   # CUSTOM msgs
-  nhoa_msgs)
+  nhoa_msgs
+  upo_sgg_msgs)
   
 find_package(Boost REQUIRED COMPONENTS thread)
 
@@ -40,7 +41,7 @@ catkin_package(INCLUDE_DIRS include
                CATKIN_DEPENDS actionlib control_msgs controller_manager_msgs
                moveit_ros_planning_interface roscpp sensor_msgs 
                pal_interaction_msgs pal_web_msgs play_motion_msgs hri_msgs  # PAL msgs
-               nhoa_msgs) # CUSTOM msgs
+               nhoa_msgs upo_sgg_msgs) # CUSTOM msgs
 
 
 ## Specify additional locations of header files
@@ -69,7 +70,7 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_action_nodes/ExecuteVoiceCmd.cpp
                src/bt_action_nodes/UploadUserInput.cpp
                # BT CONDITION NODES.
-               src/bt_condition_nodes/IsQuestionnaireRequested.cpp
+               src/bt_condition_nodes/IsUserAnswered.cpp
                src/bt_condition_nodes/IsUserDetected.cpp
                src/bt_condition_nodes/IsUserEngaged.cpp
                src/bt_condition_nodes/IsUserEngaging.cpp
@@ -77,22 +78,10 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/handle_gui.cpp
                src/handle_hri.cpp
                src/handle_voice.cpp
+               src/handle_scene.cpp
                src/plan_head_motion.cpp
                src/plan_motion.cpp
                src/plan_navigation.cpp
                )
 add_dependencies(${PROJECT_NAME}_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_demo ${catkin_LIBRARIES})
-
-# BT NODES (CONVERSATION)
-# add_executable(${PROJECT_NAME}_conversation_demo src/${PROJECT_NAME}_conversation_demo.cpp 
-#                # BT ACTION NODES.
-#                src/bt_action_nodes/ExecuteConversation.cpp
-#                src/bt_action_nodes/ExecuteVoice.cpp
-#                src/bt_action_nodes/UploadUserInput.cpp
-#                # BT CONDITION NODES.
-#                src/bt_condition_nodes/IsQuestionnaireRequested.cpp
-#                #############################
-#                )
-# add_dependencies(${PROJECT_NAME}_conversation_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-# target_link_libraries(${PROJECT_NAME}_conversation_demo ${catkin_LIBRARIES})

@@ -30,6 +30,7 @@
   <depend>hri_msgs</depend>
   <!-- CUSTOM msgs -->
   <depend>nhoa_msgs</depend>
+  <depend>upo_sgg_msgs</depend>
 
   <!-- test build depends -->
   <test_depend>rostest</test_depend>
