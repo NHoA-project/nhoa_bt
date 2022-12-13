@@ -26,10 +26,18 @@ class DrawUserAttention : public BT::CoroActionNode
                                              "show left",
                                              "show right",
                                              "bow"};
-    std::vector<std::string> voice_cmds = {"Hi. Good morning!",
-                                           "Hello! Can you hear me?",
-                                           "Hey, I am here! Close to the kitchen.",
-                                           "Oh, wow. I would really love a chat."};                                         
+
+    // ESP
+    std::vector<std::string> voice_cmds = {"Hola. Buenos días!",
+                                           "Hola! ¿Me puedes escuchar?",
+                                           "¡Hey, estoy aquí! Cerca de la cocina.",
+                                           "Oh, vaya. Me encantaría charlar."};    
+
+    // ENG
+    // std::vector<std::string> voice_cmds = {"Hi. Good morning!",
+    //                                        "Hello! Can you hear me?",
+    //                                        "Hey, I am here! Close to the kitchen.",
+    //                                        "Oh, wow. I would really love a chat."};                                         
 
     // Bool flag.
     bool success_ = false;
