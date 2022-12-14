@@ -27,6 +27,20 @@ BT::NodeStatus ExecuteNavigation::tick()
           throw BT::RuntimeError("error reading port [navigation_mode]:", navigation_mode.error());
         }
         // --------
+        else if(navigation_mode.value().compare("approach_navigation") == 0 )
+        {
+          if(!(executeApproachNavigation()))
+          {
+              std::cout << "ERROR! Not able to set the requested approach navigation." << std::endl;
+              success = false;
+          }
+          else
+          {
+              std::cout << "SUCCESS! The requested approach navigation is reached." << std::endl;
+              success = true;
+          }
+        }
+        // --------
         else if(navigation_mode.value().compare("navigation_goal") == 0 )
         {
           if(!(executeNavigationGoal(navigation_goal.value())))
@@ -94,6 +108,14 @@ void ExecuteNavigation::halt(){
 
 // ####################
 // Additional functions.
+
+
+bool ExecuteNavigation::executeApproachNavigation()
+{
+  std::cout << "Executing approach navigation ..." << std::endl;
+
+  return navigation_->set_approach_navigation();
+}
 
 bool ExecuteNavigation::executeNavigationGoal(const std::vector<double>  &navigation_goal)
 {

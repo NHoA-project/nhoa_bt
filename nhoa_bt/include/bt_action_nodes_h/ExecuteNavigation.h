@@ -62,6 +62,9 @@ class ExecuteNavigation : public BT::CoroActionNode
 
     // =================================================== 
 
+    // Execute approach navigation.
+    bool executeApproachNavigation();
+
     // Execute 2D Navigation Goal (position + rotation).
     bool executeNavigationGoal(const std::vector<double>  &navigation_goal);
 
