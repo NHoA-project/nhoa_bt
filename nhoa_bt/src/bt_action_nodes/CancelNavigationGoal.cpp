@@ -1,11 +1,11 @@
-#include <CancelActionApproachNavigation.h>
+#include <CancelNavigationGoal.h>
 
 // ROS INCLUDES
 #include <ros/ros.h>
 
 // =====================================
 
-BT::NodeStatus CancelActionApproachNavigation::tick()
+BT::NodeStatus CancelNavigationGoal::tick()
 {   
   std::string input;
   bool waiting = true;
@@ -43,7 +43,7 @@ BT::NodeStatus CancelActionApproachNavigation::tick()
 }
 
 
-void CancelActionApproachNavigation::cleanup(bool halted)
+void CancelNavigationGoal::cleanup(bool halted)
 {
     std::cout << "cleaning up" << std::endl;
     if(halted)
@@ -55,7 +55,7 @@ void CancelActionApproachNavigation::cleanup(bool halted)
     }
 }
 
-void CancelActionApproachNavigation::halt(){
+void CancelNavigationGoal::halt(){
 
     std::cout << name() <<": Halted." << std::endl;
     cleanup(true);
@@ -66,7 +66,7 @@ void CancelActionApproachNavigation::halt(){
 
 // ####################
 // Additional functions.
-bool  CancelActionApproachNavigation::cancelGoal()
+bool  CancelNavigationGoal::cancelGoal()
 {
   return navigation_->cancel_goal();
 }

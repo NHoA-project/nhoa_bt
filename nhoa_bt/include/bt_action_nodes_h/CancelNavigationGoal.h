@@ -1,5 +1,5 @@
-#ifndef CancelActionApproachNavigation_H_INCLUDED_
-#define CancelActionApproachNavigation_H_INCLUDED_
+#ifndef CancelNavigationGoal_H_INCLUDED_
+#define CancelNavigationGoal_H_INCLUDED_
 
 // GENERAL INCLUDES
 #include <iostream>
@@ -19,7 +19,7 @@
 /* TODO: This BT Action node encapsulates all the functionalities
          to cancel navigation goal.*/
 
-class CancelActionApproachNavigation : public BT::CoroActionNode
+class CancelNavigationGoal : public BT::CoroActionNode
 {
   public:                                                                                                     
 
@@ -31,14 +31,14 @@ class CancelActionApproachNavigation : public BT::CoroActionNode
 
     // ==============
 
-    CancelActionApproachNavigation(const std::string& name) : 
+    CancelNavigationGoal(const std::string& name) : 
     BT::CoroActionNode(name, {})
     {
     }
 
     void init(plan_navigation*       input_navigation)
     {
-      std::cout << "### Initializing CancelActionApproachNavigation! ###" << std::endl;
+      std::cout << "### Initializing CancelNavigationGoal! ###" << std::endl;
 
       navigation_ = input_navigation;
     }
@@ -55,4 +55,4 @@ class CancelActionApproachNavigation : public BT::CoroActionNode
     bool cancelGoal();
 
 };
-#endif // CancelActionApproachNavigation_H_INCLUDED_
+#endif // CancelNavigationGoal_H_INCLUDED_
