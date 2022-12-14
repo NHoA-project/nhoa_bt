@@ -18,13 +18,21 @@
 
 plan_head_motion::plan_head_motion(ros::NodeHandle    *nodehandle):  nh_(*nodehandle),
                                                                      follow_joint_traj_client_("head_controller/follow_joint_trajectory", true),
-                                                                     point_head_client_("head_controller/point_head_action", true)
+                                                                     point_head_client_("head_controller/point_head_action", true),
+                                                                     head_following_client_("HeadFollowing", true)
 {
   // Initialize joint state variables.
   plan_head_motion::init();
 }
 
 // ###################################
+
+
+void plan_head_motion::cook_head_following_goal()
+{
+  // Cooking navigation.
+  head_following_goal_.target_id = "-1";
+}
 
 void plan_head_motion::cook_follow_joint_traj(const std::vector<double>    &joint)
 {
@@ -50,6 +58,13 @@ void plan_head_motion::cook_point_head_goal(const geometry_msgs::PointStamped &p
   point_head_goal_.max_velocity = 0.5;
   point_head_goal_.target = point;
 }
+
+void plan_head_motion::head_following_feedback_callback(const nhoa_head_following_action::HeadFollowingActionFeedback &msg)
+{
+  head_following_feedback_ = msg;
+  std::cout << " Person detected -> " << head_following_feedback_.feedback.found << std::endl;
+}
+
 
 void plan_head_motion::init()
 {
@@ -115,4 +130,16 @@ bool plan_head_motion::set_point_head_goal(const geometry_msgs::PointStamped    
       std::cout << "The goal state is: " << goal_state.toString() <<std::endl;
       return false;
   }
+}
+
+bool plan_head_motion::set_head_following()
+{
+
+  plan_head_motion::cook_head_following_goal();
+
+  // Send goal to "navigation client".
+  ROS_INFO_STREAM("Sending head following goal!");  
+  head_following_client_.sendGoal(head_following_goal_);
+
+  return true;
 }
