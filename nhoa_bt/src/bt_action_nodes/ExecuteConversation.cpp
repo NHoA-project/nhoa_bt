@@ -87,6 +87,20 @@ BT::NodeStatus ExecuteConversation::tick()
           }
         }
         // --------
+        else if(conversation_mode.value().compare("navigation") == 0)
+        {
+          if(!(executeNavigationFB()))
+          {
+              std::cout << "ERROR! Not able to start Navigation FB." << std::endl;
+              success = false;
+          }
+          else
+          {
+              std::cout << "SUCCESS! Starting Navigation FB conversation is fullfilled." << std::endl;
+              success = true;
+          }
+        }
+        // --------
         else if((conversation_mode.value().compare("questionnaire") == 0 ) )
         {
           if(!(executeQuestionnaire(iteration.value())))
@@ -325,6 +339,11 @@ bool ExecuteConversation::executeChitChatFB(const std::string &user_answer)
   return success_;
 }
 
+bool ExecuteConversation::executeNavigationFB()
+{
+  setOutput("voice_cmd_", navigation_cmds[0]);
+  return true;
+}
 bool ExecuteConversation::executeQuestionnaire(const std::size_t  &iteration)
 {
   if(iteration < questionnaire_cmds.size())
@@ -343,7 +362,7 @@ bool ExecuteConversation::executeQuestionnaire(const std::size_t  &iteration)
 
 bool ExecuteConversation::executeQuestionnaireFB(const double  &questionnaire_score)
 {
-
+  std::cout << "### Questionnaire score -> " << questionnaire_score << "###" << std::endl;
   if(questionnaire_score < 5.0)
   {
     setOutput("voice_cmd_", questionnaire_fb_cmds[0]);

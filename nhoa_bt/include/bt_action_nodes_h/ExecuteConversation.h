@@ -38,7 +38,7 @@ class ExecuteConversation : public BT::CoroActionNode
     std::vector<std::string> agenda_recall_cmds = {"Hemos terminado por ahora. Gracias.",
                                                     "Recuerda que tienes que llamar a tu hija y que tienes una cita con el médico a las 17:00. ¡Adiós!"};                                          
 
-    // Chit chat voice commands.                                        
+    // - Chit chat voice commands.                                        
     // std::vector<std::string> chit_chat_cmds = {"How are you today?",                                // Question
     //                                            "Did you sleep well?",                               // Y/N Question
     //                                            "Great. A good sleep is important.",                 // Yes
@@ -48,6 +48,10 @@ class ExecuteConversation : public BT::CoroActionNode
 
     std::vector<std::string> chit_chat_fb_cmds = {"Genial. Dormir bien es importante.",              // Yes
                                                   "Lamento escuchar eso. Debes estar muy cansado."}; // No
+
+    // -   Navigation feedback voice commands.
+    std::vector<std::string> navigation_cmds     = {"¡Perdona, estás muy lejos! Podrías acercarte un poco porfavor."}; // Y/N Question
+
 
     // - Questionnaire voice commands.                                             
     // std::vector<std::string> questionnaire_cmds = {"Question 1: ...?",
@@ -135,6 +139,9 @@ class ExecuteConversation : public BT::CoroActionNode
 
     // Outputs Chit Chat the "voice command".
     bool executeChitChatFB(const std::string &user_answer);
+
+    // Outputs Navigation feedback "voice command".
+    bool executeNavigationFB();
 
     // Outputs the Questionnaire "voice command".
     bool executeQuestionnaire(const std::size_t  &iteration);
