@@ -68,7 +68,7 @@ BT::NodeStatus ExecuteConversation::tick()
           }
           else
           {
-              std::cout << "SUCCESS! Starting Chit Chat conversation is reached." << std::endl;
+              std::cout << "SUCCESS! Starting Chit Chat conversation is fullfilled." << std::endl;
               success = true;
           }
         }
@@ -82,7 +82,7 @@ BT::NodeStatus ExecuteConversation::tick()
           }
           else
           {
-              std::cout << "SUCCESS! Starting Chit Chat FB conversation is reached." << std::endl;
+              std::cout << "SUCCESS! Starting Chit Chat FB conversation is fullfilled." << std::endl;
               success = true;
           }
         }
@@ -124,7 +124,7 @@ BT::NodeStatus ExecuteConversation::tick()
           }
           else
           {
-              std::cout << "SUCCESS! Starting Questionnaire is reached." << std::endl;
+              std::cout << "SUCCESS! Starting Questionnaire is fullfilled." << std::endl;
               success = true;
           }
         }
@@ -138,7 +138,21 @@ BT::NodeStatus ExecuteConversation::tick()
           }
           else
           {
-              std::cout << "SUCCESS! Starting Questionnaire FB is reached." << std::endl;
+              std::cout << "SUCCESS! Starting Questionnaire FB is fullfilled." << std::endl;
+              success = true;
+          }
+        }
+        // --------
+        else if(conversation_mode.value().compare("scene_segmentation") == 0)
+        {
+          if(!(checkScene()))
+          {
+              std::cout << "ERROR! Not able to Check Scene." << std::endl;
+              success = false;
+          }
+          else
+          {
+              std::cout << "SUCCESS! Check Scene is fullfilled." << std::endl;
               success = true;
           }
         }
@@ -183,17 +197,64 @@ void ExecuteConversation::halt(){
 // ####################
 // Additional functions.
 
-void ExecuteConversation::checkScene()
+bool ExecuteConversation::checkScene()
 {
   // TODO: Depending on the Boolean variables output some voice command.
   std::cout << "### person_sitting_on_chair -> " << scene_->scene_digest_msg_.person_sitting_on_chair << " ###" << std::endl;
-  std::cout << "### person_holding_book -> " << scene_->scene_digest_msg_.person_holding_book << " ###" << std::endl;
+  std::cout << "### person_holding_bottle -> " << scene_->scene_digest_msg_.person_holding_bottle << " ###" << std::endl;
   std::cout << "### person_holding_cup -> " << scene_->scene_digest_msg_.person_holding_cup << " ###" << std::endl;
   std::cout << "### person_looking_at_tv -> " << scene_->scene_digest_msg_.person_looking_at_tv << " ###" << std::endl;
-  std::cout << "### person_looking_at_cell_phone -> " << scene_->scene_digest_msg_.person_looking_at_cell_phone << " ###" << std::endl;
   std::cout << "### cup_on_table -> " << scene_->scene_digest_msg_.cup_on_table << " ###" << std::endl;
-  std::cout << "### book_on_table -> " << scene_->scene_digest_msg_.book_on_table << " ###" << std::endl;
-  std::cout << "### cell_phone_on_table -> " << scene_->scene_digest_msg_.cell_phone_on_table << " ###" << std::endl;
+  std::cout << "### bottle_on_table -> " << scene_->scene_digest_msg_.bottle_on_table << " ###" << std::endl;
+  std::cout << "### chair_near_table -> " << scene_->scene_digest_msg_.chair_near_table << " ###" << std::endl;
+
+  // Higher probability sorted.
+  if(scene_->scene_digest_msg_.person_sitting_on_chair)
+  {
+    setOutput("voice_cmd_", segmentation_scene_cmds_[0]);
+    success_ = true;
+  }
+  // -----
+  else if(scene_->scene_digest_msg_.person_holding_bottle)
+  {
+    setOutput("voice_cmd_", segmentation_scene_cmds_[1]);
+    success_ = true;
+  }
+  // -----
+  else if(scene_->scene_digest_msg_.person_holding_cup)
+  {
+    setOutput("voice_cmd_", segmentation_scene_cmds_[2]);
+    success_ = true;
+  }
+  // -----
+  else if(scene_->scene_digest_msg_.cup_on_table)
+  {
+    setOutput("voice_cmd_", segmentation_scene_cmds_[3]);
+    success_ = true;
+  }
+  // -----
+  else if(scene_->scene_digest_msg_.bottle_on_table)
+  {
+    setOutput("voice_cmd_", segmentation_scene_cmds_[4]);
+    success_ = true;
+  }
+  // -----
+  else if(scene_->scene_digest_msg_.chair_near_table)
+  {
+    setOutput("voice_cmd_", segmentation_scene_cmds_[5]);
+    success_ = true;
+  }
+  // -----
+  else if(scene_->scene_digest_msg_.person_looking_at_tv)
+  {
+    setOutput("voice_cmd_", segmentation_scene_cmds_[6]);
+  }
+  // ----
+  else
+  {
+    success_ = false;
+  }
+  return success_;
 }
 
 bool ExecuteConversation::executeAgenda(const std::size_t  &iteration)

@@ -26,16 +26,19 @@ class ExecuteConversation : public BT::CoroActionNode
     handle_scene* scene_;
 
     // Predefined messages. TODO: Download voice commands from the DB (EUT).
+    // - Agenda voice commands.
     // std::vector<std::string> agenda_cmds = {"Today is 12th of December and the weather is sunny.",
     //                                         "Remember you have to call your daughter and that you have an appointment with the doctor at 17:00."};       
     std::vector<std::string> agenda_cmds = {"Hoy es 12 de diciembre y el día es soleado.",
                                             "Recuerda que tienes que llamar a tu hija y que tienes una cita con el médico a las 17:00."};                                         
-                                                      
+
+    // - Agenda recall voice commands.                                                 
     // std::vector<std::string> agenda_recall_cmds = {"We're done for now. Thank you.",
     //                                                 "Remember that today you must call your daughter and that you have an appointment with the doctor at 17:00. Bye bye!"};  
     std::vector<std::string> agenda_recall_cmds = {"Hemos terminado por ahora. Gracias.",
                                                     "Recuerda que tienes que llamar a tu hija y que tienes una cita con el médico a las 17:00. ¡Adiós!"};                                          
-                                              
+
+    // Chit chat voice commands.                                        
     // std::vector<std::string> chit_chat_cmds = {"How are you today?",                                // Question
     //                                            "Did you sleep well?",                               // Y/N Question
     //                                            "Great. A good sleep is important.",                 // Yes
@@ -45,7 +48,8 @@ class ExecuteConversation : public BT::CoroActionNode
 
     std::vector<std::string> chit_chat_fb_cmds = {"Genial. Dormir bien es importante.",              // Yes
                                                   "Lamento escuchar eso. Debes estar muy cansado."}; // No
-                                             
+
+    // - Questionnaire voice commands.                                             
     // std::vector<std::string> questionnaire_cmds = {"Question 1: ...?",
     //                                                "Question 2: ...?",
     //                                                "Question 3: ...?"};   
@@ -53,6 +57,7 @@ class ExecuteConversation : public BT::CoroActionNode
                                                    "¿Cuán activo te encuentras hoy?",
                                                    "¿Cuán animado te encuentras hoy?"};  
 
+    // - Questionnaire feedback voice commands.
     // std::vector<std::string> questionnaire_fb_cmds = {"Today we finished it quicker",
     //                                                   "I see you're feeling better than yesterday.",
     //                                                   "I suggest calling a friend or family”, “Why don't you go out for a walk?"};      
@@ -61,12 +66,22 @@ class ExecuteConversation : public BT::CoroActionNode
                                                       "¿Qué tal si cocinas una receta saludable para toda tu familia o compañeros? Cocinar aporta grandes beneficios, como aumentar la creatividad y bienestar emocional.",
                                                       "¡Sal a caminar media hora hoy!"};        
     
+    // - Questionnaire start voice commands.
     // std::vector<std::string> questionnaire_start_cmds = {"I would like to ask you a few questions. Is now a good moment for you?", // Y/N Question
     //                                                      "Great! Here I go.",             // Yes
     //                                                      "Let's do it some other time."}; // No
     std::vector<std::string> questionnaire_start_cmds     = {"Me gustaría hacerle algunas preguntas. ¿Es un buen momento para usted?"}; // Y/N Question
     std::vector<std::string> questionnaire_start_fb_cmds  = {"¡Genial! Allá voy.",             // Yes
-                                                             "Lo dejamos para otro momento."}; // No                                                                                                                             
+                                                             "Lo dejamos para otro momento."}; // No   
+
+    // - TODO: Segmentation scene voice commands.
+    std::vector<std::string> segmentation_scene_cmds_     = {"",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             "",
+                                                             ""};                                                                                                                      
 
     // Bool flag.
     bool success_ = false;
@@ -107,7 +122,7 @@ class ExecuteConversation : public BT::CoroActionNode
     // Additional functionalities.
 
     // Check scene.
-    void checkScene();
+    bool checkScene();
 
     // Outputs the Agenda "voice command".
     bool executeAgenda(const std::size_t  &iteration);
