@@ -23,7 +23,8 @@ private:
     // ROS stuff
     ros::NodeHandle     nh_;
     ros::Subscriber     odom_sub_;
-    ros::Subscriber     approach_sub_;
+    ros::Subscriber     approach_feedback_sub_;
+    ros::Subscriber     approach_result_sub_;
 
     // Actionlib stuff.
     actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction>       client_;
@@ -34,11 +35,12 @@ private:
     bool                         action_status_;
 
     // Approach navigation stuff.
-    double                                  approach_distance_;
-    double                                  approach_distance_threshold_;
-    nhoa_approach_action::ApproachGoal      approach_goal_;
-    nhoa_approach_action::ApproachFeedback  approach_feedback_;
-    bool                                    is_approach_reached_ = false;
+    double                                        approach_distance_;
+    double                                        approach_distance_threshold_;
+    nhoa_approach_action::ApproachGoal            approach_goal_;
+    nhoa_approach_action::ApproachActionFeedback  approach_feedback_;
+    nhoa_approach_action::ApproachActionResult     approach_result_;
+    bool                                          is_approach_reached_ = false;
 
 
     // Odometry callback stuff.
@@ -48,8 +50,11 @@ private:
     // =======
     //functions
 
-    // Odom callback.
-    void approach_callback(const nhoa_approach_action::ApproachFeedback &approach_msg);
+    // Approach feedback callback.
+    void approach_feedback_callback(const nhoa_approach_action::ApproachActionFeedback &msg);
+
+    // Approach result callback.
+    void approach_result_callback(const nhoa_approach_action::ApproachActionResult &msg);
 
     // Initializing.
     void init();
@@ -69,6 +74,9 @@ public:
     // =======
     //functions
     plan_navigation(ros::NodeHandle    *nodehandle);
+
+    // Cancel action.
+    bool cancel_goal();
 
     // Check approach distance.
     bool check_approach_distance();

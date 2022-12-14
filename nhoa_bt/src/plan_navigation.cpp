@@ -18,17 +18,38 @@ plan_navigation::plan_navigation(ros::NodeHandle    *nodehandle):  nh_(*nodehand
 
 // ###################################
 
-void plan_navigation::approach_callback(const nhoa_approach_action::ApproachFeedback &approach_msg)
+void plan_navigation::approach_feedback_callback(const nhoa_approach_action::ApproachActionFeedback &msg)
 {
-  approach_feedback_ = approach_msg;
-  std::cout << " Approach distance -> " << approach_feedback_.person_distance << std::endl;
+  approach_feedback_ = msg;
+  std::cout << " Approach distance -> " << approach_feedback_.feedback.person_distance << std::endl;
+}
+
+void plan_navigation::approach_result_callback(const nhoa_approach_action::ApproachActionResult &msg)
+{
+  approach_result_ = msg;
+  std::cout << " Approach result value -> " << approach_result_.result.value << std::endl;
+  if(approach_result_.result.value == 1)
+  {
+    std::cout << "### Action goal canceled! ###" << std::endl;
+    approach_client_.cancelGoal();
+  }
+  if(approach_result_.result.value == 2)
+  {
+    std::cout << "### Action goal succeded! ###" << std::endl;
+  }
+}
+
+bool plan_navigation::cancel_goal()
+{
+  std::cout << " ### Cancel Goal ###" << std::endl;
+  approach_client_.cancelGoal();
+  return true;
 }
 
 bool plan_navigation::check_approach_distance()
 {
-  if(approach_feedback_.person_distance <= approach_distance_threshold_)
+  if(approach_feedback_.feedback.person_distance <= approach_distance_threshold_)
   {
-    std::cout << "" << std::endl;
     approach_client_.cancelGoal();
     is_approach_reached_ = true;
   }
@@ -78,8 +99,9 @@ void plan_navigation::init()
   approach_client_.waitForServer(); // UPO approach.
 
   // Initialize subscriber.
-  odom_sub_     = nh_.subscribe("/mobile_base_controller/odom", 1, &plan_navigation::odom_callback, this);
-  approach_sub_ = nh_.subscribe("/Approach/feedback", 1, &plan_navigation::approach_callback, this);
+  odom_sub_               = nh_.subscribe("/mobile_base_controller/odom", 1, &plan_navigation::odom_callback, this);
+  approach_feedback_sub_  = nh_.subscribe("/Approach/feedback", 1, &plan_navigation::approach_feedback_callback, this);
+  approach_result_sub_    = nh_.subscribe("/Approach/result", 1, &plan_navigation::approach_result_callback, this);
   
   std::cout << "plan_navigation initialized!" << std::endl;
 }
