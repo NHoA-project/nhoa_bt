@@ -27,6 +27,8 @@ private:
     std::vector <std::string>   web_list_ = {"nhoa_Q1",
                                              "nhoa_Q2",
                                              "nhoa_Q3"};
+    std::string                 web_logo_ = "nhoa_image";
+    
     // User input stuff.
     ros::Subscriber     user_input_sub_;
 
@@ -56,7 +58,8 @@ public:
     handle_gui(ros::NodeHandle    *nodehandle);
 
     // Set predefined motion.
-    bool set_web_go_to(const std::size_t    &iteration,
+    bool set_web_go_to(const std::string    &gui_type,
+                       const std::size_t    &iteration,
                        const uint8_t        &web_type);
 };
 #endif // __handle_gui_H_INCLUDED__

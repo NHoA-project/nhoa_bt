@@ -45,24 +45,37 @@ void handle_gui::init()
 }
 
 
-bool handle_gui::set_web_go_to(const std::size_t    &iteration,
+bool handle_gui::set_web_go_to(const std::string    &gui_type,
+                               const std::size_t    &iteration,
                                const uint8_t        &web_type)
 {
-  if(iteration < max_iter_)
+  if(gui_type.compare("questionnaire") == 0 )
   {
-    handle_gui::cook_web_msg(web_list_[iteration], web_type);
+    if(iteration < max_iter_)
+    {
+      handle_gui::cook_web_msg(web_list_[iteration], web_type);
 
-    // Send goal to the client.
-    ROS_INFO_STREAM("Robot: Publishing in -> " << web_list_[iteration]);
-    web_go_to_pub_.publish(web_msg_);
-    success_ = true;
+      // Send goal to the client.
+      ROS_INFO_STREAM("Robot: Publishing in -> " << web_list_[iteration]);
+      web_go_to_pub_.publish(web_msg_);
+      success_ = true;
+    }
+    else
+    {
+      success_ =  false;
+    }
+
+    return success_;
   }
-  else
+  else if( gui_type.compare("logo") == 0 )
   {
-    success_ =  false;
-  }
+    handle_gui::cook_web_msg(web_logo_, web_type);
 
-  return success_;
+      // Send goal to the client.
+      ROS_INFO_STREAM("Robot: Publishing in -> " << web_logo_);
+      web_go_to_pub_.publish(web_msg_);
+      success_ = true;
+  }
 }
 
 void handle_gui::user_input_callback(const pal_interaction_msgs::Input&  user_input)
