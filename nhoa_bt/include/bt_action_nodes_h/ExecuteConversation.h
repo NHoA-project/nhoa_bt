@@ -74,9 +74,11 @@ class ExecuteConversation : public BT::CoroActionNode
     // std::vector<std::string> questionnaire_start_cmds = {"I would like to ask you a few questions. Is now a good moment for you?", // Y/N Question
     //                                                      "Great! Here I go.",             // Yes
     //                                                      "Let's do it some other time."}; // No
-    std::vector<std::string> questionnaire_start_cmds     = {"Me gustaría hacerle algunas preguntas. ¿Es un buen momento para usted?"}; // Y/N Question
-    std::vector<std::string> questionnaire_start_fb_cmds  = {"¡Genial! Allá voy.",             // Yes
-                                                             "Lo dejamos para otro momento."}; // No   
+    std::vector<std::string> questionnaire_closing_cmds       = {"Gracias por realizar el cuestionario. Recibirá el consejo médico en breves momentos."}; 
+    std::vector<std::string> questionnaire_instructions_cmds  = {"Para realizar el cuestionario, marque una de las 5 respuestas sugeridas mediante la pantalla táctil."}; 
+    std::vector<std::string> questionnaire_start_cmds         = {"Me gustaría hacerle algunas preguntas. ¿Es un buen momento para usted?"}; // Y/N Question
+    std::vector<std::string> questionnaire_start_fb_cmds      = {"¡Genial! Allá voy.",             // Yes
+                                                                 "Lo dejamos para otro momento."}; // No   
 
     // - TODO: Segmentation scene voice commands.
     std::vector<std::string> segmentation_scene_cmds_     = {"",
@@ -145,6 +147,12 @@ class ExecuteConversation : public BT::CoroActionNode
 
     // Outputs the Questionnaire "voice command".
     bool executeQuestionnaire(const std::size_t  &iteration);
+
+    // Outputs the Questionnaire Closing "voice command".
+    bool executeQuestionnaireClosing();
+
+    // Outputs the Questionnaire Instructions "voice command".
+    bool executeQuestionnaireInstructions();
 
     // Outputs the Questionnaire Feedback "voice command".
     bool executeQuestionnaireFB(const double  &questionnaire_score);

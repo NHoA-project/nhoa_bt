@@ -115,6 +115,34 @@ BT::NodeStatus ExecuteConversation::tick()
           }
         }
         // --------
+        else if((conversation_mode.value().compare("questionnaire_closing") == 0 ) )
+        {
+          if(!(executeQuestionnaireClosing()))
+          {
+            std::cout << "ERROR! Not able to execute Questionnaire Closing." << std::endl;
+            success = false;
+          }
+          else
+          {
+            std::cout << "SUCCESS! Questionnaire Closing executed." << std::endl;
+            success = true;
+          }
+        }
+        // --------
+        else if((conversation_mode.value().compare("questionnaire_instructions") == 0 ) )
+        {
+          if(!(executeQuestionnaireInstructions()))
+          {
+            std::cout << "ERROR! Not able to execute Questionnaire Instructions." << std::endl;
+            success = false;
+          }
+          else
+          {
+            std::cout << "SUCCESS! Questionnaire Instructions executed." << std::endl;
+            success = true;
+          }
+        }
+        // --------
         else if((conversation_mode.value().compare("questionnaire_fb") == 0) )
         {
           if(!(executeQuestionnaireFB(questionnaire_score.value())))
@@ -359,6 +387,17 @@ bool ExecuteConversation::executeQuestionnaire(const std::size_t  &iteration)
   return success_;
 }
 
+bool ExecuteConversation::executeQuestionnaireClosing()
+{
+  setOutput("voice_cmd_", questionnaire_closing_cmds[0]);
+  return true;
+}
+
+bool ExecuteConversation::executeQuestionnaireInstructions()
+{
+  setOutput("voice_cmd_", questionnaire_instructions_cmds[0]);
+  return true;
+}
 
 bool ExecuteConversation::executeQuestionnaireFB(const double  &questionnaire_score)
 {
