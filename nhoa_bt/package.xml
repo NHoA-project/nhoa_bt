@@ -31,6 +31,8 @@
   <!-- CUSTOM msgs -->
   <depend>nhoa_msgs</depend>
   <depend>upo_sgg_msgs</depend>
+  <depend>nhoa_approach_action</depend>
+  <depend>nhoa_head_following_action</depend>
 
   <!-- test build depends -->
   <test_depend>rostest</test_depend>

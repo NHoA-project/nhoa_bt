@@ -32,7 +32,10 @@ find_package(catkin REQUIRED COMPONENTS
   play_motion_msgs 
   # CUSTOM msgs
   nhoa_msgs
-  upo_sgg_msgs)
+  upo_sgg_msgs
+  nhoa_approach_action
+  nhoa_head_following_action
+  )
   
 find_package(Boost REQUIRED COMPONENTS thread)
 
@@ -41,7 +44,7 @@ catkin_package(INCLUDE_DIRS include
                CATKIN_DEPENDS actionlib control_msgs controller_manager_msgs
                moveit_ros_planning_interface roscpp sensor_msgs 
                pal_interaction_msgs pal_web_msgs play_motion_msgs hri_msgs  # PAL msgs
-               nhoa_msgs upo_sgg_msgs) # CUSTOM msgs
+               nhoa_msgs upo_sgg_msgs nhoa_approach_action nhoa_head_following_action) # CUSTOM msgs 
 
 
 ## Specify additional locations of header files
@@ -61,6 +64,7 @@ link_directories(
 # BT NODES
 add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp 
                # BT ACTION NODES.
+               src/bt_action_nodes/CancelNavigationGoal.cpp
                src/bt_action_nodes/DrawUserAttention.cpp
                src/bt_action_nodes/ExecuteConversation.cpp
                src/bt_action_nodes/ExecuteHeadMotion.cpp
@@ -70,6 +74,7 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_action_nodes/ExecuteVoiceCmd.cpp
                src/bt_action_nodes/UploadUserInput.cpp
                # BT CONDITION NODES.
+               src/bt_condition_nodes/IsApproximationReached.cpp
                src/bt_condition_nodes/IsUserAnswered.cpp
                src/bt_condition_nodes/IsUserDetected.cpp
                src/bt_condition_nodes/IsUserEngaged.cpp
