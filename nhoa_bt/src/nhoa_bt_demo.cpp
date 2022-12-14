@@ -24,6 +24,7 @@
 #ifdef MANUAL_STATIC_LINKING
 
 // ACTION NODES
+#include <CancelNavigationGoal.h>
 #include <DrawUserAttention.h>
 #include <ExecuteConversation.h>
 #include <ExecuteHeadMotion.h>
@@ -34,6 +35,7 @@
 #include <UploadUserInput.h>
 
 // CONDITION NODES
+#include <IsApproximationReached.h>
 #include <IsUserAnswered.h>
 #include <IsUserDetected.h>
 #include <IsUserEngaged.h>
@@ -103,6 +105,7 @@ int main(int argc, char **argv)
     std::cout << "BT_CONTROL: Starting the node registration" << std::endl;
 
     // ACTION NODES (BT full implemented).
+    factory.registerNodeType<CancelNavigationGoal>("CancelNavigationGoal");
     factory.registerNodeType<DrawUserAttention>("DrawUserAttention");
     factory.registerNodeType<ExecuteConversation>("ExecuteConversation");
     factory.registerNodeType<ExecuteGUI>("ExecuteGUI");
@@ -118,6 +121,7 @@ int main(int argc, char **argv)
 
     // CONDITION NODES (BT full implemented).
     // factory.registerNodeType<ConditionNodeFrame>("ConditionNodeFrame");
+    factory.registerNodeType<IsApproximationReached>("IsApproximationReached");
     factory.registerNodeType<IsUserAnswered>("IsUserAnswered");
     factory.registerNodeType<IsUserDetected>("IsUserDetected");
     factory.registerNodeType<IsUserEngaged>("IsUserEngaged");
@@ -164,7 +168,11 @@ int main(int argc, char **argv)
     for (auto &node : tree.nodes)
     {
         // BT Action nodes.
-        if(auto ExecuteGUI_node = dynamic_cast<ExecuteGUI *>(node.get()))
+        if(auto CancelNavigationGoal_node = dynamic_cast<CancelNavigationGoal *>(node.get()))
+        {
+            CancelNavigationGoal_node->init(&navigation); 
+        }
+        else if(auto ExecuteGUI_node = dynamic_cast<ExecuteGUI *>(node.get()))
         {
             ExecuteGUI_node->init(&nh, &gui); 
         }
@@ -186,17 +194,21 @@ int main(int argc, char **argv)
         }
         else if (auto UploadUserInput_node = dynamic_cast<UploadUserInput *>(node.get()))
         {
-            UploadUserInput_node->init(&gui);
+            UploadUserInput_node->init(&gui, &hri);
         }
         // --------------
         // BT Condition nodes.
+        else if (auto IsApproximationReached_node = dynamic_cast<IsApproximationReached *>(node.get()))
+        {
+            IsApproximationReached_node->init(&navigation);
+        }
         else if (auto IsUserAnswered_node = dynamic_cast<IsUserAnswered *>(node.get()))
         {
             IsUserAnswered_node->init(&hri);
         }
         else if (auto IsUserDetected_node = dynamic_cast<IsUserDetected *>(node.get()))
         {
-            IsUserDetected_node->init(&hri);
+            IsUserDetected_node->init(&hri, &head_motion);
         }
         else if (auto IsUserEngaging_node = dynamic_cast<IsUserEngaging *>(node.get()))
         {
