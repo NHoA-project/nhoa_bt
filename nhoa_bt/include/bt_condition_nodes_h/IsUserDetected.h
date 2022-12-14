@@ -6,6 +6,7 @@
 
 // NHOA_BT INCLUDES
 #include <handle_hri.h>
+#include <plan_head_motion.h>
 
 
 /* TODO: Here should be implemented all the functionalities of:
@@ -17,7 +18,8 @@ class IsUserDetected : public BT::ConditionNode
   public:
 
     // Shared program resources.
-    handle_hri* hri_;
+    plan_head_motion* head_motion_;
+    handle_hri*       hri_;
 
     // Boolean stuff.
     bool success_                 = false;
@@ -29,10 +31,12 @@ class IsUserDetected : public BT::ConditionNode
     {
     }
 
-    void init(handle_hri* input_hri)
+    void init(handle_hri* input_hri,
+              plan_head_motion* input_head_motion)
     {
       std::cout << "### Initializing IsUserDetected! ###" << std::endl;
-      hri_    = input_hri;
+      hri_            = input_hri;
+      head_motion_    = input_head_motion;
     }
 
     // You must override the virtual function tick()

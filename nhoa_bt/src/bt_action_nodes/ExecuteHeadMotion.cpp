@@ -48,6 +48,20 @@ BT::NodeStatus ExecuteHeadMotion::tick()
           }
         }
         // --------
+        else if( head_motion_mode.value().compare("head_following") == 0)
+        {
+          if(!(executeHeadFollowing()))
+          {
+            std::cout << "ERROR! Not able to set the requested Head Following." << std::endl;
+            success = false;
+          }
+          else
+          {
+            std::cout << "SUCCESS! The Head Following is reached." << std::endl;
+            success = true;
+          }
+        }
+        // --------
         else if( head_motion_mode.value().compare("pan_tilt") == 0)
         {
           if(!(executeFollowJointTraj(follow_traj_goal.value())))
@@ -101,6 +115,13 @@ void ExecuteHeadMotion::halt(){
 
 // ####################
 // Additional functions
+
+bool ExecuteHeadMotion::executeHeadFollowing()
+{
+  std::cout << "Executing head following ..." << std::endl;
+
+  return head_motion_->set_head_following();
+}
 
 bool ExecuteHeadMotion::executeFollowJointTraj(const std::vector<double>  &joint)
 {

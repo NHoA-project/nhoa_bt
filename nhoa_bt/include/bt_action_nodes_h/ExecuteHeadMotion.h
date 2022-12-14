@@ -65,6 +65,8 @@ class ExecuteHeadMotion : public BT::CoroActionNode
 
     // =================================================== 
 
+    bool executeHeadFollowing();
+
     bool executeFollowJointTraj(const std::vector<double>     &joint);
 
     bool executePointHead(const geometry_msgs::PointStamped   &point);
