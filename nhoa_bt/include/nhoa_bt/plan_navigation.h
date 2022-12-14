@@ -39,7 +39,7 @@ private:
     double                                        approach_distance_threshold_;
     nhoa_approach_action::ApproachGoal            approach_goal_;
     nhoa_approach_action::ApproachActionFeedback  approach_feedback_;
-    nhoa_approach_action::ApproachActionResult     approach_result_;
+    nhoa_approach_action::ApproachActionResult    approach_result_;
     bool                                          is_approach_reached_ = false;
 
 
