@@ -3,16 +3,48 @@
 // ROS headers
 #include <ros/ros.h>
 
+// UPO includes.
+#include "nhoa_approach_action/ApproachAction.h"
+
 // =====================================
 
 plan_navigation::plan_navigation(ros::NodeHandle    *nodehandle):  nh_(*nodehandle),
-                                                                   client_("/move_base", true)
+                                                                   client_("/move_base", true),
+                                                                   approach_client_("Approach", true)
 {
   // Initialize joint state variables.
   plan_navigation::init();
 }
 
 // ###################################
+
+void plan_navigation::approach_callback(const nhoa_approach_action::ApproachFeedback &approach_msg)
+{
+  approach_feedback_ = approach_msg;
+  std::cout << " Approach distance -> " << approach_feedback_.person_distance << std::endl;
+}
+
+bool plan_navigation::check_approach_distance()
+{
+  if(approach_feedback_.person_distance <= approach_distance_threshold_)
+  {
+    std::cout << "" << std::endl;
+    approach_client_.cancelGoal();
+    is_approach_reached_ = true;
+  }
+  else
+  {
+    is_approach_reached_ = false;
+  }
+  
+  return is_approach_reached_;
+}
+
+void plan_navigation::cook_approach_navigation()
+{
+  // Cooking navigation.
+  approach_goal_.target_id = "-1";
+}
 
 void plan_navigation::cook_navigation(const std::vector<double>    &navigation_goal)
 {
@@ -26,12 +58,14 @@ void plan_navigation::cook_navigation(const std::vector<double>    &navigation_g
     goal_.target_pose.pose.position.y     = navigation_goal[1];
     goal_.target_pose.pose.orientation.z  = sin(navigation_goal[2] / 2.0);  // rad
     goal_.target_pose.pose.orientation.w  = cos(navigation_goal[2] / 2.0);  // rad
-
 }
 
 void plan_navigation::init()
 {
   std::cout << "Initializing plan_navigation ..." << std::endl;
+
+  // Initialize parameters.
+  approach_distance_threshold_ = nh_.param("approach_distance_threshold", 0.5);
 
   if (!ros::Time::waitForValid(ros::WallDuration(10.0))) // NOTE: Important when using simulated clock
   {
@@ -41,10 +75,12 @@ void plan_navigation::init()
   
   // ROS_INFO("Waiting for Action Server ...");
   client_.waitForServer(); // Should be implemented w/ Real Ari.
+  approach_client_.waitForServer(); // UPO approach.
 
   // Initialize subscriber.
-  odom_sub_ = nh_.subscribe("/mobile_base_controller/odom", 1, &plan_navigation::odom_callback, this);
-
+  odom_sub_     = nh_.subscribe("/mobile_base_controller/odom", 1, &plan_navigation::odom_callback, this);
+  approach_sub_ = nh_.subscribe("/Approach/feedback", 1, &plan_navigation::approach_callback, this);
+  
   std::cout << "plan_navigation initialized!" << std::endl;
 }
 
@@ -53,6 +89,18 @@ void plan_navigation::odom_callback(const nav_msgs::Odometry &odom_msg)
   mutex_.lock();
   odom_ = odom_msg;
   mutex_.unlock();
+}
+
+bool plan_navigation::set_approach_navigation()
+{
+
+  plan_navigation::cook_approach_navigation();
+
+  // Send goal to "navigation client".
+  ROS_INFO_STREAM("Sending navigation goal!");  
+  approach_client_.sendGoal(approach_goal_);
+
+  return true;
 }
 
 bool plan_navigation::set_navigation_goal(const std::vector<double>    &navigation_goal)

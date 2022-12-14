@@ -11,6 +11,9 @@
 // STD includes.
 #include <mutex>
 
+// UPO includes.
+#include "nhoa_approach_action/ApproachAction.h"
+
 // =====
 
 class plan_navigation
@@ -20,13 +23,23 @@ private:
     // ROS stuff
     ros::NodeHandle     nh_;
     ros::Subscriber     odom_sub_;
+    ros::Subscriber     approach_sub_;
 
     // Actionlib stuff.
-    actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> client_;
+    actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction>       client_;
+    actionlib::SimpleActionClient<nhoa_approach_action::ApproachAction> approach_client_;
 
     // Move base stuff.
     move_base_msgs::MoveBaseGoal goal_;
     bool                         action_status_;
+
+    // Approach navigation stuff.
+    double                                  approach_distance_;
+    double                                  approach_distance_threshold_;
+    nhoa_approach_action::ApproachGoal      approach_goal_;
+    nhoa_approach_action::ApproachFeedback  approach_feedback_;
+    bool                                    is_approach_reached_ = false;
+
 
     // Odometry callback stuff.
     nav_msgs::Odometry  odom_;
@@ -34,8 +47,15 @@ private:
 
     // =======
     //functions
+
+    // Odom callback.
+    void approach_callback(const nhoa_approach_action::ApproachFeedback &approach_msg);
+
     // Initializing.
     void init();
+
+    // Cook approach navigation.
+    void cook_approach_navigation();
 
     // Cook navigation.
     void cook_navigation(const std::vector<double>    &navigation_goal);
@@ -49,6 +69,12 @@ public:
     // =======
     //functions
     plan_navigation(ros::NodeHandle    *nodehandle);
+
+    // Check approach distance.
+    bool check_approach_distance();
+
+    // Set approach navigation.
+    bool set_approach_navigation();
 
     // Set 2D navigation goal (position + rotation).
     bool set_navigation_goal(const std::vector<double>    &navigation_goal);
