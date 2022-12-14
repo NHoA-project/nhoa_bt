@@ -21,18 +21,19 @@ BT::NodeStatus ExecuteGUI::tick()
       { 
         // Get the Blackboard input arguments.
         auto iteration  = getInput<std::size_t>("_iteration");
+        auto gui_type   = getInput<std::string>("_gui_type");
         auto web_type   = getInput<int>("_web_type");
 
         // =======
 
-        // if((web_name.value().empty()))
-        // {
-        //   throw BT::RuntimeError("error reading port [web_name]:", web_name.error());
-        // }
-        // // --------
-        // else if((!web_name.value().empty()))
-        // {
-          if(!(executeGUI(iteration.value(), web_type.value())))
+        if((gui_type.value().empty()))
+        {
+          throw BT::RuntimeError("error reading port [gui_type]:", gui_type.error());
+        }
+        // --------
+        else
+        {
+          if(!(executeGUI(gui_type.value(), iteration.value(), web_type.value())))
           {
               std::cout << "ERROR! Not able to set the requested web name." << std::endl;
               success = false;
@@ -42,7 +43,7 @@ BT::NodeStatus ExecuteGUI::tick()
               std::cout << "SUCCESS! The requested web name is reached." << std::endl;
               success = true;
           }
-        // }
+        }
         waiting = false;
       } 
   }
@@ -84,9 +85,10 @@ void ExecuteGUI::halt(){
 // ####################
 // Additional functions.
 
-bool ExecuteGUI::executeGUI(const std::size_t  &iteration,
+bool ExecuteGUI::executeGUI(const std::string  &gui_type,
+                            const std::size_t  &iteration,
                             const int          &web_type)
 {
   // std::cout << "### ITERATION ->  "<< iteration << "###" << std::endl;
-  return gui_->set_web_go_to(iteration, web_type); 
+  return gui_->set_web_go_to(gui_type, iteration, web_type); 
 }
