@@ -14,6 +14,7 @@
 
 // NHOA_BT INCLUDES
 #include <handle_gui.h>
+#include <handle_hri.h>
 
 
 /* TODO: This BT Action node encapsulates all the functionalities
@@ -25,6 +26,7 @@ class UploadUserInput : public BT::CoroActionNode
 
     // Shared program resources.
     handle_gui* gui_;
+    handle_hri* hri_;
 
     // Bool flag.
     bool      success_              = false;
@@ -34,7 +36,7 @@ class UploadUserInput : public BT::CoroActionNode
                                                      "Un poco",
                                                      "Moderadamente",
                                                      "Bastante",
-                                                     "Muchisimo"};
+                                                     "Muchísimo"};
 
     // ==============
 
@@ -53,11 +55,12 @@ class UploadUserInput : public BT::CoroActionNode
                  {BT::OutputPort<double>("questionnaire_score_")}};
     }
 
-    void init(handle_gui*       input_gui)
+    void init(handle_gui*       input_gui,
+              handle_hri*       input_hri)
     {
       std::cout << "### Initializing UploadUserInput! ###" << std::endl;
-
       gui_      = input_gui;
+      hri_      = input_hri;
     }
 
     // You must override the virtual function tick()

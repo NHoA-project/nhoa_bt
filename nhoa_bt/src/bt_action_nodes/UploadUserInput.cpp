@@ -110,7 +110,8 @@ void  UploadUserInput::checkQuestionnaireInput(const std::size_t  &iteration,
   {
     // TODO: Integrate smile score.
     std::cout << " Adding smile score to the questionnaire one! " << std::endl;
-    // questionnaire_score =+ hri_->smile_score * 5.0;
+
+    questionnaire_score += hri_->set_smile_score();
   }
   std::cout << " ### Questionnaire score -> " << questionnaire_score << " ### " << std::endl;
   setOutput("questionnaire_score_", questionnaire_score);
