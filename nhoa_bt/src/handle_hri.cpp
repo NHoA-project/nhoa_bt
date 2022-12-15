@@ -52,7 +52,7 @@ handle_hri::handle_hri(ros::NodeHandle    *nodehandle):  nh_(*nodehandle)
 void handle_hri::head_direction_callback(const std_msgs::Int32ConstPtr&  direction)
 {
   head_direction_ = direction->data;
-  std::cout << " ### Direction -> " << direction->data << std::endl; 
+  // std::cout << " ### Direction -> " << direction->data << std::endl; 
   if(head_direction_ == 1)
   {
     engagement_level_acum_ += 1; 
@@ -72,8 +72,8 @@ void handle_hri::init()
   std::cout << "Initializing handle_hri ..." << std::endl;
 
   // Initialize variables.
-  engaged_level_threshold_    = nh_.param("engaged_level_threshold", 5);
-  engaging_level_threshold_   = nh_.param("engaging_level_threshold", 10);
+  engaging_level_threshold_   = nh_.param("engaging_level_threshold", 5);
+  engaged_level_threshold_    = nh_.param("engaged_level_threshold", 10);
   // match_confidence_threshold_ = nh_.param("ids_match_confidence_threshold", 0.5);
   smile_score_threshold_      = nh_.param("smile_score_threshold", 0.5);
 
@@ -188,13 +188,11 @@ void handle_hri::live_speech_callback(const hri_msgs::LiveSpeech&  speech)
 
 void handle_hri::smile_score_callback(const std_msgs::Float32::ConstPtr&  score)
 {
-  std::cout << "Smile score -> " << score->data << std::endl; 
+  // std::cout << "Current smile score -> " << score->data << std::endl; 
   // TODO: Valor ponderat de quantitat de vegades que s'ha superat el threshold.
   if(score->data >= smile_score_threshold_)
     smile_acum_ += 1;
   smile_calls_ += 1;
-  std::cout << "Smile acum -> " << smile_acum_ << std::endl;
-  std::cout << "Smile calls -> " << smile_calls_ << std::endl;
 }
 
 
@@ -232,5 +230,7 @@ void handle_hri::smile_score_callback(const std_msgs::Float32::ConstPtr&  score)
 
 double handle_hri::set_smile_score()
 {
-  return double(smile_acum_/smile_calls_) * 5.0;
+
+  // std::cout << "(Smile acum/ Smile calls -> (" << smile_acum_ << "/ " << smile_calls_ << ")" << std::endl;
+  return ((double(smile_acum_)* 5.0)/(double(smile_calls_)+ 0.001));
 }
