@@ -65,6 +65,7 @@ link_directories(
 add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp 
                # BT ACTION NODES.
                src/bt_action_nodes/CancelNavigationGoal.cpp
+               src/bt_action_nodes/CheckSmileScore.cpp
                src/bt_action_nodes/DrawUserAttention.cpp
                src/bt_action_nodes/ExecuteConversation.cpp
                src/bt_action_nodes/ExecuteHeadMotion.cpp
@@ -75,10 +76,12 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_action_nodes/UploadUserInput.cpp
                # BT CONDITION NODES.
                src/bt_condition_nodes/IsApproximationReached.cpp
+               src/bt_condition_nodes/IsBottleOnTable.cpp
                src/bt_condition_nodes/IsUserAnswered.cpp
                src/bt_condition_nodes/IsUserDetected.cpp
                src/bt_condition_nodes/IsUserEngaged.cpp
                src/bt_condition_nodes/IsUserEngaging.cpp
+               src/bt_condition_nodes/IsUserSat.cpp
                #############################
                src/handle_gui.cpp
                src/handle_hri.cpp
