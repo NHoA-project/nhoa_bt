@@ -33,5 +33,6 @@ void handle_scene::init()
 
 void handle_scene::scene_digest_callback(const upo_sgg_msgs::SceneDigest&  scene_digest)
 {
+  // std::cout << " Scene digest received!" << std::endl;
   scene_digest_msg_ = scene_digest;
 }
