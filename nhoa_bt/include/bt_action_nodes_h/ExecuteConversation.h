@@ -79,7 +79,7 @@ class ExecuteConversation : public BT::CoroActionNode
     //                                                      "Great! Here I go.",             // Yes
     //                                                      "Let's do it some other time."}; // No
     std::vector<std::string> questionnaire_closing_cmds       = {"Gracias por realizar el cuestionario. Recibirá el consejo médico en breves momentos."}; 
-    std::vector<std::string> questionnaire_instructions_cmds  = {"Para realizar el cuestionario, acerquese al robot y marque una de las 5 respuestas sugeridas mediante la pantalla táctil."}; 
+    std::vector<std::string> questionnaire_instructions_cmds  = {"Para realizar el cuestionario, acérquese y marque una de las 5 respuestas sugeridas mediante la pantalla táctil."}; 
     std::vector<std::string> questionnaire_start_cmds         = {"Me gustaría hacerle algunas preguntas. ¿Es un buen momento para usted?"}; // Y/N Question
     std::vector<std::string> questionnaire_start_fb_cmds      = {"¡Genial! Allá voy.",             // Yes
                                                                  "Lo dejamos para otro momento."}; // No   

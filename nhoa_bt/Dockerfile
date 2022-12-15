@@ -32,9 +32,13 @@ WORKDIR /nhoa_bt_ws/src
 
 # CLone github repos.
 RUN git clone https://github.com/NHoA-project/nhoa_bt.git ./nhoa
+# RUN git clone https://github.com/nhoa-project/nhoa_approach_action.git ./nhoa_approach_action
+# RUN git clone https://github.com/nhoa-project/hri_face_detect.git ./hri_face_detect
 WORKDIR /nhoa_bt_ws
 
 RUN /bin/bash -c "source /opt/ros/noetic/setup.bash; catkin build"
+# RUN /bin/bash -c "source /opt/ros/noetic/setup.bash; catkin build  -DCATKIN_ENABLE_TESTING=0 -DCMAKE_CXX_STANDARD=11"
+
 
 # Add source to bashrc
 RUN echo "" >> ~/.bashrc

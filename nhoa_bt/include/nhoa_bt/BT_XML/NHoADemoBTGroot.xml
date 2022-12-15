@@ -2,30 +2,43 @@
 <root main_tree_to_execute="NHoADemoBT">
     <!-- ////////// -->
     <BehaviorTree ID="NHoADemoBT">
-        <Sequence>     
-            <SubTree ID="T1"/> 
+        <Sequence>    
+            <SetBlackboard output_key="questionnaire_score"     value="0.0"/>
+            <!-- <SubTree ID="T1"/> 
             <ReactiveSequence name="UserDetectionReactiveSequence">
                 <Condition ID="IsUserDetected"/>
                 <SubTree ID="T2"/> 
                 <SubTree ID="T3"/> 
                 <SubTree ID="T4"/> 
-                <SubTree ID="T5"/> 
-                <SubTree ID="T6"/> 
+                <SubTree ID="T5" __shared_blackboard="false" _questionnaire_score="questionnaire_score" />
+                <SubTree ID="T6" __shared_blackboard="false" _questionnaire_score="questionnaire_score" />
                 <SubTree ID="T7"/> 
-            </ReactiveSequence>
-        </Sequence>    
+            </ReactiveSequence> -->
+            <SubTree ID="T5" __shared_blackboard="false" _questionnaire_score="questionnaire_score" />
+            <SubTree ID="T6" __shared_blackboard="false" _questionnaire_score="questionnaire_score" />
+        </Sequence>   
     </BehaviorTree>
     <!-- ////////// -->
     <BehaviorTree ID="T1">
         <Sequence>        
-            <SetBlackboard output_key="motion_name"         value="look_around"/>
-            <SetBlackboard output_key="navigation_mode"     value="rotation"/>
+            <!-- <SetBlackboard output_key="head_motion_mode"     value="pan_tilt"/>
+            <SetBlackboard output_key="navigation_mode"      value="rotation"/>
+            <SetBlackboard output_key="rotation"             value="6.283185"/> -->
             <RetryUntilSuccesful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserDetected"/>
-                    <Inverter>
-                        <Action ID="ExecuteUperbodyMotion" _motion_name="{motion_name}"/>
-                    </Inverter>
+                    <!-- TODO: UPO -> ROTATION -->
+                    <!-- <Inverter>
+                        <Parallel success_threshold="2">
+                            <Action ID="ExecuteNavigation" _navigation_goal="{}" _navigation_mode="{navigation_mode}" _rotation="{rotation}" />
+                            <Sequence>
+                                <SetBlackboard output_key="pan_tilt_goal"         value="-1.309; 0.0"/>
+                                <Action ID="ExecuteHeadMotion" _head_motion_mode="{head_motion_mode}" _pan_tilt_goal="{pan_tilt_goal}" _point_head_goal="" />
+                                <SetBlackboard output_key="pan_tilt_goal"         value="+1.309; 0.0"/>
+                                <Action ID="ExecuteHeadMotion" _head_motion_mode="{head_motion_mode}" _pan_tilt_goal="{pan_tilt_goal}" _point_head_goal="" />
+                            </Sequence>
+                        </Parallel> 
+                    </Inverter> -->
                 </Fallback>
             </RetryUntilSuccesful>
         </Sequence>
@@ -53,13 +66,20 @@
     <!-- ////////// -->
     <BehaviorTree ID="T3">
         <Sequence>        
-            <SetBlackboard output_key="navigation_goal" value="0.0;1.0;2.0"/>
-            <SetBlackboard output_key="navigation_mode" value="navigation_goal"/>
+            <SetBlackboard output_key="navigation_mode" value="approach_navigation"/>
             <RetryUntilSuccesful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserEngaged"/>
                     <Inverter> 
-                        <Action ID="ExecuteNavigation" _navigation_goal="{}" _navigation_mode="{navigation_mode}" _rotation="{}" />
+                        <Sequence>        
+                            <!-- APPROACHING -->
+                            <Action ID="ExecuteNavigation" _navigation_goal="" _navigation_mode="{navigation_mode}" _rotation="" />
+                            <Timeout msec="10000">
+                                <RetryUntilSuccesful num_attempts="100000000">
+                                    <Condition ID="IsApproximationReached"/>
+                                </RetryUntilSuccesful>
+                            </Timeout>
+                        </Sequence>
                     </Inverter>
                 </Fallback>
             </RetryUntilSuccesful>
@@ -68,22 +88,30 @@
     <!-- ////////// -->
     <BehaviorTree ID="T4">
         <Sequence>     
-            <SetBlackboard output_key="iteration" value="0"/>   
-            <SetBlackboard output_key="conversation_mode" value="chit_chat"/>   
+            <!-- CHIT CHAT -->
+            <SetBlackboard output_key="iteration"           value="0"/>   
+            <SetBlackboard output_key="conversation_mode"   value="chit_chat"/>
+            <SetBlackboard output_key="user_answer"       value=""/>
             <RetryUntilSuccesful num_attempts="30">
                 <Inverter>
                     <Sequence>    
-                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}"  questionnaire_requested_="" motion_name_="" voice_cmd_="{voice_cmd}"/>
+                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" _questionnaire_score="{_questionnaire_score}" _user_answer="" iteration_="{iteration}"   motion_name_="{motion_name}" voice_cmd_="{voice_cmd}"/>
                         <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
                     </Sequence>    
                 </Inverter>
             </RetryUntilSuccesful>
-            <SetBlackboard output_key="iteration" value="0"/>   
+            <!-- CHIT CHAT Q/A -->
+            <Condition ID="IsUserAnswered" _conversation_mode="{conversation_mode}" user_answered_="{user_answer}"/> 
+            <SetBlackboard output_key="conversation_mode"   value="chit_chat_fb"/> 
+            <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="" _questionnaire_score="" _user_answer="{user_answer}" iteration_=""   motion_name_="" voice_cmd_="{voice_cmd}"/>
+            <Action ID="ExecuteVoiceCmd"                        _voice_cmd="{voice_cmd}"/>            <SetBlackboard output_key="iteration" value="0"/>   
+            <!-- AGENDA -->
+            <SetBlackboard output_key="iteration"           value="0"/>   
             <SetBlackboard output_key="conversation_mode" value="agenda"/>   
             <RetryUntilSuccesful num_attempts="30">
                 <Inverter>
                     <Sequence>    
-                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}"  questionnaire_requested_="" motion_name_="" voice_cmd_="{voice_cmd}"/>
+                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" _questionnaire_score="{_questionnaire_score}" _user_answer="" iteration_="{iteration}"   motion_name_="{motion_name}" voice_cmd_="{voice_cmd}"/>
                         <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
                     </Sequence>    
                 </Inverter>
@@ -93,30 +121,33 @@
     <!-- ////////// -->
     <BehaviorTree ID="T5">
         <Sequence>     
-            <SetBlackboard output_key="iteration" value="0"/>   
-            <SetBlackboard output_key="conversation_mode" value="questionnaire_start" />   
-            <RetryUntilSuccesful num_attempts="30">
-                <Inverter>
-                    <Sequence>    
-                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}"  questionnaire_requested_="{questionnaire_requested}" motion_name_="" voice_cmd_="{voice_cmd}"/>
-                        <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
-                    </Sequence>    
-                </Inverter>
-            </RetryUntilSuccesful>
-            <SetBlackboard output_key="iteration" value="0"/>   
+            <!-- START QUESTIONNAIRE -->
+            <SetBlackboard output_key="iteration"           value="0"/>   
+            <SetBlackboard output_key="conversation_mode"   value="questionnaire_start" />   
+            <SetBlackboard output_key="web_type"            value="4" />   
+            <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="" motion_name_="" voice_cmd_="{voice_cmd}"/>
+            <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
+            <!-- QUESTIONNAIRE -->
             <SetBlackboard output_key="conversation_mode" value="questionnaire"/>   
             <Inverter>
                 <Sequence>
-                    <Condition ID="IsQuestionnaireRequested" _questionnaire_requested="{questionnaire_requested}"/>
-                    <RetryUntilSuccesful num_attempts="30">
-                        <Inverter>
-                            <Sequence>    
-                                <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}"  questionnaire_requested_="" motion_name_="" voice_cmd_="{voice_cmd}"/>
-                                <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
-                                <Action ID="UploadUserInput" _conversation_mode="{conversation_mode}" _iteration="{iteration}" />
-                            </Sequence>    
-                        </Inverter>
-                    </RetryUntilSuccesful>
+                    <Condition ID="IsUserAnswered" _conversation_mode="{conversation_mode}" user_answered_="{user_answer}"/> 
+                    <Inverter>
+                        <RetryUntilSuccesful num_attempts="30">
+                            <Inverter>
+                                <Sequence>    
+                                    <Action ID="ExecuteGUI" _iteration="{iteration}" _web_type="{web_type}"/>
+                                    <Parallel success_threshold="2">
+                                        <Sequence>
+                                            <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}"   motion_name_="" voice_cmd_="{voice_cmd}"/>
+                                            <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
+                                        </Sequence>
+                                        <Action ID="UploadUserInput" _conversation_mode="{conversation_mode}" _iteration="{iteration}" _questionnaire_score="{_questionnaire_score}" questionnaire_score_="{_questionnaire_score}"/>
+                                    </Parallel>
+                                </Sequence>    
+                            </Inverter>
+                        </RetryUntilSuccesful> 
+                    </Inverter>
                 </Sequence>
             </Inverter>
         </Sequence>
@@ -124,16 +155,9 @@
     <!-- ////////// -->
     <BehaviorTree ID="T6">
         <Sequence>     
-            <SetBlackboard output_key="iteration" value="0"/>   
-            <SetBlackboard output_key="conversation_mode" value="questionnaire_fb"/>   
-            <RetryUntilSuccesful num_attempts="30">
-                <Inverter>
-                    <Sequence>    
-                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}"  questionnaire_requested_="" motion_name_="" voice_cmd_="{voice_cmd}"/>
-                        <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
-                    </Sequence>    
-                </Inverter>
-            </RetryUntilSuccesful>
+            <SetBlackboard output_key="conversation_mode" value="questionnaire_fb"/>  
+            <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" _questionnaire_score="{_questionnaire_score}" _user_answer="" iteration_="{iteration}"   motion_name_="{motion_name}" voice_cmd_="{voice_cmd}"/>
+            <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
@@ -144,7 +168,7 @@
             <RetryUntilSuccesful num_attempts="30">
                 <Inverter>
                     <Sequence>    
-                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" iteration_="{iteration}"  questionnaire_requested_="" motion_name_="{motion_name}" voice_cmd_="{voice_cmd}"/>
+                        <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="{iteration}" _questionnaire_score="{_questionnaire_score}" _user_answer="" iteration_="{iteration}"   motion_name_="{motion_name}" voice_cmd_="{voice_cmd}"/>
                         <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
                     </Sequence>    
                 </Inverter>
@@ -164,10 +188,20 @@
         <Action ID="ExecuteConversation">
             <input_port name="_conversation_mode"           type="std::string"/>
             <input_port name="_iteration"                   type="std::size_t"/>
+            <input_port name="_questionnaire_score"         type="double"/>
+            <input_port name="_user_answer"                 type="std::string"/>
             <output_port name="iteration_"                  type="std::size_t"/>
-            <output_port name="questionnaire_requested_"    type="std::string"/>
             <output_port name="motion_name_"                type="std::string"/>
             <output_port name="voice_cmd_"                  type="std::string"/>
+        </Action>
+        <Action ID="ExecuteGUI">
+            <input_port name="_iteration"   type="std::size_t"/>
+            <input_port name="_web_type"    type="int"/>
+        </Action>
+        <Action ID="ExecuteHeadMotion">
+            <input_port name="_head_motion_mode" type="std::string"/>
+            <input_port name="_pan_tilt_goal"    type="std::vector&lt;double, std::allocator&lt;double&gt; &gt;"/>
+            <input_port name="_point_head_goal"  type="geometry_msgs::PointStamped"/>
         </Action>
         <Action ID="ExecuteNavigation">
             <input_port name="_navigation_goal" type="std::vector&lt;double, std::allocator&lt;double&gt; &gt;"/>
@@ -181,12 +215,16 @@
             <input_port name="_voice_cmd" type="std::string"/>
         </Action>
         <Action ID="UploadUserInput">
-            <input_port name="_conversation_mode"   type="std::string"/>
-            <input_port name="_iteration"           type="std::size_t"/>
+            <input_port name="_conversation_mode"       type="std::string"/>
+            <input_port name="_iteration"               type="std::size_t"/>
+            <input_port name="_questionnaire_score"     type="double"/>
+            <output_port name="questionnaire_score_"    type="double"/>
         </Action>
         <!-- Condition Nodes -->
-        <Condition ID="IsQuestionnaireRequested">
-            <input_port name="_questionnaire_requested"            type="std::string"/>
+        <Condition ID="IsApproximationReached"/>
+        <Condition ID="IsUserAnswered">
+            <input_port name="_conversation_mode"   type="std::string"/>
+            <output_port name="user_answer_"        type="std::string"/>
         </Condition>
         <Condition ID="IsUserDetected"/>
         <Condition ID="IsUserEngaged"/>
@@ -196,8 +234,14 @@
         <SubTree ID="T2" />
         <SubTree ID="T3" />
         <SubTree ID="T4" />
-        <SubTree ID="T5" />
-        <SubTree ID="T6" />
+        <SubTree ID="T5" >
+            <input_port default="false" name="__shared_blackboard">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+            <input_port default="0.0"   type="double"   name="_questionnaire_score"/>
+        </SubTree>    
+        <SubTree ID="T6" >
+            <input_port default="false" name="__shared_blackboard">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+            <input_port default="0.0"   type="double"   name="_questionnaire_score"/>
+        </SubTree>   
         <SubTree ID="T7" />
     </TreeNodesModel>
     <!-- ////////// -->

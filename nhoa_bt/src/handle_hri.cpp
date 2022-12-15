@@ -193,6 +193,8 @@ void handle_hri::smile_score_callback(const std_msgs::Float32::ConstPtr&  score)
   if(score->data >= smile_score_threshold_)
     smile_acum_ += 1;
   smile_calls_ += 1;
+  std::cout << "Smile acum -> " << smile_acum_ << std::endl;
+  std::cout << "Smile calls -> " << smile_calls_ << std::endl;
 }
 
 

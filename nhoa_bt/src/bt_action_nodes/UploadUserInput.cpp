@@ -87,23 +87,27 @@ void  UploadUserInput::checkQuestionnaireInput(const std::size_t  &iteration,
   if( gui_->user_input_msg_.compare(questionnaire_resp_[0]) == 0 )
   {
     questionnaire_score += 1.0;
-
+    // q_answers_ [iteration] = q_resp_[iteration][1];
   }
   else if( gui_->user_input_msg_.compare(questionnaire_resp_[1]) == 0 )  
   {
     questionnaire_score += 2.0;
+    // q_answers_ [iteration] = q_resp_[iteration][2];
   }
   else if( gui_->user_input_msg_.compare(questionnaire_resp_[2]) == 0 )  
   {
     questionnaire_score += 3.0;
+    // q_answers_ [iteration] = q_resp_[iteration][3];
   }
   else if( gui_->user_input_msg_.compare(questionnaire_resp_[3]) == 0 )  
   {
     questionnaire_score += 4.0;
+    // q_answers_ [iteration] = q_resp_[iteration][4];
   }
   else if( gui_->user_input_msg_.compare(questionnaire_resp_[4]) == 0 )  
   {
     questionnaire_score += 5.0;
+    // q_answers_ [iteration] = q_resp_[iteration][5];
   }
   
   if(iteration+1 == gui_->max_iter_)
@@ -111,7 +115,7 @@ void  UploadUserInput::checkQuestionnaireInput(const std::size_t  &iteration,
     // TODO: Integrate smile score.
     std::cout << " Adding smile score to the questionnaire one! " << std::endl;
 
-    questionnaire_score += hri_->set_smile_score();
+    // questionnaire_score += hri_->set_smile_score();
   }
   std::cout << " ### Questionnaire score -> " << questionnaire_score << " ### " << std::endl;
   setOutput("questionnaire_score_", questionnaire_score);

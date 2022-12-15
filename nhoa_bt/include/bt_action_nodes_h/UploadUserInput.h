@@ -38,6 +38,25 @@ class UploadUserInput : public BT::CoroActionNode
                                                      "Bastante",
                                                      "Muchísimo"};
 
+    
+    // EUT DIGITAL stuff.
+    std::vector<std::string> q_answers_ = {"", "", ""};
+
+    std::vector<std::vector<std::string>>  q_resp_ = {{"2f83e34b-b288-4108-89f8-a8dd286c8339",
+                                                       "6a029077-5c26-47ce-8ad4-03b3e32c678c",
+                                                       "02bd3ffd-8a0e-4a81-97d3-8c400a54c1c7",
+                                                       "072fddf1-0f72-4789-b491-bc995dc3b844",
+                                                       "dde68135-e9ea-462a-a037-bd8f1e1ebdde"},
+                                                      {"2a56b59d-7869-4845-a8c3-0f9c18fb8338",
+                                                       "22f5a6ba-309d-4ff0-a979-44d6946a30b7",
+                                                       "b2379d4b-263f-4196-b106-0ca7bb9a10bf",
+                                                       "9c44e6db-3ff7-4fed-aad1-d34106bd15ba",
+                                                       "f65fb160-4e9f-41c6-8daa-d2efa2762f1a"},
+                                                      {"22f5a6ba-309d-4ff0-a979-44d6946a30b7",
+                                                       "8852993f-4507-49ef-a1c0-696c5ce8b88a",
+                                                       "a6e1e340-d6ef-43f4-838e-929f542aa1e2",
+                                                       "85e3689e-6fb6-414a-ba88-8d677efa5b20",
+                                                       "d1e57313-b766-48fc-ac48-eb5b302fb3cc"}};
     // ==============
 
     UploadUserInput(const std::string& name, const BT::NodeConfiguration& config) : 

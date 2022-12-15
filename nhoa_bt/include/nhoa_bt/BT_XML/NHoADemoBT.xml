@@ -6,29 +6,20 @@
             <SetBlackboard output_key="questionnaire_score"     value="0.0"/>
             <SubTree ID="T1"/> 
             <ReactiveSequence name="UserDetectionReactiveSequence">
-                <SubTree ID="T2"/> 
+                <!-- <SubTree ID="T2"/> 
                 <SubTree ID="T3"/> 
-                <SubTree ID="T4"/> 
+                <SubTree ID="T4"/>  -->
                 <SubTree ID="T5" __shared_blackboard="false" _questionnaire_score="questionnaire_score" />
                 <SubTree ID="T6" __shared_blackboard="false" _questionnaire_score="questionnaire_score" />
                 <SubTree ID="T7"/> 
             </ReactiveSequence>
-            <!-- <SetBlackboard output_key="motion_name"     value="wave2"/>
-            <Action ID="ExecuteUperbodyMotion" _motion_name="{motion_name}"/> -->
-
-            <!-- <SubTree ID="T5" __shared_blackboard="false" _questionnaire_score="questionnaire_score" /> -->
-            <!-- <SubTree ID="TCustom"  /> -->
         </Sequence>   
     </BehaviorTree>
     <!-- ////////// -->
-    <BehaviorTree ID="TCustom">
+    <!-- <BehaviorTree ID="TCustom">
         <Sequence>     
-            <SetBlackboard output_key="iteration"                value="0"/>
-            <SetBlackboard output_key="web_type"                value="4"/>
-            <SetBlackboard output_key="gui_type"                value="logo"/>
-            <Action ID="ExecuteGUI" _gui_type="{gui_type}" _iteration="{iteration}" _web_type="{web_type}"/>
         </Sequence>
-    </BehaviorTree>
+    </BehaviorTree> -->
     <!-- ////////// -->
     <BehaviorTree ID="T1">
         <Sequence>        
@@ -68,12 +59,12 @@
         <Sequence>        
             <SetBlackboard output_key="navigation_mode"     value="approach_navigation"/>
             <SetBlackboard output_key="conversation_mode"   value="navigation"/>
+            <!-- APPROACHING -->
             <RetryUntilSuccessful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserEngaged"/>
-                    <Inverter> 
+                    <!-- <Inverter> 
                         <Sequence>        
-                            <!-- APPROACHING -->
                             <RetryUntilSuccessful num_attempts="10">
                                 <Fallback>
                                     <Inverter>
@@ -92,7 +83,7 @@
                                 </Fallback>
                             </RetryUntilSuccessful>
                         </Sequence>
-                    </Inverter>
+                    </Inverter> -->
                 </Fallback>
             </RetryUntilSuccessful>
         </Sequence>

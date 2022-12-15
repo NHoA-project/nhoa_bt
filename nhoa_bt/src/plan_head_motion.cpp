@@ -83,6 +83,7 @@ void plan_head_motion::init()
   // ROS_INFO("Waiting for Action Server ...");
   follow_joint_traj_client_.waitForServer();
   point_head_client_.waitForServer();
+  // head_following_client_.waitForServer();
 
   // Init Follow Joint Trajectory goal.
   plan_head_motion::init_fjt_goal();

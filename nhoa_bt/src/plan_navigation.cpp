@@ -96,7 +96,7 @@ void plan_navigation::init()
   
   // ROS_INFO("Waiting for Action Server ...");
   client_.waitForServer(); // Should be implemented w/ Real Ari.
-  approach_client_.waitForServer(); // UPO approach.
+  // approach_client_.waitForServer(); // UPO approach.
 
   // Initialize subscriber.
   odom_sub_               = nh_.subscribe("/mobile_base_controller/odom", 1, &plan_navigation::odom_callback, this);
