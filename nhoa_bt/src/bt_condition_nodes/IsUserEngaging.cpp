@@ -66,6 +66,7 @@ BT::NodeStatus IsUserEngaging::tick() {
 // Additional functions.
 bool IsUserEngaging::isUserEngaging()
 {
+    std::cout << "### Engagement level -> " << hri_->engagement_level_acum_ << " <> " << hri_->engaging_level_threshold_ << std::endl;
     if( hri_->engagement_level_acum_ > hri_->engaging_level_threshold_)
     // if( hri_->smile_score_ > hri_->smile_score_threshold_ ) // TODO: SmileScore
     // if( hri_->engagement_level_.compare("engaged") == 0 ) // TODO: EngagementLevel

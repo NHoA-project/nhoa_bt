@@ -51,12 +51,22 @@ BT::NodeStatus IsUserEngaged::tick() {
             waiting = false;
         } 
     }
+
+    if(success)
+    {
+        return BT::NodeStatus::SUCCESS;
+    }
+    else
+    {
+        return BT::NodeStatus::FAILURE;
+    }
 }
 
 // ####################
 // Additional functions.
 bool IsUserEngaged::isUserEngaged()
 {
+    std::cout << "### Engaged level -> " << hri_->engagement_level_acum_ << " <> " << hri_->engaged_level_threshold_ << std::endl;
     if( hri_->engagement_level_acum_ > hri_->engaged_level_threshold_)
     // if( hri_->smile_score_ > hri_->smile_score_threshold_ ) // TODO: SmileScore
     // if( hri_->engagement_level_.compare("engaged") == 0 ) // TODO: EngagementLevel
