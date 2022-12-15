@@ -29,66 +29,65 @@ class ExecuteConversation : public BT::CoroActionNode
     // - Agenda voice commands.
     // std::vector<std::string> agenda_cmds = {"Today is 12th of December and the weather is sunny.",
     //                                         "Remember you have to call your daughter and that you have an appointment with the doctor at 17:00."};       
-    std::vector<std::string> agenda_cmds = {"Hoy es 12 de diciembre y el día es soleado.",
-                                            "Recuerda que tienes que llamar a tu hija y que tienes una cita con el médico a las 17:00."};                                         
+    std::vector<std::string> agenda_cmds = {"Hoy es 15 de diciembre y el día es soleado.",
+                                            "Recuerde que tiene que llamar a su hija y que tiene una cita con el médico a las cinco de la tarde."};                                         
 
     // - Agenda recall voice commands.                                                 
     // std::vector<std::string> agenda_recall_cmds = {"We're done for now. Thank you.",
     //                                                 "Remember that today you must call your daughter and that you have an appointment with the doctor at 17:00. Bye bye!"};  
     std::vector<std::string> agenda_recall_cmds = {"Hemos terminado por ahora. Gracias.",
-                                                    "Recuerda que tienes que llamar a tu hija y que tienes una cita con el médico a las 17:00. ¡Adiós!"};                                          
+                                                    "Recuerde que tiene que llamar a su hija y que tiene una cita con el médico a las cinco de la tarde. ¡Adiós!"};                 
+
+    // - Bottle On Table voice commands.                                                 
+    std::vector<std::string> bottle_on_table_cmds = {"Le recuerdo que hidratarse con frecuencia es importante. Tiene la botella justo encima de la mesa."};
+                      
 
     // - Chit chat voice commands.                                        
     // std::vector<std::string> chit_chat_cmds = {"How are you today?",                                // Question
     //                                            "Did you sleep well?",                               // Y/N Question
     //                                            "Great. A good sleep is important.",                 // Yes
     //                                            "I am sorry to hear that. You must be very tired."}; // No
-    std::vector<std::string> chit_chat_cmds = {"¿Cómo estás hoy?",                                // Question
-                                               "¿Has dormido bien?"};                              // Y/N Question
+    std::vector<std::string> chit_chat_cmds = {"¿Cómo está hoy?",                                // Question
+                                               "¿Ha dormido bien?"};                              // Y/N Question
 
     std::vector<std::string> chit_chat_fb_cmds = {"Genial. Dormir bien es importante.",              // Yes
-                                                  "Lamento escuchar eso. Debes estar muy cansado."}; // No
+                                                  "Lamento escuchar eso. Debe estar muy cansado."}; // No
 
     // -   Navigation feedback voice commands.
-    std::vector<std::string> navigation_cmds     = {"¡Perdona, estás muy lejos! Podrías acercarte un poco porfavor."}; // Y/N Question
+    std::vector<std::string> navigation_cmds     = {"¡Perdona, está muy lejos! Podría acercarse un poco porfavor."}; // Y/N Question
 
 
     // - Questionnaire voice commands.                                             
     // std::vector<std::string> questionnaire_cmds = {"Question 1: ...?",
     //                                                "Question 2: ...?",
     //                                                "Question 3: ...?"};   
-    std::vector<std::string> questionnaire_cmds = {"¿Cuán lleno de energía te encuentras hoy?",
-                                                   "¿Cuán activo te encuentras hoy?",
-                                                   "¿Cuán animado te encuentras hoy?"};  
+    std::vector<std::string> questionnaire_cmds = {"¿Cuán lleno de energía se encuentra hoy?",
+                                                   "¿Cuán activo se encuentra hoy?",
+                                                   "¿Cuán animado se encuentra hoy?"};  
 
     // - Questionnaire feedback voice commands.
     // std::vector<std::string> questionnaire_fb_cmds = {"Today we finished it quicker",
     //                                                   "I see you're feeling better than yesterday.",
     //                                                   "I suggest calling a friend or family”, “Why don't you go out for a walk?"};      
-    std::vector<std::string> questionnaire_fb_cmds = {"A veces solo necesitas desconectar. Pon tu canción favorita, cántala y veras que te sentirás mucho mejor. Préstale atención a la letra y siente la melodía.",
-                                                      "Haz una lista de sitios donde te gustaría pasear y comienza por uno.",
-                                                      "¿Qué tal si cocinas una receta saludable para toda tu familia o compañeros? Cocinar aporta grandes beneficios, como aumentar la creatividad y bienestar emocional.",
-                                                      "¡Sal a caminar media hora hoy!"};        
+    std::vector<std::string> questionnaire_fb_cmds = {"A veces solo necesita desconectar. Ponga su canción favorita, cántela y verá que se encuentra mucho mejor. Préstele atención a la letra y sienta la melodía.",
+                                                      "Haga una lista de los sitios donde le gustaría pasear y escoja por uno.",
+                                                      "¿Qué tal si cocina una receta saludable para toda su familia o compañeros? Cocinar aporta grandes beneficios, como aumentar la creatividad y bienestar emocional.",
+                                                      "Le sugiero que salga a caminar media hora hoy"};        
     
     // - Questionnaire start voice commands.
     // std::vector<std::string> questionnaire_start_cmds = {"I would like to ask you a few questions. Is now a good moment for you?", // Y/N Question
     //                                                      "Great! Here I go.",             // Yes
     //                                                      "Let's do it some other time."}; // No
     std::vector<std::string> questionnaire_closing_cmds       = {"Gracias por realizar el cuestionario. Recibirá el consejo médico en breves momentos."}; 
-    std::vector<std::string> questionnaire_instructions_cmds  = {"Para realizar el cuestionario, marque una de las 5 respuestas sugeridas mediante la pantalla táctil."}; 
+    std::vector<std::string> questionnaire_instructions_cmds  = {"Para realizar el cuestionario, acerquese al robot y marque una de las 5 respuestas sugeridas mediante la pantalla táctil."}; 
     std::vector<std::string> questionnaire_start_cmds         = {"Me gustaría hacerle algunas preguntas. ¿Es un buen momento para usted?"}; // Y/N Question
     std::vector<std::string> questionnaire_start_fb_cmds      = {"¡Genial! Allá voy.",             // Yes
                                                                  "Lo dejamos para otro momento."}; // No   
 
-    // - TODO: Segmentation scene voice commands.
-    std::vector<std::string> segmentation_scene_cmds_     = {"",
-                                                             "",
-                                                             "",
-                                                             "",
-                                                             "",
-                                                             "",
-                                                             ""};                                                                                                                      
-
+    // - User Sat voice commands.                                                 
+    std::vector<std::string> user_sat_cmds            = {"Le recomiendo que se siente en la silla que hay cerca de la mesa."};      
+    std::vector<std::string> user_still_sat_cmds      = {"Puedo ver que sigue sentado. Para realizar el cuestionario debe levantarse."};                                          
+            
     // Bool flag.
     bool success_ = false;
 
@@ -127,14 +126,14 @@ class ExecuteConversation : public BT::CoroActionNode
     // =================================================== 
     // Additional functionalities.
 
-    // Check scene.
-    bool checkScene();
-
     // Outputs the Agenda "voice command".
     bool executeAgenda(const std::size_t  &iteration);
 
     // Outputs the Agenda Recall "motion_name" and "voice command".
     bool executeAgendaRecall(const std::size_t  &iteration);
+
+    // Outputs the Bottle On Table "voice command".
+    bool executeBottleOnTable();
 
     // Outputs Chit Chat the "voice command".
     bool executeChitChat(const std::size_t &iteration);
@@ -156,6 +155,12 @@ class ExecuteConversation : public BT::CoroActionNode
 
     // Outputs the Questionnaire Feedback "voice command".
     bool executeQuestionnaireFB(const double  &questionnaire_score);
+
+    // Outputs the User Sat "voice command".
+    bool executeUserSat();
+
+    // Outputs the User Still Sat "voice command".
+    bool executeUserStillSat();
 
     // Outputs the "voice command" to start the Questionnaire conversation.
     bool startQuestionnaire(const std::size_t &iteration);

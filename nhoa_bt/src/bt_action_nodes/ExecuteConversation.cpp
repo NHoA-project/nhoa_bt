@@ -59,6 +59,20 @@ BT::NodeStatus ExecuteConversation::tick()
           }
         }
         // --------
+        else if(conversation_mode.value().compare("bottle_on_table") == 0)
+        {
+          if(!(executeBottleOnTable()))
+          {
+              std::cout << "ERROR! Not able toexecuteBottleOnTable." << std::endl;
+              success = false;
+          }
+          else
+          {
+              std::cout << "SUCCESS! executeBottleOnTable conversation is fullfilled." << std::endl;
+              success = true;
+          }
+        }
+        // --------
         else if(conversation_mode.value().compare("chit_chat") == 0)
         {
           if(!(executeChitChat(iteration.value())))
@@ -185,16 +199,30 @@ BT::NodeStatus ExecuteConversation::tick()
           }
         }
         // --------
-        else if(conversation_mode.value().compare("scene_segmentation") == 0)
+        else if(conversation_mode.value().compare("user_sat") == 0)
         {
-          if(!(checkScene()))
+          if(!(executeUserSat()))
           {
-              std::cout << "ERROR! Not able to Check Scene." << std::endl;
+              std::cout << "ERROR! Not able to Execute User Sat." << std::endl;
               success = false;
           }
           else
           {
-              std::cout << "SUCCESS! Check Scene is fullfilled." << std::endl;
+              std::cout << "SUCCESS! Execute User Sat is fullfilled." << std::endl;
+              success = true;
+          }
+        }
+        // --------
+        else if(conversation_mode.value().compare("user_still_sat") == 0)
+        {
+          if(!(executeUserStillSat()))
+          {
+              std::cout << "ERROR! Not able to Execute User Sat." << std::endl;
+              success = false;
+          }
+          else
+          {
+              std::cout << "SUCCESS! Execute User Sat is fullfilled." << std::endl;
               success = true;
           }
         }
@@ -239,66 +267,6 @@ void ExecuteConversation::halt(){
 // ####################
 // Additional functions.
 
-bool ExecuteConversation::checkScene()
-{
-  // TODO: Depending on the Boolean variables output some voice command.
-  std::cout << "### person_sitting_on_chair -> " << scene_->scene_digest_msg_.person_sitting_on_chair << " ###" << std::endl;
-  std::cout << "### person_holding_bottle -> " << scene_->scene_digest_msg_.person_holding_bottle << " ###" << std::endl;
-  std::cout << "### person_holding_cup -> " << scene_->scene_digest_msg_.person_holding_cup << " ###" << std::endl;
-  std::cout << "### person_looking_at_tv -> " << scene_->scene_digest_msg_.person_looking_at_tv << " ###" << std::endl;
-  std::cout << "### cup_on_table -> " << scene_->scene_digest_msg_.cup_on_table << " ###" << std::endl;
-  std::cout << "### bottle_on_table -> " << scene_->scene_digest_msg_.bottle_on_table << " ###" << std::endl;
-  std::cout << "### chair_near_table -> " << scene_->scene_digest_msg_.chair_near_table << " ###" << std::endl;
-
-  // Higher probability sorted.
-  if(scene_->scene_digest_msg_.person_sitting_on_chair)
-  {
-    setOutput("voice_cmd_", segmentation_scene_cmds_[0]);
-    success_ = true;
-  }
-  // -----
-  else if(scene_->scene_digest_msg_.person_holding_bottle)
-  {
-    setOutput("voice_cmd_", segmentation_scene_cmds_[1]);
-    success_ = true;
-  }
-  // -----
-  else if(scene_->scene_digest_msg_.person_holding_cup)
-  {
-    setOutput("voice_cmd_", segmentation_scene_cmds_[2]);
-    success_ = true;
-  }
-  // -----
-  else if(scene_->scene_digest_msg_.cup_on_table)
-  {
-    setOutput("voice_cmd_", segmentation_scene_cmds_[3]);
-    success_ = true;
-  }
-  // -----
-  else if(scene_->scene_digest_msg_.bottle_on_table)
-  {
-    setOutput("voice_cmd_", segmentation_scene_cmds_[4]);
-    success_ = true;
-  }
-  // -----
-  else if(scene_->scene_digest_msg_.chair_near_table)
-  {
-    setOutput("voice_cmd_", segmentation_scene_cmds_[5]);
-    success_ = true;
-  }
-  // -----
-  else if(scene_->scene_digest_msg_.person_looking_at_tv)
-  {
-    setOutput("voice_cmd_", segmentation_scene_cmds_[6]);
-  }
-  // ----
-  else
-  {
-    success_ = false;
-  }
-  return success_;
-}
-
 bool ExecuteConversation::executeAgenda(const std::size_t  &iteration)
 {
   if(iteration < agenda_cmds.size())
@@ -322,7 +290,7 @@ bool ExecuteConversation::executeAgendaRecall(const std::size_t  &iteration)
     setOutput("voice_cmd_", agenda_recall_cmds[iteration]);
     if( iteration == agenda_recall_cmds.size()-1 )
     {
-      setOutput("motion_name_", "wave");
+      setOutput("motion_name_", "wave2");
     }
     success_ = true;
   }
@@ -331,6 +299,12 @@ bool ExecuteConversation::executeAgendaRecall(const std::size_t  &iteration)
     success_ = false;
   }
   return success_;
+}
+
+bool ExecuteConversation::executeBottleOnTable()
+{
+  setOutput("voice_cmd_", bottle_on_table_cmds[0]);
+  return true;
 }
 
 bool ExecuteConversation::executeChitChat(const std::size_t &iteration)
@@ -421,6 +395,19 @@ bool ExecuteConversation::executeQuestionnaireFB(const double  &questionnaire_sc
   success_ = true;
   return success_;
 }
+
+bool ExecuteConversation::executeUserSat()
+{
+  setOutput("voice_cmd_", user_sat_cmds[0]);
+  return true;
+}
+
+bool ExecuteConversation::executeUserStillSat()
+{
+  setOutput("voice_cmd_", user_still_sat_cmds[0]);
+  return true;
+}
+
 
 bool ExecuteConversation::startQuestionnaire(const std::size_t &iteration)
 {
