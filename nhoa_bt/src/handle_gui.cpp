@@ -64,8 +64,6 @@ bool handle_gui::set_web_go_to(const std::string    &gui_type,
     {
       success_ =  false;
     }
-
-    return success_;
   }
   else if( gui_type.compare("logo") == 0 )
   {
@@ -76,6 +74,7 @@ bool handle_gui::set_web_go_to(const std::string    &gui_type,
       web_go_to_pub_.publish(web_msg_);
       success_ = true;
   }
+  return success_;
 }
 
 void handle_gui::user_input_callback(const pal_interaction_msgs::Input&  user_input)
