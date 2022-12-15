@@ -25,6 +25,7 @@
 
 // ACTION NODES
 #include <CancelNavigationGoal.h>
+#include <CheckSmileScore.h>
 #include <DrawUserAttention.h>
 #include <ExecuteConversation.h>
 #include <ExecuteHeadMotion.h>
@@ -36,10 +37,12 @@
 
 // CONDITION NODES
 #include <IsApproximationReached.h>
+#include <IsBottleOnTable.h>
 #include <IsUserAnswered.h>
 #include <IsUserDetected.h>
 #include <IsUserEngaged.h>
 #include <IsUserEngaging.h>
+#include <IsUserSat.h>
 
 // RECYCLA FILES INCLUDES
 #include <handle_gui.h>
@@ -106,6 +109,7 @@ int main(int argc, char **argv)
 
     // ACTION NODES (BT full implemented).
     factory.registerNodeType<CancelNavigationGoal>("CancelNavigationGoal");
+    factory.registerNodeType<CheckSmileScore>("CheckSmileScore");
     factory.registerNodeType<DrawUserAttention>("DrawUserAttention");
     factory.registerNodeType<ExecuteConversation>("ExecuteConversation");
     factory.registerNodeType<ExecuteGUI>("ExecuteGUI");
@@ -122,10 +126,13 @@ int main(int argc, char **argv)
     // CONDITION NODES (BT full implemented).
     // factory.registerNodeType<ConditionNodeFrame>("ConditionNodeFrame");
     factory.registerNodeType<IsApproximationReached>("IsApproximationReached");
+    factory.registerNodeType<IsBottleOnTable>("IsBottleOnTable");
     factory.registerNodeType<IsUserAnswered>("IsUserAnswered");
     factory.registerNodeType<IsUserDetected>("IsUserDetected");
     factory.registerNodeType<IsUserEngaged>("IsUserEngaged");
     factory.registerNodeType<IsUserEngaging>("IsUserEngaging");
+    factory.registerNodeType<IsUserSat>("IsUserSat");
+
 
     // CONDITION NODES (Class + BT wrapped functionalities).
     // factory.registerSimpleCondition("IsGrasping",
@@ -172,6 +179,10 @@ int main(int argc, char **argv)
         {
             CancelNavigationGoal_node->init(&navigation); 
         }
+        else if(auto CheckSmileScore_node = dynamic_cast<CheckSmileScore *>(node.get()))
+        {
+            CheckSmileScore_node->init(&hri); 
+        }
         else if(auto ExecuteGUI_node = dynamic_cast<ExecuteGUI *>(node.get()))
         {
             ExecuteGUI_node->init(&nh, &gui); 
@@ -202,6 +213,10 @@ int main(int argc, char **argv)
         {
             IsApproximationReached_node->init(&navigation);
         }
+        else if (auto IsBottleOnTable_node = dynamic_cast<IsBottleOnTable *>(node.get()))
+        {
+            IsBottleOnTable_node->init(&scene);
+        }
         else if (auto IsUserAnswered_node = dynamic_cast<IsUserAnswered *>(node.get()))
         {
             IsUserAnswered_node->init(&hri);
@@ -217,6 +232,10 @@ int main(int argc, char **argv)
         else if (auto IsUserEngaged_node = dynamic_cast<IsUserEngaged *>(node.get()))
         {
             IsUserEngaged_node->init(&hri);
+        }
+        else if (auto IsUserSat_node = dynamic_cast<IsUserSat *>(node.get()))
+        {
+            IsUserSat_node->init(&scene);
         }
     }
 
