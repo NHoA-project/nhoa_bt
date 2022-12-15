@@ -76,11 +76,11 @@ bool DrawUserAttention::drawUserAttention(const std::size_t  &iteration)
 {
   if(!(iteration > voice_cmds.size()))
   {
-    std::cout << "### ITERATION -> " << iteration << " ###" << std::endl;
+    std::cout << "### Executing -> " << motion_names_[iteration] << " ###" << std::endl;
 
     // Setting outputs.
     setOutput("iteration_", iteration + 1);  
-    setOutput("motion_name_", motion_names[iteration]);
+    setOutput("motion_name_", motion_names_[iteration]);
     setOutput("voice_cmd_", voice_cmds[iteration]);
 
     success_ = true;

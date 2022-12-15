@@ -21,15 +21,14 @@ class DrawUserAttention : public BT::CoroActionNode
   public:   
 
     // TODO: Predefined messages.
-    std::vector<std::string> motion_names = {"nod",
-                                             "look around",
-                                             "show left",
-                                             "show right",
-                                             "bow"};
+    std::vector<std::string> motion_names_ = {"wave2",
+                                              "wave2",
+                                              "middle_arms_back_forward",
+                                              "alive_10"};
 
     // ESP
     std::vector<std::string> voice_cmds = {"Hola. Buenos días!",
-                                           "Hola! ¿Me puedes escuchar?",
+                                           "¡Hola! ¿Me puede escuchar?",
                                            "¡Hey, estoy aquí! Cerca de la cocina.",
                                            "Oh, vaya. Me encantaría charlar."};    
 
