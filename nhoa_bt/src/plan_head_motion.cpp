@@ -62,7 +62,11 @@ void plan_head_motion::cook_point_head_goal(const geometry_msgs::PointStamped &p
 void plan_head_motion::head_following_feedback_callback(const nhoa_head_following_action::HeadFollowingActionFeedback &msg)
 {
   head_following_feedback_ = msg;
-  std::cout << " Person detected -> " << head_following_feedback_.feedback.found << std::endl;
+  if(head_following_feedback_.feedback.found)
+    std::cout << " Person detected -> " << "TRUE" << std::endl;
+  else
+    std::cout << " Person detected -> " << "FALSE" << std::endl;
+
 }
 
 
@@ -82,6 +86,9 @@ void plan_head_motion::init()
 
   // Init Follow Joint Trajectory goal.
   plan_head_motion::init_fjt_goal();
+
+  // Init Head Following subscriber.
+  head_following_sub_    = nh_.subscribe("/HeadFollowing/feedback", 1, &plan_head_motion::head_following_feedback_callback, this);
 
   std::cout << "plan_head_motion initialized!" << std::endl;
 }
