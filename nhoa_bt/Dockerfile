@@ -18,7 +18,10 @@ RUN apt-get update && \
     ros-noetic-controller-manager-msgs \
     ros-noetic-hri-msgs \
     ros-noetic-moveit-ros-planning-interface \
-    ros-noetic-move-base-msgs 
+    ros-noetic-move-base-msgs \
+    ros-noetic-move-base \
+    ros-noetic-vision-msgs 
+
     # ros-noetic-hri \
     # ros-noetic-pyhri \
     # ros-noetic-human-description \
@@ -31,9 +34,11 @@ RUN apt-get update && \
 WORKDIR /nhoa_bt_ws/src
 
 # CLone github repos.
-RUN git clone https://github.com/NHoA-project/nhoa_bt.git ./nhoa
-# RUN git clone https://github.com/nhoa-project/nhoa_approach_action.git ./nhoa_approach_action
-# RUN git clone https://github.com/nhoa-project/hri_face_detect.git ./hri_face_detect
+RUN git clone https://github.com/NHoA-project/nhoa_bt.git                       ./nhoa
+RUN git clone https://github.com/nhoa-project/nhoa_approach_action.git          ./nhoa_approach_action
+RUN git clone https://github.com/nhoa-project/nhoa_head_following_action.git    ./nhoa_head_following_action
+RUN git clone https://github.com/nhoa-project/upo_sgg_msgs.git                  ./upo_sgg_msgs
+
 WORKDIR /nhoa_bt_ws
 
 RUN /bin/bash -c "source /opt/ros/noetic/setup.bash; catkin build"

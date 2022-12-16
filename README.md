@@ -20,6 +20,9 @@ This repository is structured into three packages:
 * [play_motion_msgs](https://github.com/pal-robotics/play_motion.git)
 - [pal_interaction_msgs](https://github.com/pal-robotics/pal_msgs.git)
 - [hri_msgs](https://github.com/ros4hri/hri_msgs.git)
+- [nhoa_approach_action](https://github.com/nhoa-project/nhoa_approach_action)
+- [nhoa_head_following_action](https://github.com/nhoa-project/nhoa_head_following_action)
+- [upo_ssg_msgs](https://github.com/nhoa-project/upo_ssg_msgs)
 
 Tested with Ubuntu 20.04 and ROS Noetic.
 
@@ -77,18 +80,28 @@ Then, execute in different terminals each docker image's bash:
 docker exec -it melodic-ari bash
 # In the 2nd terminal
 docker exec -it noetic-nhoa_bt bash
+# In the 3rd terminal
+docker exec -it noetic-nhoa_bt bash
+# In the 4rth terminal
+docker exec -it noetic-nhoa_bt bash
 ```
-
 Run the following command to launch all required nodes for the PAL ARI's simulation (1st terminal):
 ```
 source /opt/pal/ferrum/setup.bash
 roslaunch ari_20_gazebo ari_gazebo.launch
 ```
-Run the following command to launch all required nodes for the NHoA's BT execution (2nd terminal):
+Run the following command to launch the nhoa_approach_action node (2nd terminal):
+```
+roslaunch nhoa_approach_action nhoa_approach_action.launch
+```
+Run the following command to launch the nhoa_head_following_action node (3rd terminal):
+```
+roslaunch nhoa_head_following_action nhoa_head_folllowing_action.launch 
+```
+Run the following command to launch all required nodes for the NHoA's BT execution (4th terminal):
 ```
 roslaunch nhoa_bt nhoa_bt_demo.launch
 ```
-
 ## Additional
 If you want to export the GI to your device, you will need to execute the following steps in a new terminal:
 
