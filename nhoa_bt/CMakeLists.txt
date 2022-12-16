@@ -81,7 +81,7 @@ add_executable(${PROJECT_NAME}_demo src/${PROJECT_NAME}_demo.cpp
                src/bt_condition_nodes/IsUserDetected.cpp
                src/bt_condition_nodes/IsUserEngaged.cpp
                src/bt_condition_nodes/IsUserEngaging.cpp
-               src/bt_condition_nodes/IsUserSat.cpp
+               src/bt_condition_nodes/IsUserSeated.cpp
                #############################
                src/handle_gui.cpp
                src/handle_hri.cpp
