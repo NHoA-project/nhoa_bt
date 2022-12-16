@@ -42,7 +42,7 @@
 #include <IsUserDetected.h>
 #include <IsUserEngaged.h>
 #include <IsUserEngaging.h>
-#include <IsUserSat.h>
+#include <IsUserSeated.h>
 
 // RECYCLA FILES INCLUDES
 #include <handle_gui.h>
@@ -131,7 +131,7 @@ int main(int argc, char **argv)
     factory.registerNodeType<IsUserDetected>("IsUserDetected");
     factory.registerNodeType<IsUserEngaged>("IsUserEngaged");
     factory.registerNodeType<IsUserEngaging>("IsUserEngaging");
-    factory.registerNodeType<IsUserSat>("IsUserSat");
+    factory.registerNodeType<IsUserSeated>("IsUserSeated");
 
 
     // CONDITION NODES (Class + BT wrapped functionalities).
@@ -233,9 +233,9 @@ int main(int argc, char **argv)
         {
             IsUserEngaged_node->init(&hri);
         }
-        else if (auto IsUserSat_node = dynamic_cast<IsUserSat *>(node.get()))
+        else if (auto IsUserSeated_node = dynamic_cast<IsUserSeated *>(node.get()))
         {
-            IsUserSat_node->init(&scene);
+            IsUserSeated_node->init(&scene);
         }
     }
 

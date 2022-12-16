@@ -15,8 +15,7 @@
 // NHOA_BT INCLUDES
 #include <handle_hri.h>
 
-/* This BT action node encapsulates the PAL ROBOTICS ARI "tts" 
-   speech functionality.*/
+/* This BT action node encapsulates the UOC smile score functionality.*/
 
 class CheckSmileScore : public BT::CoroActionNode
 {

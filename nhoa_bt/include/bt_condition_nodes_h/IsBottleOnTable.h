@@ -7,8 +7,7 @@
 // NHOA_BT INCLUDES
 #include <handle_scene.h>
 
-/* TODO: Here should be implemented all the functionalities of:
-         - Body detection -> pyhri (ROS4HRI) */
+/* TODO: UPO scene segmentation is_bottle_on_table condition check */
 
 class IsBottleOnTable : public BT::ConditionNode
 {
@@ -37,7 +36,7 @@ class IsBottleOnTable : public BT::ConditionNode
     BT::NodeStatus tick() override;
 
     // =================================================== 
-    // Check if user is engaging.
+    // Check if bottle is on table.
     bool isBottleOnTable();
 };
 #endif //IsBottleOnTable_H_INCLUDED__

@@ -36,7 +36,7 @@ class IsApproximationReached : public BT::ConditionNode
     BT::NodeStatus tick() override;
 
     // =================================================== 
-    // Check if user is engaging.
+    // Check if approximation is reached.
     bool isApproximationReached();
 };
 #endif //IsApproximationReached_H_INCLUDED__

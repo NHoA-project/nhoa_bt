@@ -6,20 +6,15 @@
             <SetBlackboard output_key="questionnaire_score"     value="0.0"/>
             <SubTree ID="T1"/> 
             <ReactiveSequence name="UserDetectionReactiveSequence">
-                <!-- <SubTree ID="T2"/> 
+                <SubTree ID="T2"/> 
                 <SubTree ID="T3"/> 
-                <SubTree ID="T4"/>  -->
+                <SubTree ID="T4"/> 
                 <SubTree ID="T5" __shared_blackboard="false" _questionnaire_score="questionnaire_score" />
                 <SubTree ID="T6" __shared_blackboard="false" _questionnaire_score="questionnaire_score" />
                 <SubTree ID="T7"/> 
             </ReactiveSequence>
         </Sequence>   
     </BehaviorTree>
-    <!-- ////////// -->
-    <!-- <BehaviorTree ID="TCustom">
-        <Sequence>     
-        </Sequence>
-    </BehaviorTree> -->
     <!-- ////////// -->
     <BehaviorTree ID="T1">
         <Sequence>        
@@ -63,7 +58,7 @@
             <RetryUntilSuccessful num_attempts="30">
                 <Fallback>
                     <Condition ID="IsUserEngaged"/>
-                    <!-- <Inverter> 
+                    <Inverter> 
                         <Sequence>        
                             <RetryUntilSuccessful num_attempts="10">
                                 <Fallback>
@@ -83,7 +78,7 @@
                                 </Fallback>
                             </RetryUntilSuccessful>
                         </Sequence>
-                    </Inverter> -->
+                    </Inverter>
                 </Fallback>
             </RetryUntilSuccessful>
         </Sequence>
@@ -97,7 +92,7 @@
             <SetBlackboard output_key="conversation_mode"     value="user_sat"/>
             <RetryUntilSuccessful num_attempts="30">
                 <Fallback>
-                    <Condition ID="IsUserSat"/>
+                    <Condition ID="IsUserSeated"/>
                     <Inverter>
                         <Sequence>
                             <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="" _questionnaire_score="" _user_answer="" iteration_=""   motion_name_="" voice_cmd_="{voice_cmd}"/>
@@ -168,7 +163,7 @@
                     <RetryUntilSuccessful num_attempts="30">
                         <Inverter>
                             <Sequence>
-                                <Condition ID="IsUserSat"/>
+                                <Condition ID="IsUserSeated"/>
 
                                 <Action ID="ExecuteConversation" _conversation_mode="{conversation_mode}" _iteration="" _questionnaire_score="" _user_answer="" iteration_=""   motion_name_="" voice_cmd_="{voice_cmd}"/>
                                 <Action ID="ExecuteVoiceCmd" _voice_cmd="{voice_cmd}"/>
@@ -286,7 +281,7 @@
         <Condition ID="IsUserDetected"/>
         <Condition ID="IsUserEngaged"/>
         <Condition ID="IsUserEngaging"/>
-        <Condition ID="IsUserSat"/>
+        <Condition ID="IsUserSeated"/>
         <!-- Subtrees -->
         <SubTree ID="T1" />
         <SubTree ID="T2" />

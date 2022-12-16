@@ -65,10 +65,13 @@ class ExecuteHeadMotion : public BT::CoroActionNode
 
     // =================================================== 
 
+    // Execute UPO head following action.
     bool executeHeadFollowing();
 
+    // Execute head follow joint trajectory action.
     bool executeFollowJointTraj(const std::vector<double>     &joint);
 
+    // Execute point head action.
     bool executePointHead(const geometry_msgs::PointStamped   &point);
 };
 #endif // ExecuteHeadMotion_H_INCLUDED_
