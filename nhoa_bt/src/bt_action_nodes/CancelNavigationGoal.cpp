@@ -68,5 +68,7 @@ void CancelNavigationGoal::halt(){
 // Additional functions.
 bool  CancelNavigationGoal::cancelGoal()
 {
-  return navigation_->cancel_goal();
+  std::cout << "Cancelling navigation goal ..." << std::endl;
+  // return navigation_->cancel_goal();
+  return true;
 }

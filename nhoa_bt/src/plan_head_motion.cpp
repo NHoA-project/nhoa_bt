@@ -147,7 +147,7 @@ bool plan_head_motion::set_head_following()
 
   // Send goal to "navigation client".
   ROS_INFO_STREAM("Sending head following goal!");  
-  head_following_client_.sendGoal(head_following_goal_);
+  // head_following_client_.sendGoal(head_following_goal_);
 
   return true;
 }

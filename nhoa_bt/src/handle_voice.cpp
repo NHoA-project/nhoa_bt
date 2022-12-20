@@ -45,7 +45,7 @@ void handle_voice::init()
   }
   
   // ROS_INFO("Waiting for Action Server ...");
-  client_.waitForServer();
+  // client_.waitForServer();
 
   std::cout << "handle_voice initialized!" << std::endl;
 }

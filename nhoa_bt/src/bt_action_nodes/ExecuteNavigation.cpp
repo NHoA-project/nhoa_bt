@@ -114,7 +114,8 @@ bool ExecuteNavigation::executeApproachNavigation()
 {
   std::cout << "Executing approach navigation ..." << std::endl;
 
-  return navigation_->set_approach_navigation();
+  // return navigation_->set_approach_navigation();
+  return true;
 }
 
 bool ExecuteNavigation::executeNavigationGoal(const std::vector<double>  &navigation_goal)

@@ -3,40 +3,56 @@
 
 BT::NodeStatus IsUserAnswered::tick() 
 {
-
-    // TODO: CLEAN VERSION.
+    // TODO: HARDCODED VERSION.
     std::string input;
-    bool waiting = true;
-    bool success = false;
-    while (waiting) 
-    {
-        std::cout << name() << ": Select 's' (start) or 'p'(pause)" << std::endl;
+    while (true) {
+        std::cout << name() << ": Does user answered? Select 's' (success) or 'f'(failure)" << std::endl;
         std::cin >> input;
         if (input.compare("s") == 0) 
         { 
-            // Get the Blackboard input arguments.
-            auto conversation_mode    = getInput<std::string>("_conversation_mode");
-            if(conversation_mode.value().empty())
-            {
-                throw BT::RuntimeError("error reading port [conversation_mode]:", conversation_mode.error());
-            }
-            // ==========
-            else
-            {
-                success = isUserAnswered(conversation_mode.value());
-                waiting = false;
-            }
+            std::cout << "User has answered!" << std::endl;
+            return BT::NodeStatus::SUCCESS;
+        } 
+        else if(input.compare("f") == 0) 
+        {
+            std::cout << "User has NOT answered!" << std::endl;
+            return BT::NodeStatus::FAILURE;
         } 
     }
 
-    if(success)
-    {
-        return BT::NodeStatus::SUCCESS;
-    }
-    else
-    {
-        return BT::NodeStatus::FAILURE;
-    }
+    // // TODO: CLEAN VERSION.
+    // std::string input;
+    // bool waiting = true;
+    // bool success = false;
+    // while (waiting) 
+    // {
+    //     std::cout << name() << ": Select 's' (start) or 'p'(pause)" << std::endl;
+    //     std::cin >> input;
+    //     if (input.compare("s") == 0) 
+    //     { 
+    //         // Get the Blackboard input arguments.
+    //         auto conversation_mode    = getInput<std::string>("_conversation_mode");
+    //         if(conversation_mode.value().empty())
+    //         {
+    //             throw BT::RuntimeError("error reading port [conversation_mode]:", conversation_mode.error());
+    //         }
+    //         // ==========
+    //         else
+    //         {
+    //             success = isUserAnswered(conversation_mode.value());
+    //             waiting = false;
+    //         }
+    //     } 
+    // }
+
+    // if(success)
+    // {
+    //     return BT::NodeStatus::SUCCESS;
+    // }
+    // else
+    // {
+    //     return BT::NodeStatus::FAILURE;
+    // }
 }
 
 // ####################

@@ -34,7 +34,7 @@ RUN apt-get update && \
 WORKDIR /nhoa_bt_ws/src
 
 # CLone github repos.
-RUN git clone https://github.com/NHoA-project/nhoa_bt.git                       ./nhoa
+RUN git clone -b simple_version --single-branch https://github.com/NHoA-project/nhoa_bt.git                       ./nhoa
 RUN git clone https://github.com/nhoa-project/nhoa_approach_action.git          ./nhoa_approach_action
 RUN git clone https://github.com/nhoa-project/nhoa_head_following_action.git    ./nhoa_head_following_action
 RUN git clone https://github.com/nhoa-project/upo_sgg_msgs.git                  ./upo_sgg_msgs

@@ -2,48 +2,48 @@
 #include  <iostream>
 
 BT::NodeStatus IsBottleOnTable::tick() {
-    // // TODO: HARDCODED VERSION.
-    // std::string input;
-    // while (true) {
-    //     std::cout << name() << ": Is bottle on table? Select 's' (success) or 'f'(failure)" << std::endl;
-    //     std::cin >> input;
-    //     if (input.compare("s") == 0) 
-    //     { 
-    //         std::cout <<  Bottle is on table!" << std::endl;
-    //         return BT::NodeStatus::SUCCESS;
-    //     } 
-    //     else if(input.compare("f") == 0) 
-    //     {
-    //         std::cout << "Bottle is not on table! << std::endl;
-    //         return BT::NodeStatus::FAILURE;
-    //     } 
-    // }
-
-    // TODO: CLEAN VERSION.
+    // TODO: HARDCODED VERSION.
     std::string input;
-    bool waiting = true;
-    bool success = false;
-    while (waiting) 
-    {
-        std::cout << name() << ": Select 's' (start) or 'p'(pause)" << std::endl;
+    while (true) {
+        std::cout << name() << ": Is bottle on table? Select 's' (success) or 'f'(failure)" << std::endl;
         std::cin >> input;
         if (input.compare("s") == 0) 
         { 
-            if(isBottleOnTable())
-                success = true;
-
-            waiting = false;
+            std::cout <<  "Bottle is on table!" << std::endl;
+            return BT::NodeStatus::SUCCESS;
+        } 
+        else if(input.compare("f") == 0) 
+        {
+            std::cout << "Bottle is not on table!" << std::endl;
+            return BT::NodeStatus::FAILURE;
         } 
     }
 
-    if(success)
-    {
-        return BT::NodeStatus::SUCCESS;
-    }
-    else
-    {
-        return BT::NodeStatus::FAILURE;
-    }
+    // // TODO: CLEAN VERSION.
+    // std::string input;
+    // bool waiting = true;
+    // bool success = false;
+    // while (waiting) 
+    // {
+    //     std::cout << name() << ": Select 's' (start) or 'p'(pause)" << std::endl;
+    //     std::cin >> input;
+    //     if (input.compare("s") == 0) 
+    //     { 
+    //         if(isBottleOnTable())
+    //             success = true;
+
+    //         waiting = false;
+    //     } 
+    // }
+
+    // if(success)
+    // {
+    //     return BT::NodeStatus::SUCCESS;
+    // }
+    // else
+    // {
+    //     return BT::NodeStatus::FAILURE;
+    // }
 }
 
 // ####################

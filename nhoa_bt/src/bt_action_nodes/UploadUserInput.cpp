@@ -124,14 +124,15 @@ void  UploadUserInput::checkQuestionnaireInput(const std::size_t  &iteration,
 bool UploadUserInput::getQuestionnaireInput(const std::size_t  &iteration,
                                                   double       &questionnaire_score)
 {
-  while (gui_->user_input_flag_ == false){}
+  // while (gui_->user_input_flag_ == false){}
 
   std::cout << "Introduce Question " << iteration << " answer: " << std::endl;
-  std::cout << "Question " << iteration << " answer : '" << gui_->user_input_msg_ << "' sent to the DB cloud." << std::endl;
+  // std::cout << "Question " << iteration << " answer : '" << gui_->user_input_msg_ << "' sent to the DB cloud." << std::endl;
+  std::cout << "Question " << iteration << " answer sent to the DB cloud." << std::endl;
 
-  UploadUserInput::checkQuestionnaireInput(iteration-1, questionnaire_score);
+  // UploadUserInput::checkQuestionnaireInput(iteration-1, questionnaire_score);
 
-  gui_->user_input_flag_ = false;
+  // gui_->user_input_flag_ = false;
 
   // TODO: Send answer to the DB (EUT).
   // uploadQuestionnaireAnswer(iteration, user_input);

@@ -90,5 +90,6 @@ bool ExecuteVoiceCmd::executeVoiceCmd(const std::string  &voice_cmd)
 {
   std::cout << "### EXECUTING VOICE COMMAND -> " << voice_cmd << " ###" << std::endl;
 
-  return voice_->set_voice_cmd(voice_cmd); 
+  // return voice_->set_voice_cmd(voice_cmd); 
+  return true;
 }

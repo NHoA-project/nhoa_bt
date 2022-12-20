@@ -95,7 +95,7 @@ void plan_navigation::init()
   }
   
   // ROS_INFO("Waiting for Action Server ...");
-  client_.waitForServer(); // Should be implemented w/ Real Ari.
+  // client_.waitForServer(); // Should be implemented w/ Real Ari.
   // approach_client_.waitForServer(); // UPO approach.
 
   // Initialize subscriber.

@@ -1,11 +1,10 @@
 version: "2.3"
 
 services:
-  noetic-nhoa_bt:
+  noetic-nhoa_bt-simple:
     network_mode: host
-    container_name: "noetic-nhoa_bt"
-    image: ghcr.io/nhoa-project/noetic-nhoa_bt:latest # GitHub Option.
-    # image: gitlab.local.eurecat.org:5050/robotics-automation/nhoa:noetic-nhoa_bt # Gitlab Option. (ONLY EUT)
+    container_name: "noetic-nhoa_bt-simple"
+    image: gitlab.local.eurecat.org:5050/robotics-automation/nhoa:noetic-nhoa_bt-simple
     privileged: true
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
@@ -23,7 +22,7 @@ services:
   melodic-ari:
     network_mode: host
     container_name: "melodic-ari"
-    image: registry.gitlab.com/pal-robotics/nhoa/dockers/pal-ferrum-pal-metapkg-development-ari-20-dev
+    image: gitlab.local.eurecat.org:5050/robotics-automation/nhoa:melodic-ari
     privileged: true
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
